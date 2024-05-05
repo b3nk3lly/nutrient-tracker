@@ -6,6 +6,7 @@ import Food from "../types/food";
 const SearchBar = () => {
 	const [query, setQuery] = useState("");
 	const [suggestions, setSuggestions] = useState<Food[]>([]);
+	const [searchFocused, setSearchFocused] = useState(false);
 
 	/**
 	 * Fetches search suggestions from the backend
@@ -39,13 +40,28 @@ const SearchBar = () => {
 	};
 
 	return (
-		<div>
-			<input type="text" placeholder="Search..." value={query} onChange={handleInputChange} />
-			<ul>
-				{suggestions.map((result, index) => (
-					<li key={index}>{result.food_description}</li>
-				))}
-			</ul>
+		<div className="w-3/4">
+			<input
+				className="input input-bordered w-full"
+				type="text"
+				placeholder="Search..."
+				value={query}
+				onChange={handleInputChange}
+				onFocus={() => setSearchFocused(true)}
+				onBlur={() => setSearchFocused(false)}
+			/>
+			<div
+				className="overflow-y-auto max-h-64"
+				hidden={!searchFocused || suggestions.length == 0}
+			>
+				<ul className="menu menu-vertical bg-base-200 rounded-box flex flex-col">
+					{suggestions.map((result, index) => (
+						<li key={index}>
+							<button>{result.food_description}</button>
+						</li>
+					))}
+				</ul>
+			</div>
 		</div>
 	);
 };
