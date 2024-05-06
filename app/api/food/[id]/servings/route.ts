@@ -1,0 +1,99 @@
+// /api/food/[id]/servings
+
+import { NextRequest, NextResponse } from "next/server";
+import Serving from "../../../../types/serving";
+
+const quantityRegex = new RegExp(/^\d+(\/\d+)?/); // finds a whole number or a fraction denoted with '/'
+const gramsServingRegex = new RegExp(/\d+g/); // finds a whole-number gram measurement (e.g., 90g)
+
+const namesToIgnore = ["no serving sizes specified", "no serving specified"];
+
+/**
+ * Extracts the quantity of a serving from its name. If the quantity is a fraction, the quantity
+ * is first computed and then returned.
+ *
+ * Examples:
+ * - For a serving named `15ml`, this returns `15`
+ * - For a serving named `"1/2 egg"`, this returns `0.5`
+ * @param serving the server whose quantity to compute
+ * @returns the serving's quantity as a number
+ */
+const computeQuantity = ({ measure_name }: Serving) => {
+	// try to parse quantity from name
+	const quantity = quantityRegex.exec(measure_name)?.at(0);
+
+	if (!quantity) {
+		throw new Error(`Could not extract quantity from serving: ${measure_name}`);
+	}
+
+	// assume quantity is a fraction and split it
+	const [numerator, denominator] = quantity.split("/");
+
+	return denominator
+		? Number(numerator) / Number(denominator) // if it is a fraction, compute it
+		: Number(numerator); // else return numerator
+};
+
+/**
+ * Formats the name of a serving by removing the numeric quantity, any trailing 's',
+ * and any trailing or leading whitespace.
+ * @param serving the serving whose name to format
+ * @returns the formatted name
+ */
+const formatName = ({ measure_name }: Serving) => {
+	const newName = measure_name
+		.replace(quantityRegex, "") // remove quantity
+		.trim();
+
+	// remove trailing 's', if it exists
+	return newName.endsWith("s") ? newName.slice(0, -1) : newName;
+};
+
+/**
+ * Formats a list of serving sizes by filtering out placeholders, formatting measure names,
+ * computing conversion factors, and removing duplicates.
+ * @param servings the list of servings to format
+ * @returns the formatted list
+ */
+const formatServings = (servings: Serving[]) => {
+	const formattedServings = servings
+		.filter(
+			(serving) =>
+				// filter out meaningless serving sizes
+				!namesToIgnore.includes(serving.measure_name) &&
+				// filter options that include a serving in grams
+				// we add our own grams serving later
+				!gramsServingRegex.test(serving.measure_name)
+		)
+		// create a new serving with computed conversion factor and formatted measure name
+		.map((serving) => ({
+			// calculate the conversion factor per single unit of the serving
+			conversion_factor_value: serving.conversion_factor_value / computeQuantity(serving),
+			// format the serving name
+			measure_name: formatName(serving)
+		}));
+
+	// add a default serving size, grams
+	// helps with foods that otherwise have no serving sizes, and good to have a consistent measurement
+	formattedServings.push({ conversion_factor_value: 0.01, measure_name: "g" });
+
+	return (
+		formattedServings
+			// sort alphabetically
+			.sort((a, b) => a.measure_name.localeCompare(b.measure_name))
+			// remove duplicates by measure_name
+			.filter(
+				(serving, index, array) => serving.measure_name != array.at(index + 1)?.measure_name
+			)
+	);
+};
+
+export async function GET(request: NextRequest) {
+	const foodId = request.url.split("/").slice(-2, -1);
+	const cnfResponse = await fetch(
+		`https://food-nutrition.canada.ca/api/canadian-nutrient-file/servingsize?id=${foodId}`
+	);
+	const servings: Serving[] = await cnfResponse.json();
+
+	return NextResponse.json(formatServings(servings), { status: 200 });
+}
