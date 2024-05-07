@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Food from "../types/food";
 
-const SearchBar = () => {
+const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 	const [query, setQuery] = useState("");
 	const [suggestions, setSuggestions] = useState<Food[]>([]);
 	const [searchFocused, setSearchFocused] = useState(false);
@@ -39,6 +39,10 @@ const SearchBar = () => {
 		}
 	};
 
+	const shouldRenderOptions = () => {
+		return searchFocused && suggestions.length > 0;
+	};
+
 	return (
 		<div className="w-3/4">
 			<input
@@ -50,17 +54,20 @@ const SearchBar = () => {
 				onFocus={() => setSearchFocused(true)}
 				onBlur={() => setSearchFocused(false)}
 			/>
-			<div
-				className="overflow-y-auto max-h-64"
-				hidden={!searchFocused || suggestions.length == 0}
-			>
-				<ul className="menu menu-vertical bg-base-200 rounded-box flex flex-col">
-					{suggestions.map((result, index) => (
-						<li key={index}>
-							<button>{result.food_description}</button>
-						</li>
-					))}
-				</ul>
+			<div className="overflow-y-auto max-h-64">
+				{shouldRenderOptions() && (
+					<ul className="menu menu-vertical bg-base-200 rounded-box flex flex-col">
+						{suggestions.map((food, index) => (
+							<li key={index}>
+								{/* use onMouseDown so this is clickable before the options are 
+								    un-rendered after the search bar loses focus */}
+								<button onMouseDown={() => props.onSelect(food)}>
+									{food.food_description}
+								</button>
+							</li>
+						))}
+					</ul>
+				)}
 			</div>
 		</div>
 	);
