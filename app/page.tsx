@@ -46,7 +46,7 @@ export default function Home() {
 	};
 
 	return (
-		<main className="flex min-h-screen flex-col items-center justify-between p-24">
+		<main className="flex min-h-screen flex-col items-center space-y-8 p-24">
 			<SearchBar onSelect={(food: Food) => addFood(selectedMealId, food)} />
 			{meals.map((meal) => (
 				<MealCard

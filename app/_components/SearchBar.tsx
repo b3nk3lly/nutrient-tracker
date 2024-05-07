@@ -54,19 +54,21 @@ const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 				onFocus={() => setSearchFocused(true)}
 				onBlur={() => setSearchFocused(false)}
 			/>
-			<div className="overflow-y-auto max-h-64">
+			<div className="relative">
 				{shouldRenderOptions() && (
-					<ul className="menu menu-vertical bg-base-200 rounded-box flex flex-col">
-						{suggestions.map((food, index) => (
-							<li key={index}>
-								{/* use onMouseDown so this is clickable before the options are 
+					<div className="absolute top-0 left-0 z-10 overflow-y-auto max-h-64 rounded-box">
+						<ul className="menu menu-vertical bg-base-200 flex flex-col">
+							{suggestions.map((food, index) => (
+								<li key={index}>
+									{/* use onMouseDown so this is clickable before the options are 
 								    un-rendered after the search bar loses focus */}
-								<button onMouseDown={() => props.onSelect(food)}>
-									{food.food_description}
-								</button>
-							</li>
-						))}
-					</ul>
+									<button onMouseDown={() => props.onSelect(food)}>
+										{food.food_description}
+									</button>
+								</li>
+							))}
+						</ul>
+					</div>
 				)}
 			</div>
 		</div>
