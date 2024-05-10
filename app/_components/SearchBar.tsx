@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Food from "../types/food";
+import SectionLabel from "./SectionLabel";
 
 const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 	const [query, setQuery] = useState("");
@@ -45,9 +46,7 @@ const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 
 	return (
 		<div className="w-full">
-			<div className="label">
-				<span className="label-text">Search for food:</span>
-			</div>
+			<SectionLabel label="Search for food:" />
 			<input
 				className="input input-bordered w-full"
 				type="text"
