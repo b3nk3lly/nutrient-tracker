@@ -44,11 +44,14 @@ const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 	};
 
 	return (
-		<div className="w-3/4">
+		<div className="w-full">
+			<div className="label">
+				<span className="label-text">Search for food:</span>
+			</div>
 			<input
 				className="input input-bordered w-full"
 				type="text"
-				placeholder="Search..."
+				placeholder="Enter a name or food code"
 				value={query}
 				onChange={handleInputChange}
 				onFocus={() => setSearchFocused(true)}
