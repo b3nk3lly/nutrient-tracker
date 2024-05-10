@@ -14,7 +14,7 @@ const MealCard = (props: {
 	};
 
 	return (
-		<div className="card card-compact card-bordered rounded-lg border-base-200 w-full ">
+		<div className="card card-compact card-bordered rounded-lg border-base-200 w-full">
 			<div className="card-header rounded-t-lg bg-base-200 h-12 place-content-center">
 				<div className="card-title">
 					<input

@@ -7,6 +7,7 @@ import Food from "./types/food";
 import FoodItem from "./_components/FoodItem";
 import Meal from "./types/meal";
 import Serving from "./types/serving";
+import MealNavigation from "./_components/MealNavigation";
 
 export default function Home() {
 	let mealCount = 0; // incremented to assign meal IDs
@@ -46,16 +47,16 @@ export default function Home() {
 	};
 
 	return (
-		<main className="flex min-h-screen flex-col items-center space-y-8 p-24">
+		<main className="flex min-h-screen flex-col items-center space-y-8 p-24 w-full">
 			<SearchBar onSelect={(food: Food) => addFood(selectedMealId, food)} />
-			{meals.map((meal) => (
-				<MealCard
-					key={meal.id}
-					name={meal.name}
-					onNameChange={(name: string) => handleMealNameChange(meal.id, name)}
-					onDelete={() => handleMealDelete(meal.id)}
-				>
-					{foods.map((food) => (
+			<MealCard
+				name={meals.find((meal) => meal.id === selectedMealId)?.name ?? ""}
+				onNameChange={(name: string) => handleMealNameChange(selectedMealId, name)}
+				onDelete={() => handleMealDelete(selectedMealId)}
+			>
+				{foods
+					.filter((food) => food.mealId == selectedMealId)
+					.map((food) => (
 						<FoodItem
 							key={food.id}
 							foodCode={food.food_code}
@@ -69,8 +70,12 @@ export default function Home() {
 							}
 						/>
 					))}
-				</MealCard>
-			))}
+			</MealCard>
+			<MealNavigation
+				selectedMealId={selectedMealId}
+				mealCount={mealCount}
+				onClick={setSelectedMealId}
+			/>
 		</main>
 	);
 }
