@@ -29,7 +29,9 @@ const MealCard = (props: {
 						/>
 					</div>
 				</div>
-				<div className="card-body rounded-b-lg bg-base-100 divide-y">{props.children}</div>
+				<div className="card-body rounded-b-lg bg-base-100 divide-y overflow-y-auto max-h-64">
+					{props.children}
+				</div>
 			</div>
 		</div>
 	);
