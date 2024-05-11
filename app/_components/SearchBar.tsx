@@ -60,8 +60,8 @@ const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 				{shouldRenderOptions() && (
 					<div className="absolute top-0 left-0 z-10 overflow-y-auto max-h-64 rounded-box">
 						<ul className="menu menu-vertical bg-base-200 flex flex-col">
-							{suggestions.map((food, index) => (
-								<li key={index}>
+							{suggestions.map((food) => (
+								<li key={food.food_code}>
 									{/* use onMouseDown so this is clickable before the options are 
 								    un-rendered after the search bar loses focus */}
 									<button onMouseDown={() => props.onSelect(food)}>
