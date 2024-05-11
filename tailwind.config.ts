@@ -20,7 +20,7 @@ const config: Config = {
 				}
 			},
 			animation: {
-				flash: "flash 0.5s ease-in-out"
+				flash: "flash 0.33s ease-in-out"
 			}
 		}
 	},
