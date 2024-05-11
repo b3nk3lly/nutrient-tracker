@@ -77,14 +77,14 @@ const formatServings = (servings: Serving[]) => {
 	// helps with foods that otherwise have no serving sizes, and good to have a consistent measurement
 	formattedServings.push({ conversion_factor_value: 0.01, measure_name: "g" });
 
+	// sort alphabetically
+	formattedServings.sort((a, b) => a.measure_name.localeCompare(b.measure_name));
+
 	return (
-		formattedServings
-			// sort alphabetically
-			.sort((a, b) => a.measure_name.localeCompare(b.measure_name))
-			// remove duplicates by measure_name
-			.filter(
-				(serving, index, array) => serving.measure_name != array.at(index + 1)?.measure_name
-			)
+		// remove duplicates by measure_name
+		formattedServings.filter(
+			(serving, index, array) => serving.measure_name != array.at(index + 1)?.measure_name
+		)
 	);
 };
 
