@@ -47,7 +47,8 @@ export default function Home() {
 	};
 
 	return (
-		<main className="flex min-h-screen flex-col items-center space-y-8 p-24 w-full">
+		<main className="flex min-h-screen flex-col items-center space-y-8 p-8 w-full">
+			<h1>Nutrient Reporter</h1>
 			<SearchBar onSelect={(food: Food) => addFood(selectedMealId, food)} />
 			<MealCard
 				name={meals.find((meal) => meal.id === selectedMealId)?.name ?? ""}
