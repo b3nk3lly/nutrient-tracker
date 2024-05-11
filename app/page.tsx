@@ -11,11 +11,13 @@ import MealNavigation from "./_components/MealNavigation";
 
 let mealCount = 0; // incremented to assign meal IDs
 let foodCount = 0; // incremented to assign food IDs
+let servingCount = 0; // incremented to assign serving IDs
 
 export default function Home() {
 	const [meals, setMeals] = useState<Meal[]>([{ id: mealCount, name: "Untitled meal" }]);
 	const [selectedMealId, setSelectedMealId] = useState(mealCount);
 	const [foods, setFoods] = useState<Food[]>([]);
+	const [servings, setServings] = useState<Serving[]>([]);
 
 	const handleMealDelete = (id: number) => {
 		setMeals(meals.filter((meal) => meal.id !== id));
@@ -25,9 +27,28 @@ export default function Home() {
 		setMeals(meals.map((meal) => (meal.id === id ? { ...meal, name: name } : meal)));
 	};
 
-	const addFood = (id: number, food: Food) => {
+	const addFood = async (id: number, food: Food) => {
+		// set default properties on new food
 		const newFood = { ...food, id: ++foodCount, mealId: id, quantity: 0 };
 
+		// get servings for the newly added food
+		const response = await fetch(`/api/food/${newFood.food_code}/servings`);
+		const json: Serving[] = await response.json();
+
+		// set IDs
+		const newServings = json.map((serving) => ({
+			...serving,
+			id: ++servingCount,
+			foodId: newFood.id
+		}));
+
+		// default to first selected serving
+		newFood.selectedServingId = newServings[0].id;
+
+		// add new servings to state
+		setServings([...servings, ...newServings]);
+
+		// add new food to state
 		// sort so that newest food appears first
 		const sortedFoods = [newFood, ...foods].sort((a, b) => (a.id > b.id ? -1 : 1));
 		setFoods(sortedFoods);
@@ -37,8 +58,13 @@ export default function Home() {
 		setFoods(foods.map((food) => (food.id === id ? { ...food, quantity: quantity } : food)));
 	};
 
-	const handleServingChange = (id: number, serving: Serving) => {
-		setFoods(foods.map((food) => (food.id === id ? { ...food, serving: serving } : food)));
+	const handleServingChange = (event: { target: { value: string } }, foodId: number) => {
+		const selectedServingId = Number(event.target.value);
+		setFoods(
+			foods.map((food) =>
+				food.id === foodId ? { ...food, selectedServingId: selectedServingId } : food
+			)
+		);
 	};
 
 	return (
@@ -56,16 +82,26 @@ export default function Home() {
 						.map((food) => (
 							<FoodItem
 								key={food.id}
-								foodCode={food.food_code}
 								name={food.food_description}
 								quantity={food.quantity}
 								onQuantityChange={(quantity: number) =>
 									handleQuantityChange(food.id, quantity)
 								}
-								onServingChange={(serving: Serving) =>
-									handleServingChange(food.id, serving)
-								}
-							/>
+							>
+								<select
+									className="select select-sm select-bordered join-item w-1/2"
+									onChange={(event) => handleServingChange(event, food.id)}
+									value={food.selectedServingId}
+								>
+									{servings
+										.filter((serving) => serving.foodId == food.id)
+										.map((serving) => (
+											<option key={serving.id} value={serving.id}>
+												{serving.measure_name}
+											</option>
+										))}
+								</select>
+							</FoodItem>
 						))}
 				</MealCard>
 				<MealNavigation

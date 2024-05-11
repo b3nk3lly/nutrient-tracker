@@ -1,38 +1,16 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Serving from "../types/serving";
+import React, { ReactNode } from "react";
 
 const FoodItem = (props: {
-	foodCode: number;
 	name: string;
 	quantity: number;
 	onQuantityChange: (quantity: number) => void;
-	onServingChange: (serving: Serving) => void;
+	children?: ReactNode;
 }) => {
-	const [servings, setServings] = useState<Serving[]>([]);
-
-	// fetch servings from backend on render
-	useEffect(() => {
-		const fetchServings = async () => {
-			const response = await fetch(`/api/food/${props.foodCode}/servings`);
-			const json: Serving[] = await response.json();
-
-			setServings(json);
-		};
-
-		fetchServings();
-	}, [props.foodCode]);
-
 	const handleQuantityChange = (event: { target: { value: string } }) => {
 		const inputValue = Number(event.target.value);
 		props.onQuantityChange(inputValue);
-	};
-
-	const handleServingChange = (event: { target: { value: string } }) => {
-		const selectValue = Number(event.target.value);
-		const selectedServing = servings[selectValue];
-		props.onServingChange(selectedServing);
 	};
 
 	return (
@@ -47,16 +25,7 @@ const FoodItem = (props: {
 						value={props.quantity}
 						onChange={handleQuantityChange}
 					/>
-					<select
-						className="select select-sm select-bordered join-item w-1/2"
-						onChange={handleServingChange}
-					>
-						{servings.map((serving, index) => (
-							<option key={index} value={index}>
-								{serving.measure_name}
-							</option>
-						))}
-					</select>
+					{props.children}
 				</div>
 			</label>
 		</div>
