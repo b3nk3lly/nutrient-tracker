@@ -36,7 +36,7 @@ const FoodItem = (props: {
 	};
 
 	return (
-		<div className="py-4">
+		<div className="py-4 animate-flash">
 			<h2 className="m-1 font-bold">{props.name}</h2>
 			<label className="w-full m-1">
 				Quantity:

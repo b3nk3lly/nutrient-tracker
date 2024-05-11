@@ -9,13 +9,11 @@ import Meal from "./types/meal";
 import Serving from "./types/serving";
 import MealNavigation from "./_components/MealNavigation";
 
+let mealCount = 0; // incremented to assign meal IDs
+let foodCount = 0; // incremented to assign food IDs
+
 export default function Home() {
-	let mealCount = 0; // incremented to assign meal IDs
-	let foodCount = 0; // incremented to assign food IDs
-
-	const defaultMeal = { id: mealCount, name: "Untitled meal", foods: [] };
-
-	const [meals, setMeals] = useState<Meal[]>([defaultMeal]);
+	const [meals, setMeals] = useState<Meal[]>([{ id: mealCount, name: "Untitled meal" }]);
 	const [selectedMealId, setSelectedMealId] = useState(mealCount);
 	const [foods, setFoods] = useState<Food[]>([]);
 
@@ -28,22 +26,19 @@ export default function Home() {
 	};
 
 	const addFood = (id: number, food: Food) => {
-		foodCount++;
-		setFoods([...foods, { ...food, id: foodCount, mealId: id, quantity: 0 }]);
+		const newFood = { ...food, id: ++foodCount, mealId: id, quantity: 0 };
+
+		// sort so that newest food appears first
+		const sortedFoods = [newFood, ...foods].sort((a, b) => (a.id > b.id ? -1 : 1));
+		setFoods(sortedFoods);
 	};
 
 	const handleQuantityChange = (id: number, quantity: number) => {
-		console.log("Quantity set to ", quantity);
-		setFoods(
-			foods.map((food) => (food.food_code === id ? { ...food, quantity: quantity } : food))
-		);
+		setFoods(foods.map((food) => (food.id === id ? { ...food, quantity: quantity } : food)));
 	};
 
 	const handleServingChange = (id: number, serving: Serving) => {
-		console.log("Serving set to ", serving);
-		setFoods(
-			foods.map((food) => (food.food_code === id ? { ...food, serving: serving } : food))
-		);
+		setFoods(foods.map((food) => (food.id === id ? { ...food, serving: serving } : food)));
 	};
 
 	return (
@@ -65,10 +60,10 @@ export default function Home() {
 								name={food.food_description}
 								quantity={food.quantity}
 								onQuantityChange={(quantity: number) =>
-									handleQuantityChange(food.food_code, quantity)
+									handleQuantityChange(food.id, quantity)
 								}
 								onServingChange={(serving: Serving) =>
-									handleServingChange(food.food_code, serving)
+									handleServingChange(food.id, serving)
 								}
 							/>
 						))}

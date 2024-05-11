@@ -11,6 +11,16 @@ const config: Config = {
 			backgroundImage: {
 				"gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
 				"gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))"
+			},
+			keyframes: {
+				flash: {
+					"0%": { "background-color": "inherit" },
+					"50%": { "background-color": "#b1d9e9" }, // flash to INFO color
+					"100%": { "background-color": "inherit" }
+				}
+			},
+			animation: {
+				flash: "flash 0.5s ease-in-out"
 			}
 		}
 	},
