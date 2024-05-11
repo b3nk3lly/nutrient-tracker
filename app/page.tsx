@@ -47,36 +47,38 @@ export default function Home() {
 	};
 
 	return (
-		<main className="flex min-h-screen flex-col items-center space-y-8 p-8 w-full">
-			<h1>Nutrient Reporter</h1>
-			<SearchBar onSelect={(food: Food) => addFood(selectedMealId, food)} />
-			<MealCard
-				name={meals.find((meal) => meal.id === selectedMealId)?.name ?? ""}
-				onNameChange={(name: string) => handleMealNameChange(selectedMealId, name)}
-				onDelete={() => handleMealDelete(selectedMealId)}
-			>
-				{foods
-					.filter((food) => food.mealId == selectedMealId)
-					.map((food) => (
-						<FoodItem
-							key={food.id}
-							foodCode={food.food_code}
-							name={food.food_description}
-							quantity={food.quantity}
-							onQuantityChange={(quantity: number) =>
-								handleQuantityChange(food.food_code, quantity)
-							}
-							onServingChange={(serving: Serving) =>
-								handleServingChange(food.food_code, serving)
-							}
-						/>
-					))}
-			</MealCard>
-			<MealNavigation
-				selectedMealId={selectedMealId}
-				mealCount={mealCount}
-				onClick={setSelectedMealId}
-			/>
+		<main className="flex min-h-screen flex-col items-center space-y-8 p-8">
+			<div className="w-full md:w-3/4 lg:w-1/2">
+				<h1 className="text-center">Nutrient Reporter</h1>
+				<SearchBar onSelect={(food: Food) => addFood(selectedMealId, food)} />
+				<MealCard
+					name={meals.find((meal) => meal.id === selectedMealId)?.name ?? ""}
+					onNameChange={(name: string) => handleMealNameChange(selectedMealId, name)}
+					onDelete={() => handleMealDelete(selectedMealId)}
+				>
+					{foods
+						.filter((food) => food.mealId == selectedMealId)
+						.map((food) => (
+							<FoodItem
+								key={food.id}
+								foodCode={food.food_code}
+								name={food.food_description}
+								quantity={food.quantity}
+								onQuantityChange={(quantity: number) =>
+									handleQuantityChange(food.food_code, quantity)
+								}
+								onServingChange={(serving: Serving) =>
+									handleServingChange(food.food_code, serving)
+								}
+							/>
+						))}
+				</MealCard>
+				<MealNavigation
+					selectedMealId={selectedMealId}
+					mealCount={mealCount}
+					onClick={setSelectedMealId}
+				/>
+			</div>
 		</main>
 	);
 }
