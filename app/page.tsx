@@ -8,6 +8,7 @@ import FoodItem from "./_components/FoodItem";
 import Meal from "./types/meal";
 import Serving from "./types/serving";
 import MealNavigation from "./_components/MealNavigation";
+import ReportData from "./types/reportData";
 
 let mealCount = 0; // incremented to assign meal IDs
 let foodCount = 0; // incremented to assign food IDs
@@ -67,6 +68,26 @@ export default function Home() {
 		);
 	};
 
+	const handleGenerateReport = async () => {
+		const reportData: ReportData = {
+			meals: meals.map((meal) => ({
+				name: meal.name,
+				foods: foods
+					.filter((food) => food.mealId === meal.id)
+					.map((food) => ({
+						food_code: food.food_code,
+						food_description: food.food_description,
+						quantity: food.quantity,
+						serving: servings.find(
+							(serving) => serving.id === food.selectedServingId
+						) ?? { conversion_factor_value: 0.01, measure_name: "g" }
+					}))
+			}))
+		};
+
+		await fetch("/api/report", { method: "POST", body: JSON.stringify(reportData) });
+	};
+
 	return (
 		<main className="min-h-screen flex flex-col items-center">
 			<div className="flex flex-col items-center space-y-8 p-8 w-full md:w-3/4 lg:w-1/2">
@@ -109,6 +130,9 @@ export default function Home() {
 					mealCount={mealCount}
 					onClick={setSelectedMealId}
 				/>
+				<button className="btn btn-neutral" onClick={handleGenerateReport}>
+					Generate Report
+				</button>
 			</div>
 		</main>
 	);
