@@ -1,10 +1,17 @@
 // /api/food
 
 import { NextResponse, NextRequest } from "next/server";
-import Food from "../../types/food";
 
-const processedFoodData = new Map<string, Food>();
+const processedFoodData = new Map<string, CNFFood>();
 const strippingRegex = new RegExp(/[^a-zA-Z0-9 ]/, "g"); // used for removing special characters
+
+/**
+ * The structure of the response from Canadian Nutrient File
+ */
+interface CNFFood {
+	food_code: number;
+	food_description: string;
+}
 
 let initialized = false;
 
@@ -64,7 +71,7 @@ async function initFoodData() {
 	const response = await fetch(
 		"https://food-nutrition.canada.ca/api/canadian-nutrient-file/food"
 	);
-	const json: Food[] = await response.json();
+	const json: CNFFood[] = await response.json();
 
 	json.forEach((food) => {
 		processedFoodData.set(formatString(food.food_description), food);
@@ -105,7 +112,10 @@ export async function GET(request: NextRequest) {
 	);
 
 	return NextResponse.json(
-		matchingEntries.map(([key, value]) => value),
+		matchingEntries.map(([key, value]) => ({
+			code: value.food_code,
+			description: value.food_description
+		})),
 		{ status: 200 }
 	);
 }

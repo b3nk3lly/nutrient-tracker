@@ -35,7 +35,7 @@ export default function Home() {
 		const newFood = { ...food, id: ++foodCount, mealId: id, quantity: 0 };
 
 		// get servings for the newly added food
-		const response = await fetch(`/api/food/${newFood.food_code}/servings`);
+		const response = await fetch(`/api/food/${newFood.code}/servings`);
 		const json: Serving[] = await response.json();
 
 		// set IDs
@@ -87,12 +87,12 @@ export default function Home() {
 				foods: foods
 					.filter((food) => food.mealId === meal.id)
 					.map((food) => ({
-						food_code: food.food_code,
-						food_description: food.food_description,
+						code: food.code,
+						description: food.description,
 						quantity: food.quantity,
 						serving: servings.find(
 							(serving) => serving.id === food.selectedServingId
-						) ?? { conversion_factor_value: 0.01, measure_name: "g" }
+						) ?? { conversionFactor: 0.01, name: "g" }
 					}))
 			}))
 		};
@@ -115,7 +115,7 @@ export default function Home() {
 						.map((food) => (
 							<FoodItem
 								key={food.id}
-								name={food.food_description}
+								name={food.description}
 								quantity={food.quantity}
 								onQuantityChange={(quantity: number) =>
 									handleQuantityChange(food.id, quantity)
@@ -130,7 +130,7 @@ export default function Home() {
 										.filter((serving) => serving.foodId == food.id)
 										.map((serving) => (
 											<option key={serving.id} value={serving.id}>
-												{serving.measure_name}
+												{serving.name}
 											</option>
 										))}
 								</select>

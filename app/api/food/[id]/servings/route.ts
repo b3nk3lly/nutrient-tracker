@@ -9,6 +9,14 @@ const gramsServingRegex = new RegExp(/\d+g/); // finds a whole-number gram measu
 const namesToIgnore = ["no serving sizes specified", "no serving specified"];
 
 /**
+ * The structure of the response from Canadian Nutrient File
+ */
+interface CNFServing {
+	conversion_factor_value: number;
+	measure_name: string;
+}
+
+/**
  * Extracts the quantity of a serving from its name. If the quantity is a fraction, the quantity
  * is first computed and then returned.
  *
@@ -18,7 +26,7 @@ const namesToIgnore = ["no serving sizes specified", "no serving specified"];
  * @param serving the server whose quantity to compute
  * @returns the serving's quantity as a number
  */
-const computeQuantity = ({ measure_name }: Serving) => {
+const computeQuantity = ({ measure_name }: CNFServing) => {
 	// try to parse quantity from name
 	const quantity = quantityRegex.exec(measure_name)?.at(0);
 
@@ -40,7 +48,7 @@ const computeQuantity = ({ measure_name }: Serving) => {
  * @param serving the serving whose name to format
  * @returns the formatted name
  */
-const formatName = ({ measure_name }: Serving) => {
+const formatName = ({ measure_name }: CNFServing) => {
 	const newName = measure_name
 		.replace(quantityRegex, "") // remove quantity
 		.trim();
@@ -55,7 +63,7 @@ const formatName = ({ measure_name }: Serving) => {
  * @param servings the list of servings to format
  * @returns the formatted list
  */
-const formatServings = (servings: Serving[]) => {
+const formatServings = (servings: CNFServing[]) => {
 	const formattedServings = servings
 		.filter(
 			(serving) =>
@@ -82,9 +90,14 @@ const formatServings = (servings: Serving[]) => {
 
 	return (
 		// remove duplicates by measure_name
-		formattedServings.filter(
-			(serving, index, array) => serving.measure_name != array.at(index + 1)?.measure_name
-		)
+		formattedServings
+			.filter(
+				(serving, index, array) => serving.measure_name != array.at(index + 1)?.measure_name
+			)
+			.map((serving) => ({
+				name: serving.measure_name,
+				conversionFactor: serving.conversion_factor_value
+			}))
 	);
 };
 
@@ -93,7 +106,7 @@ export async function GET(request: NextRequest) {
 	const cnfResponse = await fetch(
 		`https://food-nutrition.canada.ca/api/canadian-nutrient-file/servingsize?id=${foodId}`
 	);
-	const servings: Serving[] = await cnfResponse.json();
+	const servings: CNFServing[] = await cnfResponse.json();
 
 	return NextResponse.json(formatServings(servings), { status: 200 });
 }
