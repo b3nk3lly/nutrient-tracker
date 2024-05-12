@@ -65,7 +65,7 @@ const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 									{/* use onMouseDown so this is clickable before the options are 
 								    un-rendered after the search bar loses focus */}
 									<button onMouseDown={() => props.onSelect(food)}>
-										{food.description}
+										{`[${food.code}] ${food.description}`}
 									</button>
 								</li>
 							))}
