@@ -28,7 +28,8 @@ const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 		const inputValue = event.target.value;
 		setQuery(inputValue);
 
-		if (inputValue) {
+		// if query is too short, we don't want to overdo it on suggestions
+		if (inputValue && inputValue.length >= 3) {
 			// debounce filtering
 			setTimeout(async () => {
 				fetchSearchSuggestions(inputValue).then((result) => {
