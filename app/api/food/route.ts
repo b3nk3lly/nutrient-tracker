@@ -107,8 +107,11 @@ export async function GET(request: NextRequest) {
 		);
 	}
 
+	const searchByFoodCode = !isNaN(Number(query));
+
+	// match foods either by food code or with string search
 	const matchingEntries = Array.from(processedFoodData.entries()).filter(([key, value]) =>
-		matches(key, query)
+		searchByFoodCode ? value.food_code === Number(query) : matches(key, query)
 	);
 
 	return NextResponse.json(
