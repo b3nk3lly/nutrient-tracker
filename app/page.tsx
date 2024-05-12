@@ -9,6 +9,7 @@ import Meal from "./types/meal";
 import Serving from "./types/serving";
 import MealNavigation from "./_components/MealNavigation";
 import ReportData from "./types/reportData";
+import NutrientGroupSelection from "./_components/NutrientGroupSelection";
 
 let mealCount = 0; // incremented to assign meal IDs
 let foodCount = 0; // incremented to assign food IDs
@@ -19,6 +20,7 @@ export default function Home() {
 	const [selectedMealId, setSelectedMealId] = useState(mealCount);
 	const [foods, setFoods] = useState<Food[]>([]);
 	const [servings, setServings] = useState<Serving[]>([]);
+	const [selectedNutrientGroupIds, setSelectedNutrientGroupIds] = useState<number[]>([]);
 
 	const handleMealDelete = (id: number) => {
 		setMeals(meals.filter((meal) => meal.id !== id));
@@ -65,6 +67,16 @@ export default function Home() {
 			foods.map((food) =>
 				food.id === foodId ? { ...food, selectedServingId: selectedServingId } : food
 			)
+		);
+	};
+
+	const addNutrientGroup = (id: number) => {
+		setSelectedNutrientGroupIds([...selectedNutrientGroupIds, id]);
+	};
+
+	const removeNutrientGroup = (id: number) => {
+		setSelectedNutrientGroupIds(
+			selectedNutrientGroupIds.filter((nutrientGroupId) => nutrientGroupId !== id)
 		);
 	};
 
@@ -129,6 +141,10 @@ export default function Home() {
 					selectedMealId={selectedMealId}
 					mealCount={mealCount}
 					onClick={setSelectedMealId}
+				/>
+				<NutrientGroupSelection
+					onSelect={addNutrientGroup}
+					onDeselect={removeNutrientGroup}
 				/>
 				<button className="btn btn-neutral" onClick={handleGenerateReport}>
 					Generate Report
