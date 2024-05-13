@@ -1,7 +1,7 @@
-export default function SectionLabel(props: { label: string }) {
+export default function SectionLabel(props: Readonly<{ children: React.ReactNode }>) {
 	return (
 		<div className="label">
-			<span className="label-text text-primary-content">{props.label}</span>
+			<span className="label-text text-primary-content">{props.children}</span>
 		</div>
 	);
 }

@@ -47,7 +47,7 @@ const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 
 	return (
 		<div className="w-full">
-			<SectionLabel label="Search for food:" />
+			<SectionLabel>Search for food:</SectionLabel>
 			<input
 				className="input input-bordered w-full"
 				type="text"

@@ -22,7 +22,7 @@ const NutrientGroupSelection = (props: {
 
 	return (
 		<div className="w-full">
-			<SectionLabel label="Nutrients:" />
+			<SectionLabel>Nutrients:</SectionLabel>
 			<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
 				{nutrientGroups.map((nutrientGroup) => (
 					<label

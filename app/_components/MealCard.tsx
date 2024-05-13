@@ -16,7 +16,7 @@ const MealCard = (props: {
 
 	return (
 		<div className="w-full">
-			<SectionLabel label="Meals:" />
+			<SectionLabel>Meals:</SectionLabel>
 			<div className="card card-compact border-2 rounded-lg border-base-200 z-1">
 				<div className="card-header bg-base-200 h-12 place-content-center">
 					<div className="card-title">
