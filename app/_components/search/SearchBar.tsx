@@ -45,7 +45,7 @@ const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 	};
 
 	return (
-		<div className="w-full">
+		<>
 			<input
 				className="input input-bordered w-full"
 				type="text"
@@ -72,7 +72,7 @@ const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 					</div>
 				)}
 			</div>
-		</div>
+		</>
 	);
 };
 
