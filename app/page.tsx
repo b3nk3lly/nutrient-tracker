@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MealCard from "./_components/MealCard";
 import SearchBar from "./_components/SearchBar";
 import Food from "./types/food";
@@ -12,6 +12,8 @@ import ReportData from "./types/reportData";
 import NutrientGroupSelection from "./_components/NutrientGroupSelection";
 import ServingSelection from "./_components/ServingSelection";
 import Section from "./_components/Section";
+import NutrientGroup from "./types/nutrientGroup";
+import NutrientGroupCheckbox from "./_components/NutrientGroupCheckbox";
 
 let mealCount = 0; // incremented to assign meal IDs
 let foodCount = 0; // incremented to assign food IDs
@@ -23,6 +25,20 @@ export default function Home() {
 	const [foods, setFoods] = useState<Food[]>([]);
 	const [servings, setServings] = useState<Serving[]>([]);
 	const [selectedNutrientGroupIds, setSelectedNutrientGroupIds] = useState<number[]>([]);
+	const [nutrientGroups, setNutrientGroups] = useState<NutrientGroup[]>([]);
+
+	useEffect(() => {
+		const fetchNutrientGroups = async () => {
+			const response = await fetch("/api/nutrient-groups");
+			const json: NutrientGroup[] = await response.json();
+
+			// init state with all nutrient groups selected
+			setNutrientGroups(json);
+			setSelectedNutrientGroupIds(json.map((nutrientGroup) => nutrientGroup.id));
+		};
+
+		fetchNutrientGroups();
+	}, []);
 
 	const handleMealDelete = (id: number) => {
 		setMeals(meals.filter((meal) => meal.id !== id));
@@ -72,14 +88,13 @@ export default function Home() {
 		);
 	};
 
-	const addNutrientGroup = (id: number) => {
-		setSelectedNutrientGroupIds([...selectedNutrientGroupIds, id]);
-	};
-
-	const removeNutrientGroup = (id: number) => {
-		setSelectedNutrientGroupIds(
-			selectedNutrientGroupIds.filter((nutrientGroupId) => nutrientGroupId !== id)
-		);
+	const handleNutrientGroupChange = (event: { target: { checked: boolean } }, id: number) => {
+		event.target.checked
+			? setSelectedNutrientGroupIds([...selectedNutrientGroupIds, id]) // add nutrient group
+			: setSelectedNutrientGroupIds(
+					// remove nutrient group
+					selectedNutrientGroupIds.filter((nutrientGroupId) => nutrientGroupId !== id)
+			  );
 	};
 
 	const handleGenerateReport = async () => {
@@ -144,10 +159,19 @@ export default function Home() {
 					/>
 				</Section>
 				<Section label="Nutrients:">
-					<NutrientGroupSelection
-						onSelect={addNutrientGroup}
-						onDeselect={removeNutrientGroup}
-					/>
+					<NutrientGroupSelection>
+						{nutrientGroups.map((nutrientGroup) => (
+							<NutrientGroupCheckbox
+								key={nutrientGroup.id}
+								nutrientGroupId={nutrientGroup.id}
+								label={nutrientGroup.name}
+								checked={selectedNutrientGroupIds.includes(nutrientGroup.id)}
+								onChange={(event) =>
+									handleNutrientGroupChange(event, nutrientGroup.id)
+								}
+							/>
+						))}
+					</NutrientGroupSelection>
 				</Section>
 				<button className="btn btn-neutral" onClick={handleGenerateReport}>
 					Generate Report
