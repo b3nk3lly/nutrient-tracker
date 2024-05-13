@@ -11,6 +11,7 @@ import MealNavigation from "./_components/MealNavigation";
 import ReportData from "./types/reportData";
 import NutrientGroupSelection from "./_components/NutrientGroupSelection";
 import ServingSelection from "./_components/ServingSelection";
+import Section from "./_components/Section";
 
 let mealCount = 0; // incremented to assign meal IDs
 let foodCount = 0; // incremented to assign food IDs
@@ -105,41 +106,49 @@ export default function Home() {
 		<main className="min-h-screen flex flex-col items-center">
 			<div className="flex flex-col items-center space-y-8 p-8 w-full md:w-3/4 lg:w-1/2">
 				<h1>Nutrient Reporter</h1>
-				<SearchBar onSelect={(food: Food) => addFood(selectedMealId, food)} />
-				<MealCard
-					name={meals.find((meal) => meal.id === selectedMealId)?.name ?? ""}
-					onNameChange={(name: string) => handleMealNameChange(selectedMealId, name)}
-					onDelete={() => handleMealDelete(selectedMealId)}
-				>
-					{foods
-						.filter((food) => food.mealId == selectedMealId)
-						.map((food) => (
-							<FoodItem
-								key={food.id}
-								name={food.description}
-								quantity={food.quantity}
-								onQuantityChange={(quantity: number) =>
-									handleQuantityChange(food.id, quantity)
-								}
-							>
-								<ServingSelection
-									servings={servings.filter(
-										(serving) => serving.foodId == food.id
-									)}
-									onServingChange={(event) => handleServingChange(event, food.id)}
-								/>
-							</FoodItem>
-						))}
-				</MealCard>
-				<MealNavigation
-					selectedMealId={selectedMealId}
-					mealCount={mealCount}
-					onClick={setSelectedMealId}
-				/>
-				<NutrientGroupSelection
-					onSelect={addNutrientGroup}
-					onDeselect={removeNutrientGroup}
-				/>
+				<Section label="Search for food:">
+					<SearchBar onSelect={(food: Food) => addFood(selectedMealId, food)} />
+				</Section>
+				<Section label="Meals:">
+					<MealCard
+						name={meals.find((meal) => meal.id === selectedMealId)?.name ?? ""}
+						onNameChange={(name: string) => handleMealNameChange(selectedMealId, name)}
+						onDelete={() => handleMealDelete(selectedMealId)}
+					>
+						{foods
+							.filter((food) => food.mealId == selectedMealId)
+							.map((food) => (
+								<FoodItem
+									key={food.id}
+									name={food.description}
+									quantity={food.quantity}
+									onQuantityChange={(quantity: number) =>
+										handleQuantityChange(food.id, quantity)
+									}
+								>
+									<ServingSelection
+										servings={servings.filter(
+											(serving) => serving.foodId == food.id
+										)}
+										onServingChange={(event) =>
+											handleServingChange(event, food.id)
+										}
+									/>
+								</FoodItem>
+							))}
+					</MealCard>
+					<MealNavigation
+						selectedMealId={selectedMealId}
+						mealCount={mealCount}
+						onClick={setSelectedMealId}
+					/>
+				</Section>
+				<Section label="Nutrients:">
+					<NutrientGroupSelection
+						onSelect={addNutrientGroup}
+						onDeselect={removeNutrientGroup}
+					/>
+				</Section>
 				<button className="btn btn-neutral" onClick={handleGenerateReport}>
 					Generate Report
 				</button>

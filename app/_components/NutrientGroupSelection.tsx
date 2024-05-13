@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import SectionLabel from "./SectionLabel";
 import NutrientGroup from "../types/nutrientGroup";
 
 const NutrientGroupSelection = (props: {
@@ -22,7 +21,6 @@ const NutrientGroupSelection = (props: {
 
 	return (
 		<div className="w-full">
-			<SectionLabel>Nutrients:</SectionLabel>
 			<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
 				{nutrientGroups.map((nutrientGroup) => (
 					<label
