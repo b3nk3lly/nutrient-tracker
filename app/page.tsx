@@ -10,6 +10,7 @@ import Serving from "./types/serving";
 import MealNavigation from "./_components/MealNavigation";
 import ReportData from "./types/reportData";
 import NutrientGroupSelection from "./_components/NutrientGroupSelection";
+import ServingSelection from "./_components/ServingSelection";
 
 let mealCount = 0; // incremented to assign meal IDs
 let foodCount = 0; // incremented to assign food IDs
@@ -121,19 +122,12 @@ export default function Home() {
 									handleQuantityChange(food.id, quantity)
 								}
 							>
-								<select
-									className="select select-sm select-bordered join-item w-1/2"
-									onChange={(event) => handleServingChange(event, food.id)}
-									value={food.selectedServingId}
-								>
-									{servings
-										.filter((serving) => serving.foodId == food.id)
-										.map((serving) => (
-											<option key={serving.id} value={serving.id}>
-												{serving.name}
-											</option>
-										))}
-								</select>
+								<ServingSelection
+									servings={servings.filter(
+										(serving) => serving.foodId == food.id
+									)}
+									onServingChange={(event) => handleServingChange(event, food.id)}
+								/>
 							</FoodItem>
 						))}
 				</MealCard>
