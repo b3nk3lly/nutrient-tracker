@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Food from "../types/food";
+import Food from "../../types/food";
 
 const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 	const [query, setQuery] = useState("");

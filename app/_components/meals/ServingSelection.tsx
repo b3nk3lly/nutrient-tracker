@@ -1,4 +1,4 @@
-import Serving from "../types/serving";
+import Serving from "../../types/serving";
 
 export default function ServingSelection(
 	props: Readonly<{

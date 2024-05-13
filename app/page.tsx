@@ -1,19 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import MealCard from "./_components/MealCard";
-import SearchBar from "./_components/SearchBar";
+import MealCard from "./_components/meals/MealCard";
+import SearchBar from "./_components/search/SearchBar";
 import Food from "./types/food";
-import FoodItem from "./_components/FoodItem";
+import FoodItem from "./_components/meals/FoodItem";
 import Meal from "./types/meal";
 import Serving from "./types/serving";
-import MealNavigation from "./_components/MealNavigation";
+import MealNavigation from "./_components/meals/MealNavigation";
 import ReportData from "./types/reportData";
-import NutrientGroupSelection from "./_components/NutrientGroupSelection";
-import ServingSelection from "./_components/ServingSelection";
+import NutrientGroupSelection from "./_components/nutrients/NutrientGroupSelection";
+import ServingSelection from "./_components/meals/ServingSelection";
 import Section from "./_components/Section";
 import NutrientGroup from "./types/nutrientGroup";
-import NutrientGroupCheckbox from "./_components/NutrientGroupCheckbox";
+import NutrientGroupCheckbox from "./_components/nutrients/NutrientGroupCheckbox";
 
 let mealCount = 0; // incremented to assign meal IDs
 let foodCount = 0; // incremented to assign food IDs
