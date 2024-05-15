@@ -14,6 +14,7 @@ import Section from "./Section";
 import NutrientGroup from "../types/nutrientGroup";
 import NutrientGroupCheckbox from "./nutrients/NutrientGroupCheckbox";
 import Carousel from "./Carousel";
+import MealNavigation from "./meals/MealNavigation";
 
 let mealCount = 0; // incremented to assign meal IDs
 let foodCount = 0; // incremented to assign food IDs
@@ -126,6 +127,7 @@ export default function NutrientReporterForm() {
 					{meals.map((meal) => (
 						<MealCard
 							key={meal.id}
+							id={`meal${meal.id}`}
 							name={meal.name}
 							onNameChange={(name: string) => handleMealNameChange(meal.id, name)}
 							onDelete={() => handleMealDelete(meal.id)}
@@ -164,6 +166,7 @@ export default function NutrientReporterForm() {
 						</MealCard>
 					))}
 				</Carousel>
+				<MealNavigation mealIds={meals.map((meal) => meal.id)} />
 			</Section>
 			<Section label="Nutrients:">
 				<NutrientGroupSelection>

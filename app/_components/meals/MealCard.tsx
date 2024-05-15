@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 
 const MealCard = (props: {
+	id: string;
 	name: string;
 	onNameChange: (name: string) => void;
 	onDelete: () => void;
@@ -16,7 +17,10 @@ const MealCard = (props: {
 	};
 
 	return (
-		<div className={`card card-compact border-2 rounded-lg border-base-200 ${props.className}`}>
+		<div
+			id={props.id}
+			className={`card card-compact border-2 rounded-lg border-base-200 ${props.className}`}
+		>
 			<div className="card-header border-b-2">
 				<div className="card-title bg-base-200 h-12">
 					<input
