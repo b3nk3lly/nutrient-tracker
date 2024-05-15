@@ -124,40 +124,46 @@ export default function Home() {
 		<main className="min-h-screen flex flex-col items-center">
 			<div className="flex flex-col items-center space-y-8 p-8 w-full md:w-3/4 lg:w-1/2">
 				<h1>Nutrient Reporter</h1>
-				<Section label="Search for food:">
-					<SearchBar onSelect={(food: Food) => addFood(selectedMealId, food)} />
-				</Section>
 				<Section label="Meals:">
 					<MealCard
 						name={meals.find((meal) => meal.id === selectedMealId)?.name ?? ""}
 						onNameChange={(name: string) => handleMealNameChange(selectedMealId, name)}
 						onDelete={() => handleMealDelete(selectedMealId)}
+						searchBar={
+							<SearchBar onSelect={(food: Food) => addFood(selectedMealId, food)} />
+						}
 					>
-						{foods
-							.filter((food) => food.mealId == selectedMealId)
-							.map((food) => (
-								<FoodItem
-									key={food.id}
-									name={food.description}
-									quantity={food.quantity}
-									onQuantityChange={(quantity: number) =>
-										handleQuantityChange(food.id, quantity)
-									}
-								>
-									<ServingSelection
-										servings={servings.filter(
-											(serving) => serving.foodId == food.id
-										)}
-										onServingChange={(event) =>
-											handleServingChange(event, food.id)
+						{foods.length == 0 ? (
+							<p className="w-full text-center text-neutral">
+								Search for food to add it to this meal.
+							</p>
+						) : (
+							foods
+								.filter((food) => food.mealId == selectedMealId)
+								.map((food) => (
+									<FoodItem
+										key={food.id}
+										name={food.description}
+										quantity={food.quantity}
+										onQuantityChange={(quantity: number) =>
+											handleQuantityChange(food.id, quantity)
 										}
-									/>
-								</FoodItem>
-							))}
+									>
+										<ServingSelection
+											servings={servings.filter(
+												(serving) => serving.foodId == food.id
+											)}
+											onServingChange={(event) =>
+												handleServingChange(event, food.id)
+											}
+										/>
+									</FoodItem>
+								))
+						)}
 					</MealCard>
 					<MealNavigation
 						selectedMealId={selectedMealId}
-						mealCount={mealCount}
+						mealCount={meals.length}
 						onClick={setSelectedMealId}
 					/>
 				</Section>

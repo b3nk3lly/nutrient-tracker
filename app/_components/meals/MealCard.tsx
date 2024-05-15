@@ -6,6 +6,7 @@ const MealCard = (props: {
 	name: string;
 	onNameChange: (name: string) => void;
 	onDelete: () => void;
+	searchBar: ReactNode;
 	children?: ReactNode;
 }) => {
 	const handleInputChange = (event: { target: { value: string } }) => {
@@ -15,8 +16,8 @@ const MealCard = (props: {
 
 	return (
 		<div className="card card-compact border-2 rounded-lg border-base-200 z-1">
-			<div className="card-header bg-base-200 h-12 place-content-center">
-				<div className="card-title">
+			<div className="card-header border-b-2">
+				<div className="card-title bg-base-200 h-12">
 					<input
 						type="text"
 						value={props.name}
@@ -25,6 +26,7 @@ const MealCard = (props: {
 						onChange={handleInputChange}
 					/>
 				</div>
+				<div className="p-4">{props.searchBar}</div>
 			</div>
 			<div className="card-body rounded-b-lg bg-base-100 divide-y overflow-y-auto max-h-64">
 				{props.children}
