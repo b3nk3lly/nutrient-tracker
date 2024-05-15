@@ -125,47 +125,53 @@ export default function Home() {
 			<div className="flex flex-col items-center space-y-8 p-8 w-full md:w-3/4 lg:w-1/2">
 				<h1>Nutrient Reporter</h1>
 				<Section label="Meals:">
-					<MealCard
-						name={meals.find((meal) => meal.id === selectedMealId)?.name ?? ""}
-						onNameChange={(name: string) => handleMealNameChange(selectedMealId, name)}
-						onDelete={() => handleMealDelete(selectedMealId)}
-						searchBar={
-							<SearchBar onSelect={(food: Food) => addFood(selectedMealId, food)} />
-						}
-					>
-						{foods.length == 0 ? (
-							<p className="w-full text-center text-neutral">
-								Search for food to add it to this meal.
-							</p>
-						) : (
-							foods
-								.filter((food) => food.mealId == selectedMealId)
-								.map((food) => (
-									<FoodItem
-										key={food.id}
-										name={food.description}
-										quantity={food.quantity}
-										onQuantityChange={(quantity: number) =>
-											handleQuantityChange(food.id, quantity)
-										}
-									>
-										<ServingSelection
-											servings={servings.filter(
-												(serving) => serving.foodId == food.id
-											)}
-											onServingChange={(event) =>
-												handleServingChange(event, food.id)
-											}
+					<div className="carousel space-x-8 w-full">
+						{meals.map((meal) => (
+							<div key={meal.id} className="carousel-item w-full">
+								<MealCard
+									name={meal.name}
+									onNameChange={(name: string) =>
+										handleMealNameChange(meal.id, name)
+									}
+									onDelete={() => handleMealDelete(meal.id)}
+									searchBar={
+										<SearchBar
+											onSelect={(food: Food) => addFood(meal.id, food)}
 										/>
-									</FoodItem>
-								))
-						)}
-					</MealCard>
-					<MealNavigation
-						selectedMealId={selectedMealId}
-						mealCount={meals.length}
-						onClick={setSelectedMealId}
-					/>
+									}
+									className="w-full"
+								>
+									{foods.length == 0 ? (
+										<p className="w-full text-center text-neutral">
+											Search for food to add it to this meal.
+										</p>
+									) : (
+										foods
+											.filter((food) => food.mealId == meal.id)
+											.map((food) => (
+												<FoodItem
+													key={food.id}
+													name={food.description}
+													quantity={food.quantity}
+													onQuantityChange={(quantity: number) =>
+														handleQuantityChange(food.id, quantity)
+													}
+												>
+													<ServingSelection
+														servings={servings.filter(
+															(serving) => serving.foodId == food.id
+														)}
+														onServingChange={(event) =>
+															handleServingChange(event, food.id)
+														}
+													/>
+												</FoodItem>
+											))
+									)}
+								</MealCard>
+							</div>
+						))}
+					</div>
 				</Section>
 				<Section label="Nutrients:">
 					<NutrientGroupSelection>

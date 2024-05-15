@@ -6,6 +6,7 @@ const MealCard = (props: {
 	name: string;
 	onNameChange: (name: string) => void;
 	onDelete: () => void;
+	className?: string;
 	searchBar: ReactNode;
 	children?: ReactNode;
 }) => {
@@ -15,7 +16,7 @@ const MealCard = (props: {
 	};
 
 	return (
-		<div className="card card-compact border-2 rounded-lg border-base-200 z-1">
+		<div className={`card card-compact border-2 rounded-lg border-base-200 ${props.className}`}>
 			<div className="card-header border-b-2">
 				<div className="card-title bg-base-200 h-12">
 					<input
