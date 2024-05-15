@@ -41,11 +41,13 @@ export default function Home() {
 	}, []);
 
 	const handleMealDelete = (id: number) => {
-		setMeals(meals.filter((meal) => meal.id !== id));
+		setMeals((oldMeals) => oldMeals.filter((meal) => meal.id !== id));
 	};
 
 	const handleMealNameChange = (id: number, name: string) => {
-		setMeals(meals.map((meal) => (meal.id === id ? { ...meal, name: name } : meal)));
+		setMeals((oldMeals) =>
+			oldMeals.map((meal) => (meal.id === id ? { ...meal, name: name } : meal))
+		);
 	};
 
 	const addFood = async (id: number, food: Food) => {
@@ -67,34 +69,35 @@ export default function Home() {
 		newFood.selectedServingId = newServings[0].id;
 
 		// add new servings to state
-		setServings([...servings, ...newServings]);
+		setServings((oldServings) => oldServings.concat(newServings));
 
 		// add new food to state
 		// sort so that newest food appears first
-		const sortedFoods = [newFood, ...foods].sort((a, b) => (a.id > b.id ? -1 : 1));
-		setFoods(sortedFoods);
+		setFoods((oldFoods) => [newFood, ...oldFoods].sort((a, b) => (a.id > b.id ? -1 : 1)));
 	};
 
 	const handleQuantityChange = (id: number, quantity: number) => {
-		setFoods(foods.map((food) => (food.id === id ? { ...food, quantity: quantity } : food)));
+		setFoods((oldFoods) =>
+			oldFoods.map((food) => (food.id === id ? { ...food, quantity: quantity } : food))
+		);
 	};
 
 	const handleServingChange = (event: { target: { value: string } }, foodId: number) => {
 		const selectedServingId = Number(event.target.value);
-		setFoods(
-			foods.map((food) =>
+		setFoods((oldFoods) =>
+			oldFoods.map((food) =>
 				food.id === foodId ? { ...food, selectedServingId: selectedServingId } : food
 			)
 		);
 	};
 
 	const handleNutrientGroupChange = (event: { target: { checked: boolean } }, id: number) => {
-		event.target.checked
-			? setSelectedNutrientGroupIds([...selectedNutrientGroupIds, id]) // add nutrient group
-			: setSelectedNutrientGroupIds(
-					// remove nutrient group
-					selectedNutrientGroupIds.filter((nutrientGroupId) => nutrientGroupId !== id)
-			  );
+		setSelectedNutrientGroupIds((oldSelectedNutrientGroupIds) =>
+			event.target.checked
+				? [...oldSelectedNutrientGroupIds, id] // add nutrient group
+				: // remove nutrient group
+				  oldSelectedNutrientGroupIds.filter((nutrientGroupId) => nutrientGroupId !== id)
+		);
 	};
 
 	const handleGenerateReport = async () => {
