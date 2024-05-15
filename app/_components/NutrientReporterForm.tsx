@@ -140,7 +140,7 @@ export default function NutrientReporterForm() {
 							}
 							className="w-full"
 						>
-							{foods.length == 0 ? (
+							{foods.filter((food) => food.mealId == meal.id).length == 0 ? (
 								<p className="w-full text-center text-neutral">
 									Search for food to add it to this meal.
 								</p>

@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 
 const MealCard = (props: {
 	id: string;
@@ -11,6 +11,15 @@ const MealCard = (props: {
 	searchBar: ReactNode;
 	children?: ReactNode;
 }) => {
+	const mealCardRef = useRef<HTMLDivElement>(null);
+
+	/**
+	 * Scrolls a meal into view the first time it's rendered
+	 */
+	useEffect(() => {
+		mealCardRef.current?.scrollIntoView();
+	}, []);
+
 	const handleInputChange = (event: { target: { value: string } }) => {
 		const inputValue = event.target.value;
 		props.onNameChange(inputValue);
@@ -20,6 +29,7 @@ const MealCard = (props: {
 		<div
 			id={props.id}
 			className={`card card-compact border-2 rounded-lg border-base-200 ${props.className}`}
+			ref={mealCardRef}
 		>
 			<div className="card-header border-b-2">
 				<div className="card-title bg-base-200 h-12">
