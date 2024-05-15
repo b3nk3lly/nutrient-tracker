@@ -13,6 +13,7 @@ import ServingSelection from "./meals/ServingSelection";
 import Section from "./Section";
 import NutrientGroup from "../types/nutrientGroup";
 import NutrientGroupCheckbox from "./nutrients/NutrientGroupCheckbox";
+import Carousel from "./Carousel";
 
 let mealCount = 0; // incremented to assign meal IDs
 let foodCount = 0; // incremented to assign food IDs
@@ -121,49 +122,48 @@ export default function NutrientReporterForm() {
 	return (
 		<form className="w-full flex flex-col items-center space-y-8">
 			<Section label="Meals:">
-				<div className="carousel space-x-8 w-full">
+				<Carousel>
 					{meals.map((meal) => (
-						<div key={meal.id} className="carousel-item w-full">
-							<MealCard
-								name={meal.name}
-								onNameChange={(name: string) => handleMealNameChange(meal.id, name)}
-								onDelete={() => handleMealDelete(meal.id)}
-								searchBar={
-									<SearchBar onSelect={(food: Food) => addFood(meal.id, food)} />
-								}
-								className="w-full"
-							>
-								{foods.length == 0 ? (
-									<p className="w-full text-center text-neutral">
-										Search for food to add it to this meal.
-									</p>
-								) : (
-									foods
-										.filter((food) => food.mealId == meal.id)
-										.map((food) => (
-											<FoodItem
-												key={food.id}
-												name={food.description}
-												quantity={food.quantity}
-												onQuantityChange={(quantity: number) =>
-													handleQuantityChange(food.id, quantity)
+						<MealCard
+							key={meal.id}
+							name={meal.name}
+							onNameChange={(name: string) => handleMealNameChange(meal.id, name)}
+							onDelete={() => handleMealDelete(meal.id)}
+							searchBar={
+								<SearchBar onSelect={(food: Food) => addFood(meal.id, food)} />
+							}
+							className="w-full"
+						>
+							{foods.length == 0 ? (
+								<p className="w-full text-center text-neutral">
+									Search for food to add it to this meal.
+								</p>
+							) : (
+								foods
+									.filter((food) => food.mealId == meal.id)
+									.map((food) => (
+										<FoodItem
+											key={food.id}
+											name={food.description}
+											quantity={food.quantity}
+											onQuantityChange={(quantity: number) =>
+												handleQuantityChange(food.id, quantity)
+											}
+										>
+											<ServingSelection
+												servings={servings.filter(
+													(serving) => serving.foodId == food.id
+												)}
+												onServingChange={(event) =>
+													handleServingChange(event, food.id)
 												}
-											>
-												<ServingSelection
-													servings={servings.filter(
-														(serving) => serving.foodId == food.id
-													)}
-													onServingChange={(event) =>
-														handleServingChange(event, food.id)
-													}
-												/>
-											</FoodItem>
-										))
-								)}
-							</MealCard>
-						</div>
+											/>
+										</FoodItem>
+									))
+							)}
+						</MealCard>
 					))}
-				</div>
+				</Carousel>
 			</Section>
 			<Section label="Nutrients:">
 				<NutrientGroupSelection>
