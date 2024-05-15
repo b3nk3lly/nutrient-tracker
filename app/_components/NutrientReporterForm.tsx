@@ -40,6 +40,10 @@ export default function NutrientReporterForm() {
 		fetchNutrientGroups();
 	}, []);
 
+	const handleAddMeal = () => {
+		setMeals((oldMeals) => [...oldMeals, { id: ++mealCount, name: "Untitled meal" }]);
+	};
+
 	const handleMealDelete = (id: number) => {
 		setMeals((oldMeals) => oldMeals.filter((meal) => meal.id !== id));
 	};
@@ -166,7 +170,7 @@ export default function NutrientReporterForm() {
 						</MealCard>
 					))}
 				</Carousel>
-				<MealNavigation mealIds={meals.map((meal) => meal.id)} />
+				<MealNavigation mealIds={meals.map((meal) => meal.id)} onNewMeal={handleAddMeal} />
 			</Section>
 			<Section label="Nutrients:">
 				<NutrientGroupSelection>
