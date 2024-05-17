@@ -1,17 +1,19 @@
 "use client";
 
-import { ReactNode, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import DeleteButton from "../DeleteButton";
+import Food from "../../types/food";
+import SearchBar from "../search/SearchBar";
+import FoodItem from "./FoodItem";
 
 const MealCard = (props: {
-	id: string;
-	name: string;
-	onNameChange: (name: string) => void;
-	onDelete: () => void;
+	id: number;
 	className?: string;
-	searchBar: ReactNode;
-	children?: ReactNode;
+	onNameChange: (name: string) => void;
 }) => {
+	const [name, setName] = useState("");
+	const [foods, setFoods] = useState<Food[]>([]);
+
 	const mealCardRef = useRef<HTMLDivElement>(null);
 
 	/**
@@ -21,14 +23,17 @@ const MealCard = (props: {
 		mealCardRef.current?.scrollIntoView();
 	}, []);
 
-	const handleInputChange = (event: { target: { value: string } }) => {
-		const inputValue = event.target.value;
-		props.onNameChange(inputValue);
+	const addFood = async (food: Food) => {
+		// TODO set food ID
+
+		// add new food to state
+		// sort so that newest food appears first
+		setFoods((oldFoods) => [food, ...oldFoods].sort((a, b) => (a.id > b.id ? -1 : 1)));
 	};
 
 	return (
 		<div
-			id={props.id}
+			id={`meal${props.id}`}
 			className={`card card-compact border-2 rounded-lg border-base-200 ${props.className}`}
 			ref={mealCardRef}
 		>
@@ -36,17 +41,27 @@ const MealCard = (props: {
 				<div className="card-title bg-base-200 h-12 flex justify-between p-4">
 					<input
 						type="text"
-						value={props.name}
+						value={name}
 						className="input input-sm bg-base-200 border-none p-0"
 						placeholder="Enter meal name"
-						onChange={handleInputChange}
+						onChange={(e) => props.onNameChange(e.target.value)}
 					/>
 					<DeleteButton />
 				</div>
-				<div className="p-4">{props.searchBar}</div>
+				<div className="p-4">
+					<SearchBar onSelect={(food: Food) => addFood(food)} />
+				</div>
 			</div>
 			<div className="card-body rounded-b-lg bg-base-100 divide-y overflow-y-auto max-h-64">
-				{props.children}
+				{foods.length == 0 ? (
+					<p className="w-full text-center text-neutral">
+						Search for food to add it to this meal.
+					</p>
+				) : (
+					foods.map((food) => (
+						<FoodItem key={food.id} name={food.description} code={food.code} />
+					))
+				)}
 			</div>
 		</div>
 	);

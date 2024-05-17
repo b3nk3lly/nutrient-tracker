@@ -1,18 +1,11 @@
 "use client";
 
-import React, { ReactNode } from "react";
+import React, { useState } from "react";
 import DeleteButton from "../DeleteButton";
+import ServingSelection from "./ServingSelection";
 
-const FoodItem = (props: {
-	name: string;
-	quantity: number;
-	onQuantityChange: (quantity: number) => void;
-	children?: ReactNode;
-}) => {
-	const handleQuantityChange = (event: { target: { value: string } }) => {
-		const inputValue = Number(event.target.value);
-		props.onQuantityChange(inputValue);
-	};
+const FoodItem = (props: { code: number; name: string }) => {
+	const [quantity, setQuantity] = useState(0);
 
 	return (
 		<div className="py-4 animate-flash">
@@ -26,10 +19,10 @@ const FoodItem = (props: {
 					<input
 						className="input input-sm input-bordered rounded-l-none join-item w-1/2"
 						type="number"
-						value={props.quantity}
-						onChange={handleQuantityChange}
+						value={quantity}
+						onChange={(e) => setQuantity(Number(e.target.value))}
 					/>
-					{props.children}
+					<ServingSelection foodCode={props.code} />
 				</div>
 			</label>
 		</div>
