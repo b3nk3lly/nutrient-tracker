@@ -8,10 +8,10 @@ import FoodItem from "./FoodItem";
 
 const MealCard = (props: {
 	id: number;
+	name: string;
 	className?: string;
 	onNameChange: (name: string) => void;
 }) => {
-	const [name, setName] = useState("");
 	const [foods, setFoods] = useState<Food[]>([]);
 
 	const mealCardRef = useRef<HTMLDivElement>(null);
@@ -41,7 +41,7 @@ const MealCard = (props: {
 				<div className="card-title bg-base-200 h-12 flex justify-between p-4">
 					<input
 						type="text"
-						value={name}
+						value={props.name}
 						className="input input-sm bg-base-200 border-none p-0"
 						placeholder="Enter meal name"
 						onChange={(e) => props.onNameChange(e.target.value)}

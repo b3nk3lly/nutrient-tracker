@@ -29,12 +29,13 @@ export default function MealsSection() {
 					<MealCard
 						key={meal.id}
 						id={meal.id}
+						name={meal.name}
 						className="w-full"
 						onNameChange={(name) => handleMealNameChange(meal.id, name)}
 					/>
 				))}
 			</Carousel>
-			<MealNavigation mealIds={meals.map((meal) => meal.id)} onNewMeal={handleAddMeal} />
+			<MealNavigation meals={meals} onNewMeal={handleAddMeal} />
 		</Section>
 	);
 }
