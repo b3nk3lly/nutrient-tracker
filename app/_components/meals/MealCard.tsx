@@ -45,7 +45,7 @@ const MealCard = (props: {
 			className={`card card-compact border-2 rounded-lg border-base-200 ${props.className}`}
 			ref={mealCardRef}
 		>
-			<div className="card-header border-b-2">
+			<div className="card-header border-b-2 border-base-200">
 				<div className="card-title bg-base-200 h-12 flex justify-between p-4">
 					<input
 						type="text"
