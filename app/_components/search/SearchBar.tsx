@@ -57,7 +57,7 @@ const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 			</label>
 			<div className="relative">
 				{shouldRenderOptions() && (
-					<div className="absolute top-0 left-0 z-10 overflow-y-auto max-h-64 rounded-box">
+					<div className="absolute top-0 left-0 z-10 overflow-y-auto max-h-64 rounded-box w-full">
 						<ul className="menu menu-vertical bg-base-200 flex flex-col">
 							{suggestions.map((food) => (
 								<li key={food.code}>
