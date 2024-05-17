@@ -6,6 +6,8 @@ import Food from "../../types/food";
 import SearchBar from "../search/SearchBar";
 import FoodItem from "./FoodItem";
 
+let foodCount = 0; // incremented to assign food IDs
+
 const MealCard = (props: {
 	id: number;
 	name: string;
@@ -24,11 +26,11 @@ const MealCard = (props: {
 	}, []);
 
 	const addFood = async (food: Food) => {
-		// TODO set food ID
-
 		// add new food to state
 		// sort so that newest food appears first
-		setFoods((oldFoods) => [food, ...oldFoods].sort((a, b) => (a.id > b.id ? -1 : 1)));
+		setFoods((oldFoods) =>
+			[{ ...food, id: foodCount++ }, ...oldFoods].sort((a, b) => (a.id > b.id ? -1 : 1))
+		);
 	};
 
 	return (
