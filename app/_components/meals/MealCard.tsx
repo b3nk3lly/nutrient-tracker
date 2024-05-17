@@ -52,7 +52,7 @@ const MealCard = (props: {
 					<SearchBar onSelect={(food: Food) => addFood(food)} />
 				</div>
 			</div>
-			<div className="card-body rounded-b-lg bg-base-100 divide-y overflow-y-auto max-h-64">
+			<div className="card-body rounded-b-lg bg-base-100 divide-y overflow-y-auto max-h-80">
 				{foods.length == 0 ? (
 					<p className="w-full text-center text-neutral">
 						Search for food to add it to this meal.
