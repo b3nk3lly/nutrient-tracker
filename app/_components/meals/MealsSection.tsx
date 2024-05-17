@@ -22,6 +22,10 @@ export default function MealsSection() {
 		);
 	};
 
+	const handleDeleteMeal = (mealId: number) => {
+		setMeals((prevMeals) => prevMeals.filter((meal) => meal.id !== mealId));
+	};
+
 	return (
 		<Section label="Meals:">
 			<Carousel>
@@ -30,8 +34,10 @@ export default function MealsSection() {
 						key={meal.id}
 						id={meal.id}
 						name={meal.name}
+						isOnlyMeal={meals.length === 1}
 						className="w-full"
 						onNameChange={(name) => handleMealNameChange(meal.id, name)}
+						onDelete={() => handleDeleteMeal(meal.id)}
 					/>
 				))}
 			</Carousel>

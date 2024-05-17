@@ -11,8 +11,10 @@ let foodCount = 0; // incremented to assign food IDs
 const MealCard = (props: {
 	id: number;
 	name: string;
+	isOnlyMeal: boolean;
 	className?: string;
 	onNameChange: (name: string) => void;
+	onDelete: () => void;
 }) => {
 	const [foods, setFoods] = useState<Food[]>([]);
 
@@ -25,12 +27,16 @@ const MealCard = (props: {
 		mealCardRef.current?.scrollIntoView();
 	}, []);
 
-	const addFood = async (food: Food) => {
+	const handleAddFood = (food: Food) => {
 		// add new food to state
 		// sort so that newest food appears first
 		setFoods((oldFoods) =>
 			[{ ...food, id: foodCount++ }, ...oldFoods].sort((a, b) => (a.id > b.id ? -1 : 1))
 		);
+	};
+
+	const handleDeleteFood = (foodId: number) => {
+		setFoods((prevFoods) => prevFoods.filter((food) => food.id !== foodId));
 	};
 
 	return (
@@ -48,10 +54,10 @@ const MealCard = (props: {
 						placeholder="Enter meal name"
 						onChange={(e) => props.onNameChange(e.target.value)}
 					/>
-					<DeleteButton />
+					<DeleteButton onClick={props.onDelete} disabled={props.isOnlyMeal} />
 				</div>
 				<div className="p-4">
-					<SearchBar onSelect={(food: Food) => addFood(food)} />
+					<SearchBar onSelect={(food: Food) => handleAddFood(food)} />
 				</div>
 			</div>
 			<div className="card-body rounded-b-lg bg-base-100 divide-y overflow-y-auto max-h-80">
@@ -61,7 +67,12 @@ const MealCard = (props: {
 					</p>
 				) : (
 					foods.map((food) => (
-						<FoodItem key={food.id} name={food.description} code={food.code} />
+						<FoodItem
+							key={food.id}
+							name={food.description}
+							code={food.code}
+							onDelete={() => handleDeleteFood(food.id)}
+						/>
 					))
 				)}
 			</div>

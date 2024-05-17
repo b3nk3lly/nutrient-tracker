@@ -4,14 +4,14 @@ import React, { useState } from "react";
 import DeleteButton from "../DeleteButton";
 import ServingSelection from "./ServingSelection";
 
-const FoodItem = (props: { code: number; name: string }) => {
+const FoodItem = (props: { code: number; name: string; onDelete: () => void }) => {
 	const [quantity, setQuantity] = useState(0);
 
 	return (
 		<div className="py-4 animate-flash">
 			<div className="flex justify-between align-middle">
 				<h2 className="font-bold">{props.name}</h2>
-				<DeleteButton />
+				<DeleteButton onClick={props.onDelete} />
 			</div>
 			<label className="w-full m-1">
 				Quantity:
