@@ -1,6 +1,7 @@
 "use client";
 
 import React, { ReactNode } from "react";
+import DeleteButton from "../DeleteButton";
 
 const FoodItem = (props: {
 	name: string;
@@ -15,7 +16,10 @@ const FoodItem = (props: {
 
 	return (
 		<div className="py-4 animate-flash">
-			<h2 className="m-1 font-bold">{props.name}</h2>
+			<div className="flex justify-between align-middle">
+				<h2 className="font-bold">{props.name}</h2>
+				<DeleteButton />
+			</div>
 			<label className="w-full m-1">
 				Quantity:
 				<div className="join ml-3 w-3/4">

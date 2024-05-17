@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode, useEffect, useRef } from "react";
+import DeleteButton from "../DeleteButton";
 
 const MealCard = (props: {
 	id: string;
@@ -32,14 +33,15 @@ const MealCard = (props: {
 			ref={mealCardRef}
 		>
 			<div className="card-header border-b-2">
-				<div className="card-title bg-base-200 h-12">
+				<div className="card-title bg-base-200 h-12 flex justify-between p-4">
 					<input
 						type="text"
 						value={props.name}
-						className="input input-sm bg-base-200 border-none m-2"
+						className="input input-sm bg-base-200 border-none p-0"
 						placeholder="Enter meal name"
 						onChange={handleInputChange}
 					/>
+					<DeleteButton />
 				</div>
 				<div className="p-4">{props.searchBar}</div>
 			</div>
