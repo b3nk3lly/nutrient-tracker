@@ -9,17 +9,27 @@ import Meal from "../../types/meal";
 
 let mealCount = 0; // incremented to assign meal IDs
 
+function createNewMeal() {
+	return { id: mealCount, name: "Untitled meal", foods: [] };
+}
+
 export default function MealsSection() {
-	const [meals, setMeals] = useState<Meal[]>([{ id: mealCount, name: "Untitled meal" }]);
+	const [meals, setMeals] = useState<Meal[]>([createNewMeal()]);
 
 	const handleAddMeal = () => {
-		setMeals((oldMeals) => [...oldMeals, { id: ++mealCount, name: "Untitled meal" }]);
+		mealCount++;
+		setMeals((prevMeals) => [...prevMeals, createNewMeal()]);
 	};
 
-	const handleMealNameChange = (mealId: number, name: string) => {
+	const handleMealChange = <T extends keyof Meal>(
+		mealId: number,
+		property: T,
+		value: Meal[T]
+	) => {
 		setMeals((prevMeals) =>
-			prevMeals.map((meal) => (meal.id === mealId ? { ...meal, name: name } : meal))
+			prevMeals.map((meal) => (meal.id === mealId ? { ...meal, [property]: value } : meal))
 		);
+		console.log(meals);
 	};
 
 	const handleDeleteMeal = (mealId: number) => {
@@ -32,16 +42,14 @@ export default function MealsSection() {
 				{meals.map((meal) => (
 					<MealCard
 						key={meal.id}
-						id={meal.id}
-						name={meal.name}
+						meal={meal}
 						isOnlyMeal={meals.length === 1}
-						className="w-full"
-						onNameChange={(name) => handleMealNameChange(meal.id, name)}
+						onChange={(property, value) => handleMealChange(meal.id, property, value)}
 						onDelete={() => handleDeleteMeal(meal.id)}
 					/>
 				))}
 			</Carousel>
-			<MealNavigation meals={meals} onNewMeal={handleAddMeal} />
+			<MealNavigation meals={meals} onAddMeal={handleAddMeal} />
 		</Section>
 	);
 }

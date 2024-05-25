@@ -1,17 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import DeleteButton from "../DeleteButton";
 import ServingSelection from "./ServingSelection";
+import Food from "../../types/food";
 
-const FoodItem = (props: { code: number; name: string; onDelete: () => void }) => {
-	const [quantity, setQuantity] = useState(0);
+interface FoodItemProps {
+	food: Food;
+	onChange: <T extends keyof Food>(property: T, value: Food[T]) => void;
+	onDelete: () => void;
+}
 
+const FoodItem = ({ food, onChange, onDelete }: FoodItemProps) => {
 	return (
 		<div className="py-4 animate-flash">
 			<div className="flex justify-between align-middle">
-				<h2 className="font-bold">{props.name}</h2>
-				<DeleteButton onClick={props.onDelete} />
+				<h2 className="font-bold">{food.description}</h2>
+				<DeleteButton onClick={onDelete} />
 			</div>
 			<label className="w-full m-1">
 				Quantity:
@@ -19,10 +24,13 @@ const FoodItem = (props: { code: number; name: string; onDelete: () => void }) =
 					<input
 						className="input input-sm input-bordered rounded-l-none join-item w-1/2"
 						type="number"
-						value={quantity}
-						onChange={(e) => setQuantity(Number(e.target.value))}
+						value={food.quantity}
+						onChange={(e) => onChange("quantity", Number(e.target.value))}
 					/>
-					<ServingSelection foodCode={props.code} />
+					<ServingSelection
+						servings={food.servings}
+						onChange={(servingId) => onChange("selectedServingId", servingId)}
+					/>
 				</div>
 			</label>
 		</div>
