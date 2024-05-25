@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import NutrientGroup from "../../types/nutrientGroup";
 import Section from "../Section";
-import NutrientGroupCheckbox from "./NutrientGroupCheckbox";
 
 export default function NutrientGroupSection() {
 	const [selectedNutrientGroupIds, setSelectedNutrientGroupIds] = useState<number[]>([]);
@@ -35,13 +34,19 @@ export default function NutrientGroupSection() {
 		<Section label="Nutrients:">
 			<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
 				{nutrientGroups.map((nutrientGroup) => (
-					<NutrientGroupCheckbox
+					<label
 						key={nutrientGroup.id}
-						nutrientGroupId={nutrientGroup.id}
-						label={nutrientGroup.name}
-						checked={selectedNutrientGroupIds.includes(nutrientGroup.id)}
-						onChange={(event) => handleNutrientGroupChange(event, nutrientGroup.id)}
-					/>
+						className="label cursor-pointer justify-self-start"
+					>
+						<input
+							type="checkbox"
+							className="checkbox checkbox-sm mr-2"
+							checked={selectedNutrientGroupIds.includes(nutrientGroup.id)}
+							value={nutrientGroup.id}
+							onChange={(event) => handleNutrientGroupChange(event, nutrientGroup.id)}
+						/>
+						<span className="label-text m-1">{nutrientGroup.name}</span>
+					</label>
 				))}
 			</div>
 		</Section>
