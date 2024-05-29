@@ -10,6 +10,17 @@ import MealNavigation from "./meals/MealNavigation";
 
 let mealCount = 0; // incremented to assign meal IDs
 
+function downloadReport(csv: Blob) {
+	const url = window.URL.createObjectURL(csv);
+	const downloadLink = document.createElement("a");
+
+	downloadLink.href = url;
+	downloadLink.download = "report.csv";
+	document.body.appendChild(downloadLink);
+	downloadLink.click();
+	document.body.removeChild(downloadLink);
+}
+
 function createNewMeal() {
 	return { id: mealCount, name: "Untitled meal", foods: [] };
 }
@@ -23,26 +34,11 @@ export default function NutrientReporterForm() {
 			const response = await fetch("/api/nutrient-groups");
 			const json: NutrientGroup[] = await response.json();
 
-			// all nutrient groups are selected by default
-			json.forEach((nutrientGroup) => (nutrientGroup.isSelected = true));
 			setNutrientGroups(json);
 		};
 
 		fetchNutrientGroups();
 	}, []);
-
-	const handleNutrientGroupChange = (
-		event: React.ChangeEvent<HTMLInputElement>,
-		nutrientGroupId: number
-	) => {
-		setNutrientGroups((prevNutrientGroups) =>
-			prevNutrientGroups.map((nutrientGroup) =>
-				nutrientGroup.id === nutrientGroupId
-					? { ...nutrientGroup, isSelected: event.target.checked }
-					: nutrientGroup
-			)
-		);
-	};
 
 	const handleAddMeal = () => {
 		mealCount++;
@@ -63,13 +59,26 @@ export default function NutrientReporterForm() {
 		setMeals((prevMeals) => prevMeals.filter((meal) => meal.id !== mealId));
 	};
 
-	const generateReport = async () => {
-		console.log(meals);
-		console.log(nutrientGroups.filter((ng) => ng.isSelected));
+	const handleFormSubmit = async (formData: FormData) => {
+		// get selected nutrient groups
+		const selectedNutrientGroupIds = formData.getAll("nutrientGroupId");
+		const selectedNutrientGroups = nutrientGroups.filter((group) =>
+			selectedNutrientGroupIds.includes(String(group.id))
+		);
+
+		// get CSV report from backend
+		const response = await fetch("/api/report", {
+			method: "POST",
+			headers: { "Content-type": "application/json" },
+			body: JSON.stringify({ meals: meals, nutrientGroups: selectedNutrientGroups })
+		});
+
+		const csv = await response.blob();
+		downloadReport(csv);
 	};
 
 	return (
-		<form className="w-full flex flex-col items-center space-y-8" action={generateReport}>
+		<form className="w-full flex flex-col items-center space-y-8" action={handleFormSubmit}>
 			<Section label="Meals:">
 				<Carousel>
 					{meals.map((meal) => (
@@ -96,10 +105,8 @@ export default function NutrientReporterForm() {
 						>
 							<input
 								type="checkbox"
-								checked={nutrientGroup.isSelected}
-								onChange={(event) =>
-									handleNutrientGroupChange(event, nutrientGroup.id)
-								}
+								defaultChecked
+								name="nutrientGroupId"
 								className="checkbox checkbox-sm mr-2"
 								value={nutrientGroup.id}
 							/>
