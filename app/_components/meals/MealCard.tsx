@@ -39,9 +39,10 @@ const MealCard = ({ meal, isOnlyMeal, onChange, onDelete }: MealCardProps) => {
 		// add IDs to servings
 		servings.forEach((serving) => (serving.id = servingCount++));
 
-		const newFood = {
+		const newFood: Food = {
 			...food,
 			id: foodCount++,
+			quantity: 0,
 			servings: servings,
 			selectedServingId: servings[0].id
 		};
