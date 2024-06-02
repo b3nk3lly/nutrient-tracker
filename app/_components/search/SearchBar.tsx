@@ -5,7 +5,6 @@ import Food from "../../types/food";
 import SearchIcon from "./SearchIcon";
 
 const SearchBar = (props: { onSelect: (food: Food) => void }) => {
-	const [query, setQuery] = useState("");
 	const [suggestions, setSuggestions] = useState<Food[]>([]);
 	const [searchFocused, setSearchFocused] = useState(false);
 
@@ -26,7 +25,6 @@ const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 	 */
 	const handleInputChange = (event: { target: { value: string } }) => {
 		const inputValue = event.target.value;
-		setQuery(inputValue);
 
 		// if query is too short, we don't want to overdo it on suggestions
 		if (inputValue && inputValue.length >= 3) {
@@ -49,7 +47,6 @@ const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 				<input
 					type="text"
 					placeholder="Enter a name or food code"
-					value={query}
 					onChange={handleInputChange}
 					onFocus={() => setSearchFocused(true)}
 					onBlur={() => setSearchFocused(false)}
