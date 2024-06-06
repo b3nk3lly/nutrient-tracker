@@ -33,7 +33,7 @@ export default function MealNavigation({
 			</button>
 			<ul className="menu space-y-2 w-full">
 				{meals.map((meal) => (
-					<li key={meal.id}>
+					<li key={meal.id} className="animate-fadeIn">
 						<button
 							className={`${meal.id === selectedMealId ? "bg-base-300" : ""}`}
 							onClick={(e) => handleSelectMeal(e, meal.id)}

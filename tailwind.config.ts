@@ -17,10 +17,15 @@ const config: Config = {
 					"0%": { "background-color": "inherit" },
 					"50%": { "background-color": "#b1d9e9" }, // flash to INFO color
 					"100%": { "background-color": "inherit" }
+				},
+				fadeIn: {
+					"0%": { opacity: "0" },
+					"100%": { opacity: "1" }
 				}
 			},
 			animation: {
-				flash: "flash 0.33s ease-in-out"
+				flash: "flash 0.33s ease-in-out",
+				fadeIn: "fadeIn 0.1s ease-in"
 			}
 		}
 	},
