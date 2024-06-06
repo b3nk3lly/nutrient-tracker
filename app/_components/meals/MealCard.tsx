@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import DeleteButton from "../DeleteButton";
 import Food from "../../types/food";
 import SearchBar from "../search/SearchBar";
 import FoodItem from "./FoodItem";
 import Meal from "../../types/meal";
 import Serving from "../../types/serving";
+import MealName from "./MealName";
 
 interface MealCardProps {
 	meal: Meal;
@@ -60,7 +61,7 @@ const MealCard = ({ meal, isOnlyMeal, onChange, onDelete }: MealCardProps) => {
 	return (
 		<section className="p-4">
 			<header className="flex justify-between border-b-2 border-base-200 pb-2">
-				<h2 className="text-xl font-bold">{meal.name}</h2>
+				<MealName name={meal.name} onChange={(newName) => onChange("name", newName)} />
 				<DeleteButton onClick={onDelete} disabled={isOnlyMeal} />
 			</header>
 			<div className="m-4">
