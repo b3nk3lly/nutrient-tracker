@@ -1,48 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Meal from "../types/meal";
-import NutrientGroup from "../types/nutrientGroup";
-import Section from "./Section";
-import Carousel from "./Carousel";
 import MealCard from "./meals/MealCard";
 import MealNavigation from "./meals/MealNavigation";
 
 let mealCount = 0; // incremented to assign meal IDs
 
-function downloadReport(csv: Blob) {
-	const url = window.URL.createObjectURL(csv);
-	const downloadLink = document.createElement("a");
-
-	downloadLink.href = url;
-	downloadLink.download = "report.csv";
-	document.body.appendChild(downloadLink);
-	downloadLink.click();
-	document.body.removeChild(downloadLink);
-}
-
 function createNewMeal() {
-	return { id: mealCount, name: "Untitled meal", foods: [] };
+	return { id: mealCount, name: "Untitled meal " + mealCount, foods: [], isSelected: true };
 }
 
 export default function NutrientReporterForm() {
 	const [meals, setMeals] = useState<Meal[]>([createNewMeal()]);
-	const [nutrientGroups, setNutrientGroups] = useState<NutrientGroup[]>([]);
+	const [selectedMealId, setSelectedMealId] = useState(0);
 
-	useEffect(() => {
-		const fetchNutrientGroups = async () => {
-			const response = await fetch("/api/nutrient-groups");
-			const json: NutrientGroup[] = await response.json();
-
-			setNutrientGroups(json);
-		};
-
-		fetchNutrientGroups();
-	}, []);
+	const selectedMeal = meals.find((meal) => meal.id === selectedMealId) ?? meals[0];
 
 	const handleAddMeal = () => {
 		mealCount++;
-		setMeals((prevMeals) => [...prevMeals, createNewMeal()]);
+		const newMeal = createNewMeal();
+		setMeals((prevMeals) => [...prevMeals, newMeal]);
+		setSelectedMealId(newMeal.id);
 	};
 
 	const handleMealChange = <T extends keyof Meal>(
@@ -55,68 +34,60 @@ export default function NutrientReporterForm() {
 		);
 	};
 
-	const handleDeleteMeal = (mealId: number) => {
-		setMeals((prevMeals) => prevMeals.filter((meal) => meal.id !== mealId));
+	/**
+	 * Compute the next selected meal, assuming we are deleting the currently-selected meal.
+	 * The next selected meal should be the one after this, unless this is the last one in the list,
+	 * in which case the meal before this becomes selected.
+	 * @returns the meal to be selected after the selected meal is deleted.
+	 */
+	const computeNextSelectedMeal = () => {
+		for (let i = 0; i < meals.length; ++i) {
+			if (meals[i].id === selectedMealId) {
+				// if there are no more meals, the previous meal should be selected
+				if (i === meals.length - 1) {
+					return meals[i - 1];
+				}
+
+				// the next meal should be selected
+				return meals[i + 1];
+			}
+		}
+
+		throw new Error(
+			`Could not find a meal other than the currently-selected one (ID ${selectedMealId})`
+		);
 	};
 
-	const handleFormSubmit = async (formData: FormData) => {
-		// get selected nutrient groups
-		const selectedNutrientGroupIds = formData.getAll("nutrientGroupId");
-		const selectedNutrientGroups = nutrientGroups.filter((group) =>
-			selectedNutrientGroupIds.includes(String(group.id))
-		);
+	const handleDeleteMeal = (mealId: number) => {
+		const newSelectedMeal = computeNextSelectedMeal();
 
-		// get CSV report from backend
-		const response = await fetch("/api/report", {
-			method: "POST",
-			headers: { "Content-type": "application/json" },
-			body: JSON.stringify({ meals: meals, nutrientGroups: selectedNutrientGroups })
-		});
-
-		const csv = await response.blob();
-		downloadReport(csv);
+		setMeals((prevMeals) => prevMeals.filter((meal) => meal.id !== mealId));
+		setSelectedMealId(newSelectedMeal.id);
 	};
 
 	return (
-		<form className="w-full flex flex-col items-center space-y-8" action={handleFormSubmit}>
-			<Section label="Meals:">
-				<Carousel>
-					{meals.map((meal) => (
-						<MealCard
-							key={meal.id}
-							meal={meal}
-							isOnlyMeal={meals.length === 1}
-							onChange={(property, value) =>
-								handleMealChange(meal.id, property, value)
-							}
-							onDelete={() => handleDeleteMeal(meal.id)}
-						/>
-					))}
-				</Carousel>
-				<MealNavigation meals={meals} onAddMeal={handleAddMeal} />
-			</Section>
+		<form className="w-full flex">
+			<div className="w-1/3 bg-base-200">
+				<MealNavigation
+					meals={meals}
+					selectedMealId={selectedMeal.id}
+					onAddMeal={handleAddMeal}
+					onSelectMeal={(mealId) => setSelectedMealId(mealId)}
+				/>
+			</div>
+			<div className="w-2/3">
+				<MealCard
+					key={selectedMeal.id}
+					meal={selectedMeal}
+					isOnlyMeal={meals.length === 1}
+					onChange={(property, value) =>
+						handleMealChange(selectedMeal.id, property, value)
+					}
+					onDelete={() => handleDeleteMeal(selectedMeal.id)}
+				/>
+			</div>
 
-			<Section label="Nutrients:">
-				<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-					{nutrientGroups.map((nutrientGroup) => (
-						<label
-							key={nutrientGroup.id}
-							className="label cursor-pointer justify-self-start"
-						>
-							<input
-								type="checkbox"
-								defaultChecked
-								name="nutrientGroupId"
-								className="checkbox checkbox-sm mr-2"
-								value={nutrientGroup.id}
-							/>
-							<span className="label-text m-1">{nutrientGroup.name}</span>
-						</label>
-					))}
-				</div>
-			</Section>
-
-			<button type="submit" className="btn btn-neutral">
+			<button type="submit" className="btn btn-neutral fixed right-4 bottom-4">
 				Generate Report
 			</button>
 		</form>

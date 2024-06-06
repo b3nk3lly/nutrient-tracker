@@ -19,18 +19,6 @@ let foodCount = 0; // incremented to assign food IDs
 let servingCount = 0; // incremented to assign serving IDs
 
 const MealCard = ({ meal, isOnlyMeal, onChange, onDelete }: MealCardProps) => {
-	const mealCardRef = useRef<HTMLDivElement>(null);
-
-	/**
-	 * Scrolls a meal into view the first time it's rendered.
-	 */
-	useEffect(() => {
-		// avoid scrolling if the page just loaded
-		if (!isOnlyMeal) {
-			mealCardRef.current?.scrollIntoView();
-		}
-	}, [isOnlyMeal]);
-
 	const handleAddFood = async (food: Food) => {
 		// fetch serving sizes for food
 		const response = await fetch(`/api/food/${food.code}/servings`);
@@ -70,33 +58,22 @@ const MealCard = ({ meal, isOnlyMeal, onChange, onDelete }: MealCardProps) => {
 	};
 
 	return (
-		<div
-			id={`meal${meal.id}`}
-			className="card card-compact border-2 rounded-lg border-base-200 w-full"
-			ref={mealCardRef}
-		>
-			<div className="card-header border-b-2 border-base-200">
-				<div className="card-title bg-base-200 h-12 flex justify-between p-4">
-					<input
-						type="text"
-						value={meal.name}
-						className="input input-sm bg-base-200 border-none p-0"
-						placeholder="Enter meal name"
-						onChange={(e) => onChange("name", e.target.value)}
-					/>
-					<DeleteButton onClick={onDelete} disabled={isOnlyMeal} />
-				</div>
-				<div className="p-4">
-					<SearchBar onSelect={(food: Food) => handleAddFood(food)} />
-				</div>
+		<section className="p-4">
+			<header className="flex justify-between border-b-2 border-base-200 pb-2">
+				<h2 className="text-xl font-bold">{meal.name}</h2>
+				<DeleteButton onClick={onDelete} disabled={isOnlyMeal} />
+			</header>
+			<div className="m-4">
+				<SearchBar onSelect={(food: Food) => handleAddFood(food)} />
 			</div>
-			<div className="card-body rounded-b-lg bg-base-100 divide-y overflow-y-auto h-64">
-				{meal.foods.length === 0 ? (
-					<p className="w-full text-center text-neutral">
-						Search for food to add it to this meal.
-					</p>
-				) : (
-					meal.foods.map((food) => (
+
+			{meal.foods.length === 0 ? (
+				<p className="m-4 text-center text-neutral">
+					Search for food to add it to this meal.
+				</p>
+			) : (
+				<ul className="space-y-1 divide-y">
+					{meal.foods.map((food) => (
 						<FoodItem
 							key={food.id}
 							food={food}
@@ -105,10 +82,10 @@ const MealCard = ({ meal, isOnlyMeal, onChange, onDelete }: MealCardProps) => {
 							}
 							onDelete={() => handleDeleteFood(food.id)}
 						/>
-					))
-				)}
-			</div>
-		</div>
+					))}
+				</ul>
+			)}
+		</section>
 	);
 };
 

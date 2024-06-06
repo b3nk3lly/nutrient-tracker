@@ -13,9 +13,9 @@ interface FoodItemProps {
 
 const FoodItem = ({ food, onChange, onDelete }: FoodItemProps) => {
 	return (
-		<div className="py-4 animate-flash">
+		<div className="p-4 animate-flash">
 			<div className="flex justify-between align-middle">
-				<h2 className="font-bold">{food.description}</h2>
+				<p className="font-semibold">{food.description}</p>
 				<DeleteButton onClick={onDelete} />
 			</div>
 			<label className="w-full m-1">
