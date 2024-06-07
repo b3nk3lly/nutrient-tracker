@@ -80,7 +80,7 @@ export default function NutrientReporterForm() {
 							key={meal.id}
 							meal={meal}
 							selected={meal.id === selectedMealId}
-							deletable={meals.length > 0}
+							deletable={meals.length > 1}
 							onSelect={(targetMeal) => setSelectedMealId(targetMeal.id)}
 							onDelete={() => handleDeleteMeal(meal.id)}
 						/>
