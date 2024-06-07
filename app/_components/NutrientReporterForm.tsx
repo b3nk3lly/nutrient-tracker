@@ -4,6 +4,7 @@ import { useState } from "react";
 import Meal from "../types/meal";
 import MealCard from "./meals/MealCard";
 import MealNavigation from "./meals/MealNavigation";
+import MealNavigationOption from "./meals/MealNavigationOption";
 
 let mealCount = 0; // incremented to assign meal IDs
 
@@ -59,27 +60,38 @@ export default function NutrientReporterForm() {
 	};
 
 	const handleDeleteMeal = (mealId: number) => {
-		const newSelectedMeal = computeNextSelectedMeal();
+		const newMeals = meals.filter((meal) => meal.id !== mealId);
 
-		setMeals((prevMeals) => prevMeals.filter((meal) => meal.id !== mealId));
-		setSelectedMealId(newSelectedMeal.id);
+		// if we're deleting the currently-selected meal, choose what to select next
+		if (mealId === selectedMealId) {
+			const newSelectedMeal = computeNextSelectedMeal();
+			setSelectedMealId(newSelectedMeal.id);
+		}
+
+		setMeals(newMeals);
 	};
 
 	return (
 		<form className="w-full flex">
 			<div className="w-1/3 bg-base-200">
-				<MealNavigation
-					meals={meals}
-					selectedMealId={selectedMeal.id}
-					onAddMeal={handleAddMeal}
-					onSelectMeal={(mealId) => setSelectedMealId(mealId)}
-				/>
+				<MealNavigation onAddMeal={handleAddMeal}>
+					{meals.map((meal) => (
+						<MealNavigationOption
+							key={meal.id}
+							meal={meal}
+							selected={meal.id === selectedMealId}
+							deletable={meals.length > 0}
+							onSelect={(targetMeal) => setSelectedMealId(targetMeal.id)}
+							onDelete={() => handleDeleteMeal(meal.id)}
+						/>
+					))}
+				</MealNavigation>
 			</div>
 			<div className="w-2/3">
 				<MealCard
 					key={selectedMeal.id}
 					meal={selectedMeal}
-					isOnlyMeal={meals.length === 1}
+					deletable={meals.length > 1}
 					onChange={(property, value) =>
 						handleMealChange(selectedMeal.id, property, value)
 					}

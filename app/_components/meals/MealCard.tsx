@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import DeleteButton from "../DeleteButton";
 import Food from "../../types/food";
 import SearchBar from "../search/SearchBar";
@@ -11,7 +10,7 @@ import MealName from "./MealName";
 
 interface MealCardProps {
 	meal: Meal;
-	isOnlyMeal: boolean;
+	deletable?: boolean;
 	onChange: <T extends keyof Meal>(property: T, value: Meal[T]) => void;
 	onDelete: () => void;
 }
@@ -19,7 +18,7 @@ interface MealCardProps {
 let foodCount = 0; // incremented to assign food IDs
 let servingCount = 0; // incremented to assign serving IDs
 
-const MealCard = ({ meal, isOnlyMeal, onChange, onDelete }: MealCardProps) => {
+const MealCard = ({ meal, deletable, onChange, onDelete }: MealCardProps) => {
 	const handleAddFood = async (food: Food) => {
 		// fetch serving sizes for food
 		const response = await fetch(`/api/food/${food.code}/servings`);
@@ -62,7 +61,7 @@ const MealCard = ({ meal, isOnlyMeal, onChange, onDelete }: MealCardProps) => {
 		<section className="p-4 animate-fadeIn">
 			<header className="flex justify-between border-b-2 border-base-200 pb-2">
 				<MealName name={meal.name} onChange={(newName) => onChange("name", newName)} />
-				<DeleteButton onClick={onDelete} disabled={isOnlyMeal} />
+				<DeleteButton onClick={onDelete} disabled={!deletable} />
 			</header>
 			<div className="m-4">
 				<SearchBar onSelect={(food: Food) => handleAddFood(food)} />
