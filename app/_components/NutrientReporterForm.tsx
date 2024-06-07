@@ -3,8 +3,9 @@
 import { useState } from "react";
 import Meal from "../types/meal";
 import MealCard from "./meals/MealCard";
-import MealNavigation from "./meals/MealNavigation";
 import MealNavigationOption from "./meals/MealNavigationOption";
+import SideContent from "./layout/SideContent";
+import MainContent from "./layout/MainContent";
 
 let mealCount = 0; // incremented to assign meal IDs
 
@@ -18,7 +19,9 @@ export default function NutrientReporterForm() {
 
 	const selectedMeal = meals.find((meal) => meal.id === selectedMealId) ?? meals[0];
 
-	const handleAddMeal = () => {
+	const handleAddMeal = (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+
 		mealCount++;
 		const newMeal = createNewMeal();
 		setMeals((prevMeals) => [...prevMeals, newMeal]);
@@ -73,8 +76,11 @@ export default function NutrientReporterForm() {
 
 	return (
 		<form className="w-full flex">
-			<div className="w-1/3 bg-base-200">
-				<MealNavigation onAddMeal={handleAddMeal}>
+			<SideContent title="Meals">
+				<button className="btn btn-sm btn-neutral" onClick={handleAddMeal}>
+					+ Add Meal
+				</button>
+				<ul className="menu space-y-2 w-full">
 					{meals.map((meal) => (
 						<MealNavigationOption
 							key={meal.id}
@@ -85,9 +91,9 @@ export default function NutrientReporterForm() {
 							onDelete={() => handleDeleteMeal(meal.id)}
 						/>
 					))}
-				</MealNavigation>
-			</div>
-			<div className="w-2/3">
+				</ul>
+			</SideContent>
+			<MainContent>
 				<MealCard
 					key={selectedMeal.id}
 					meal={selectedMeal}
@@ -97,7 +103,7 @@ export default function NutrientReporterForm() {
 					}
 					onDelete={() => handleDeleteMeal(selectedMeal.id)}
 				/>
-			</div>
+			</MainContent>
 
 			<button type="submit" className="btn btn-neutral fixed right-4 bottom-4">
 				Generate Report

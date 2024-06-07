@@ -58,7 +58,7 @@ const MealCard = ({ meal, deletable, onChange, onDelete }: MealCardProps) => {
 	};
 
 	return (
-		<section className="p-4 animate-fadeIn">
+		<section className="animate-fadeIn">
 			<header className="flex justify-between border-b-2 border-base-200 pb-2">
 				<MealName name={meal.name} onChange={(newName) => onChange("name", newName)} />
 				<DeleteButton onClick={onDelete} disabled={!deletable} />
