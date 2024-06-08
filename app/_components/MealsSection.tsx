@@ -1,3 +1,5 @@
+"use client";
+
 import { Dispatch, SetStateAction, useState } from "react";
 import Meal from "../types/meal";
 import MealCard from "./meals/MealCard";
@@ -6,6 +8,7 @@ import SideContent from "./layout/SideContent";
 import MainContent from "./layout/MainContent";
 import createNewMeal from "../_functions/createNewMeal";
 import DeleteButton from "./DeleteButton";
+import MealName from "./meals/MealName";
 
 interface MealsSectionProps {
 	meals: Meal[];
@@ -104,15 +107,29 @@ export default function MealsSection({
 					</button>
 				</div>
 			</SideContent>
-			<MainContent>
+			<MainContent
+				headerContent={
+					<>
+						<MealName
+							key={`${selectedMeal.id}-name`}
+							name={selectedMeal.name}
+							onChange={(newName) =>
+								handleMealChange(selectedMeal.id, "name", newName)
+							}
+						/>
+						<DeleteButton
+							key={`${selectedMeal.id}-delete`}
+							onClick={() => handleDeleteMeal(selectedMeal.id)}
+							disabled={meals.length === 1}
+						/>
+					</>
+				}
+			>
 				<MealCard
-					key={selectedMeal.id}
 					meal={selectedMeal}
-					deletable={meals.length > 1}
 					onChange={(property, value) =>
 						handleMealChange(selectedMeal.id, property, value)
 					}
-					onDelete={() => handleDeleteMeal(selectedMeal.id)}
 				/>
 			</MainContent>
 		</>
