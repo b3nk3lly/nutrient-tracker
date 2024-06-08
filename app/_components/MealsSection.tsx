@@ -1,10 +1,11 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import Meal from "../types/meal";
 import MealCard from "./meals/MealCard";
-import MealNavigationOption from "./meals/MealNavigationOption";
+import SideContentMenuOption from "./layout/SideContentMenuOption";
 import SideContent from "./layout/SideContent";
 import MainContent from "./layout/MainContent";
 import createNewMeal from "../_functions/createNewMeal";
+import DeleteButton from "./DeleteButton";
 
 interface MealsSectionProps {
 	meals: Meal[];
@@ -78,13 +79,19 @@ export default function MealsSection({
 			<SideContent title="Meals">
 				<ul className="menu space-y-2 w-full">
 					{meals.map((meal) => (
-						<MealNavigationOption
+						<SideContentMenuOption
 							key={meal.id}
-							meal={meal}
+							label={meal.name}
 							selected={meal.id === selectedMealId}
-							deletable={meals.length > 1}
-							onSelect={(targetMeal) => setSelectedMealId(targetMeal.id)}
-							onDelete={() => handleDeleteMeal(meal.id)}
+							onSelect={() => setSelectedMealId(meal.id)}
+							actionButtons={[
+								meals.length > 1 && (
+									<DeleteButton
+										key={`${meal.id}-delete`}
+										onClick={() => handleDeleteMeal(meal.id)}
+									/>
+								)
+							]}
 						/>
 					))}
 				</ul>
