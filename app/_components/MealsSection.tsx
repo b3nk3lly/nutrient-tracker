@@ -1,29 +1,27 @@
-"use client";
-
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Meal from "../types/meal";
 import MealCard from "./meals/MealCard";
 import MealNavigationOption from "./meals/MealNavigationOption";
 import SideContent from "./layout/SideContent";
 import MainContent from "./layout/MainContent";
+import createNewMeal from "../_functions/createNewMeal";
 
-let mealCount = 0; // incremented to assign meal IDs
-
-function createNewMeal() {
-	return { id: mealCount, name: "Untitled meal " + mealCount, foods: [], isSelected: true };
+interface MealsSectionProps {
+	meals: Meal[];
+	setMeals: Dispatch<SetStateAction<Meal[]>>;
+	onChangePage: () => void;
 }
 
-export default function NutrientReporterForm() {
-	const [meals, setMeals] = useState<Meal[]>([createNewMeal()]);
+export default function MealsSection({
+	meals,
+	setMeals,
+	onChangePage
+}: Readonly<MealsSectionProps>) {
 	const [selectedMealId, setSelectedMealId] = useState(0);
 
 	const selectedMeal = meals.find((meal) => meal.id === selectedMealId) ?? meals[0];
 
-	const handleAddMeal = (event: React.MouseEvent<HTMLButtonElement>) => {
-		event.preventDefault();
-
 	const handleAddMeal = () => {
-		mealCount++;
 		const newMeal = createNewMeal();
 		setMeals((prevMeals) => [...prevMeals, newMeal]);
 		setSelectedMealId(newMeal.id);
@@ -94,8 +92,8 @@ export default function NutrientReporterForm() {
 					<button className="btn btn-sm btn-neutral" onClick={() => handleAddMeal()}>
 						+ Add Meal
 					</button>
-					<button type="submit" className="btn btn-sm btn-neutral">
-						Generate Report
+					<button className="btn btn-sm btn-neutral" onClick={() => onChangePage()}>
+						Nutrients &gt;
 					</button>
 				</div>
 			</SideContent>
