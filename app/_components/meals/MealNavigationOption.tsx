@@ -18,8 +18,7 @@ export default function MealNavigationOption({
 	onSelect,
 	onDelete
 }: Readonly<MealNavigationOptionProps>) {
-	const handleSelect = (event: React.MouseEvent<HTMLButtonElement>, selectedMeal: Meal) => {
-		event.preventDefault();
+	const handleSelect = (selectedMeal: Meal) => {
 		onSelect(selectedMeal);
 	};
 
@@ -27,7 +26,7 @@ export default function MealNavigationOption({
 		<li key={meal.id} className="animate-fadeIn group">
 			<button
 				className={`group-hover:bg-base-300 ${selected ? "bg-base-300" : ""}`}
-				onClick={(e) => handleSelect(e, meal)}
+				onClick={() => handleSelect(meal)}
 			>
 				{meal.name}
 			</button>

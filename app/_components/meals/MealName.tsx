@@ -35,8 +35,6 @@ export default function MealName({ name, onChange }: Readonly<MealNameProps>) {
 
 	const handleKeyDown = (event: React.KeyboardEvent) => {
 		if (event.key === "Enter") {
-			// override default behaviour of submitting the outer form
-			event.preventDefault();
 			saveMealName();
 		}
 	};

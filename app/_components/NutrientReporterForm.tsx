@@ -22,6 +22,7 @@ export default function NutrientReporterForm() {
 	const handleAddMeal = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 
+	const handleAddMeal = () => {
 		mealCount++;
 		const newMeal = createNewMeal();
 		setMeals((prevMeals) => [...prevMeals, newMeal]);
@@ -75,7 +76,7 @@ export default function NutrientReporterForm() {
 	};
 
 	return (
-		<form className="w-full flex">
+		<>
 			<SideContent title="Meals">
 				<ul className="menu space-y-2 w-full">
 					{meals.map((meal) => (
@@ -90,7 +91,7 @@ export default function NutrientReporterForm() {
 					))}
 				</ul>
 				<div className="flex gap-x-8">
-					<button className="btn btn-sm btn-neutral" onClick={handleAddMeal}>
+					<button className="btn btn-sm btn-neutral" onClick={() => handleAddMeal()}>
 						+ Add Meal
 					</button>
 					<button type="submit" className="btn btn-sm btn-neutral">
@@ -109,6 +110,6 @@ export default function NutrientReporterForm() {
 					onDelete={() => handleDeleteMeal(selectedMeal.id)}
 				/>
 			</MainContent>
-		</form>
+		</>
 	);
 }
