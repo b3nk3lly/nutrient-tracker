@@ -77,9 +77,6 @@ export default function NutrientReporterForm() {
 	return (
 		<form className="w-full flex">
 			<SideContent title="Meals">
-				<button className="btn btn-sm btn-neutral" onClick={handleAddMeal}>
-					+ Add Meal
-				</button>
 				<ul className="menu space-y-2 w-full">
 					{meals.map((meal) => (
 						<MealNavigationOption
@@ -92,6 +89,14 @@ export default function NutrientReporterForm() {
 						/>
 					))}
 				</ul>
+				<div className="flex gap-x-8">
+					<button className="btn btn-sm btn-neutral" onClick={handleAddMeal}>
+						+ Add Meal
+					</button>
+					<button type="submit" className="btn btn-sm btn-neutral">
+						Generate Report
+					</button>
+				</div>
 			</SideContent>
 			<MainContent>
 				<MealCard
@@ -104,10 +109,6 @@ export default function NutrientReporterForm() {
 					onDelete={() => handleDeleteMeal(selectedMeal.id)}
 				/>
 			</MainContent>
-
-			<button type="submit" className="btn btn-neutral fixed right-4 bottom-4">
-				Generate Report
-			</button>
 		</form>
 	);
 }
