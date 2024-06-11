@@ -1,7 +1,7 @@
 "use client";
 
 interface SideContentMenuOptionProps {
-	label: string;
+	label: React.ReactNode;
 	selected?: boolean;
 	onSelect: () => void;
 	actionButtons?: React.ReactNode[];
@@ -14,7 +14,7 @@ export default function SideContentMenuOption({
 	actionButtons
 }: Readonly<SideContentMenuOptionProps>) {
 	return (
-		<li className="animate-fadeIn group">
+		<li className="animate-fadeIn group flex justify-between">
 			<button
 				className={`group-hover:bg-base-300 ${selected ? "bg-base-300" : ""}`}
 				onClick={() => onSelect()}
@@ -25,8 +25,18 @@ export default function SideContentMenuOption({
 			{
 				/* action buttons appear only if this option is hovered */
 				actionButtons && (
-					<div className="hidden group-hover:block hover:bg-base-200 absolute right-1 top-1/2 -translate-y-1/2 p-0 rounded-full">
-						{actionButtons}
+					<div
+						style={{
+							backgroundColor:
+								"initial" /* fixes an ugly on-click background color inherited from menu */
+						}}
+						className="hidden group-hover:flex gap-0 absolute right-1 top-1/2 -translate-y-1/2 p-0"
+					>
+						{actionButtons.map((actionButton, index) => (
+							<div key={index} className="hover:bg-base-200 rounded-full">
+								{actionButton}
+							</div>
+						))}
 					</div>
 				)
 			}

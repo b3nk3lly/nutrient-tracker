@@ -1,9 +1,10 @@
 "use client";
 
 import React from "react";
-import DeleteButton from "../DeleteButton";
 import ServingSelection from "./ServingSelection";
 import Food from "../../types/food";
+import IconButton from "../IconButton";
+import DeleteIcon from "../DeleteIcon";
 
 interface FoodItemProps {
 	food: Food;
@@ -16,7 +17,9 @@ const FoodItem = ({ food, onChange, onDelete }: FoodItemProps) => {
 		<div className="p-4 animate-flash">
 			<div className="flex justify-between align-middle">
 				<p className="font-semibold">{food.description}</p>
-				<DeleteButton onClick={onDelete} />
+				<IconButton onClick={onDelete}>
+					<DeleteIcon />
+				</IconButton>
 			</div>
 			<label className="w-full m-1">
 				Quantity:

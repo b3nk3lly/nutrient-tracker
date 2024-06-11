@@ -7,8 +7,9 @@ import SideContentMenuOption from "./layout/SideContentMenuOption";
 import SideContent from "./layout/SideContent";
 import MainContent from "./layout/MainContent";
 import createNewMeal from "../_functions/createNewMeal";
-import DeleteButton from "./DeleteButton";
 import MealName from "./meals/MealName";
+import IconButton from "./IconButton";
+import DeleteIcon from "./DeleteIcon";
 
 interface MealsSectionProps {
 	meals: Meal[];
@@ -89,16 +90,18 @@ export default function MealsSection({
 							onSelect={() => setSelectedMealId(meal.id)}
 							actionButtons={[
 								meals.length > 1 && (
-									<DeleteButton
+									<IconButton
 										key={`${meal.id}-delete`}
 										onClick={() => handleDeleteMeal(meal.id)}
-									/>
+									>
+										<DeleteIcon />
+									</IconButton>
 								)
 							]}
 						/>
 					))}
 				</ul>
-				<div className="flex gap-x-8">
+				<div className="w-full flex justify-evenly">
 					<button className="btn btn-sm btn-neutral" onClick={() => handleAddMeal()}>
 						+ Add Meal
 					</button>
@@ -117,11 +120,13 @@ export default function MealsSection({
 								handleMealChange(selectedMeal.id, "name", newName)
 							}
 						/>
-						<DeleteButton
+						<IconButton
 							key={`${selectedMeal.id}-delete`}
 							onClick={() => handleDeleteMeal(selectedMeal.id)}
 							disabled={meals.length === 1}
-						/>
+						>
+							<DeleteIcon />
+						</IconButton>
 					</>
 				}
 			>
