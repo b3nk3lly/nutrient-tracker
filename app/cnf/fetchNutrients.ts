@@ -7,6 +7,7 @@ interface CNFNutrient {
 	nutrient_name_id: number;
 	unit: string;
 	nutrient_web_order: number;
+	nutrient_name: string;
 	nutrient_web_name: string;
 	nutrient_group_id: number;
 }
@@ -24,7 +25,8 @@ export default async function fetchNutrients(): Promise<Nutrient[]> {
 	return json.map((nutrient) => ({
 		id: nutrient.nutrient_name_id,
 		groupId: nutrient.nutrient_group_id,
-		name: nutrient.nutrient_web_name,
+		name: nutrient.nutrient_name,
+		webName: nutrient.nutrient_web_name,
 		unit: nutrient.unit,
 		order: nutrient.nutrient_web_order
 	}));
