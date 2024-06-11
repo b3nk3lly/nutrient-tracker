@@ -92,6 +92,7 @@ export default function MealsSection({
 								meals.length > 1 && (
 									<IconButton
 										key={`${meal.id}-delete`}
+										tooltip="Remove Meal"
 										onClick={() => handleDeleteMeal(meal.id)}
 									>
 										<DeleteIcon />
@@ -122,6 +123,7 @@ export default function MealsSection({
 						/>
 						<IconButton
 							key={`${selectedMeal.id}-delete`}
+							tooltip="Remove Meal"
 							onClick={() => handleDeleteMeal(selectedMeal.id)}
 							disabled={meals.length === 1}
 						>

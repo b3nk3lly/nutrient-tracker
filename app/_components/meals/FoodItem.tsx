@@ -17,7 +17,7 @@ const FoodItem = ({ food, onChange, onDelete }: FoodItemProps) => {
 		<div className="p-4 animate-flash">
 			<div className="flex justify-between align-middle">
 				<p className="font-semibold">{food.description}</p>
-				<IconButton onClick={onDelete}>
+				<IconButton tooltip="Remove Food" onClick={onDelete}>
 					<DeleteIcon />
 				</IconButton>
 			</div>
