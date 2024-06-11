@@ -64,7 +64,7 @@ const MealCard = ({ meal, onChange }: MealCardProps) => {
 					Search for food to add it to this meal.
 				</p>
 			) : (
-				<ul className="space-y-1 divide-y">
+				<ul className="space-y-1 divide-y divide-base-200">
 					{meal.foods.map((food) => (
 						<FoodItem
 							key={food.id}
