@@ -5,16 +5,18 @@ import SearchBar from "../search/SearchBar";
 import FoodItem from "./FoodItem";
 import Meal from "../../types/meal";
 import Serving from "../../types/serving";
+import { useMealsContext } from "../../_store/MealsContextProvider";
 
 interface MealCardProps {
 	meal: Meal;
-	onChange: <T extends keyof Meal>(property: T, value: Meal[T]) => void;
 }
 
 let foodCount = 0; // incremented to assign food IDs
 let servingCount = 0; // incremented to assign serving IDs
 
-const MealCard = ({ meal, onChange }: MealCardProps) => {
+const MealCard = ({ meal }: MealCardProps) => {
+	const { mealsDispatch } = useMealsContext();
+
 	const handleAddFood = async (food: Food) => {
 		// fetch serving sizes for food
 		const response = await fetch(`/api/food/${food.code}/servings`);
@@ -33,24 +35,11 @@ const MealCard = ({ meal, onChange }: MealCardProps) => {
 
 		// add new food to state
 		// newest food appears first
-		onChange("foods", [newFood, ...meal.foods]);
-	};
-
-	const handleFoodChange = <T extends keyof Food>(
-		foodId: number,
-		property: T,
-		value: Food[T]
-	) => {
-		const newFoods = meal.foods.map((food) =>
-			food.id === foodId ? { ...food, [property]: value } : food
-		);
-
-		onChange("foods", newFoods);
-	};
-
-	const handleDeleteFood = (foodId: number) => {
-		const newFoods = meal.foods.filter((food) => food.id !== foodId);
-		onChange("foods", newFoods);
+		mealsDispatch({
+			type: "CREATE_FOOD",
+			mealId: meal.id,
+			food: newFood
+		});
 	};
 
 	return (
@@ -66,14 +55,7 @@ const MealCard = ({ meal, onChange }: MealCardProps) => {
 			) : (
 				<ul className="space-y-1 divide-y divide-base-200">
 					{meal.foods.map((food) => (
-						<FoodItem
-							key={food.id}
-							food={food}
-							onChange={(property, value) =>
-								handleFoodChange(food.id, property, value)
-							}
-							onDelete={() => handleDeleteFood(food.id)}
-						/>
+						<FoodItem key={food.id} mealId={meal.id} food={food} />
 					))}
 				</ul>
 			)}

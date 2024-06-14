@@ -1,7 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
-import Meal from "../types/meal";
+import { useState } from "react";
 import MealCard from "./meals/MealCard";
 import SideContentMenuOption from "./layout/SideContentMenuOption";
 import SideContent from "./layout/SideContent";
@@ -10,36 +9,31 @@ import createNewMeal from "../_functions/createNewMeal";
 import MealName from "./meals/MealName";
 import IconButton from "./IconButton";
 import DeleteIcon from "./DeleteIcon";
+import { useMealsContext } from "../_store/MealsContextProvider";
 
 interface MealsSectionProps {
-	meals: Meal[];
-	setMeals: Dispatch<SetStateAction<Meal[]>>;
-	onChangePage: () => void;
+	onChangePage: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export default function MealsSection({
-	meals,
-	setMeals,
-	onChangePage
-}: Readonly<MealsSectionProps>) {
+export default function MealsSection({ onChangePage }: Readonly<MealsSectionProps>) {
+	const { meals, mealsDispatch } = useMealsContext();
 	const [selectedMealId, setSelectedMealId] = useState(0);
 
 	const selectedMeal = meals.find((meal) => meal.id === selectedMealId) ?? meals[0];
 
-	const handleAddMeal = () => {
+	const handleAddMeal = (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+
 		const newMeal = createNewMeal();
-		setMeals((prevMeals) => [...prevMeals, newMeal]);
+		mealsDispatch({ type: "CREATE_MEAL", meal: newMeal });
 		setSelectedMealId(newMeal.id);
 	};
 
-	const handleMealChange = <T extends keyof Meal>(
-		mealId: number,
-		property: T,
-		value: Meal[T]
-	) => {
-		setMeals((prevMeals) =>
-			prevMeals.map((meal) => (meal.id === mealId ? { ...meal, [property]: value } : meal))
-		);
+	const handleChangeMealName = (mealId: number, newName: string) => {
+		mealsDispatch({
+			type: "UPDATE_MEAL",
+			payload: { mealId: mealId, property: "name", value: newName }
+		});
 	};
 
 	/**
@@ -66,8 +60,8 @@ export default function MealsSection({
 		);
 	};
 
-	const handleDeleteMeal = (mealId: number) => {
-		const newMeals = meals.filter((meal) => meal.id !== mealId);
+	const handleDeleteMeal = (event: React.MouseEvent<HTMLButtonElement>, mealId: number) => {
+		event.preventDefault();
 
 		// if we're deleting the currently-selected meal, choose what to select next
 		if (mealId === selectedMealId) {
@@ -75,7 +69,12 @@ export default function MealsSection({
 			setSelectedMealId(newSelectedMeal.id);
 		}
 
-		setMeals(newMeals);
+		mealsDispatch({ type: "DELETE_MEAL", mealId });
+	};
+
+	const handleSelectMeal = (event: React.MouseEvent<HTMLButtonElement>, mealId: number) => {
+		event.preventDefault();
+		setSelectedMealId(mealId);
 	};
 
 	return (
@@ -87,13 +86,13 @@ export default function MealsSection({
 							key={meal.id}
 							label={meal.name}
 							selected={meal.id === selectedMealId}
-							onSelect={() => setSelectedMealId(meal.id)}
+							onClick={(e) => handleSelectMeal(e, meal.id)}
 							actionButtons={[
 								meals.length > 1 && (
 									<IconButton
 										key={`${meal.id}-delete`}
 										tooltip="Remove Meal"
-										onClick={() => handleDeleteMeal(meal.id)}
+										onClick={(e) => handleDeleteMeal(e, meal.id)}
 									>
 										<DeleteIcon />
 									</IconButton>
@@ -103,10 +102,10 @@ export default function MealsSection({
 					))}
 				</ul>
 				<div className="w-full flex justify-evenly">
-					<button className="btn btn-sm btn-neutral" onClick={() => handleAddMeal()}>
+					<button className="btn btn-sm btn-neutral" onClick={handleAddMeal}>
 						+ Add Meal
 					</button>
-					<button className="btn btn-sm btn-neutral" onClick={() => onChangePage()}>
+					<button className="btn btn-sm btn-neutral" onClick={onChangePage}>
 						Nutrients &gt;
 					</button>
 				</div>
@@ -117,14 +116,12 @@ export default function MealsSection({
 						<MealName
 							key={`${selectedMeal.id}-name`}
 							name={selectedMeal.name}
-							onChange={(newName) =>
-								handleMealChange(selectedMeal.id, "name", newName)
-							}
+							onChange={(newName) => handleChangeMealName(selectedMeal.id, newName)}
 						/>
 						<IconButton
 							key={`${selectedMeal.id}-delete`}
 							tooltip="Remove Meal"
-							onClick={() => handleDeleteMeal(selectedMeal.id)}
+							onClick={(e) => handleDeleteMeal(e, selectedMeal.id)}
 							disabled={meals.length === 1}
 						>
 							<DeleteIcon />
@@ -132,12 +129,7 @@ export default function MealsSection({
 					</>
 				}
 			>
-				<MealCard
-					meal={selectedMeal}
-					onChange={(property, value) =>
-						handleMealChange(selectedMeal.id, property, value)
-					}
-				/>
+				<MealCard meal={selectedMeal} />
 			</MainContent>
 		</>
 	);

@@ -1,52 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Meal from "./types/meal";
-import createNewMeal from "./_functions/createNewMeal";
-import MealsSection from "./_components/MealsSection";
-import NutrientsSection from "./_components/NutrientsSection";
-import Nutrient from "./types/nutrient";
+import MealsContextProvider from "./_store/MealsContextProvider";
+import MealsForm from "./_components/form/MealsForm";
 
 export default function Home() {
-	const [page, setPage] = useState<"meals" | "nutrients">("meals");
-	const [meals, setMeals] = useState<Meal[]>([createNewMeal()]);
-	const [nutrients, setNutrients] = useState<Nutrient[]>([]);
-	const [selectedNutrientIds, setSelectedNutrientIds] = useState<Set<number>>(new Set());
+	const [showTable, setShowTable] = useState(false);
 
-	useEffect(() => {
-		async function fetchNutrientGroups() {
-			const response = await fetch("/api/nutrients");
-			const json: Nutrient[] = await response.json();
+	const generateReportData = (meals: Meal[], selectedNutrientIds: Set<number>) => {
+		// TODO call backend for table data
+		// TODO update reportData state with new data
+		setShowTable(true);
+	};
 
-			setNutrients(json);
-		}
-
-		fetchNutrientGroups();
-	}, []);
-
-	let displayedSection;
-
-	switch (page) {
-		case "meals":
-			displayedSection = (
-				<MealsSection
-					meals={meals}
-					setMeals={setMeals}
-					onChangePage={() => setPage("nutrients")}
-				/>
-			);
-			break;
-		case "nutrients":
-			displayedSection = (
-				<NutrientsSection
-					nutrients={nutrients}
-					selectedNutrientIds={selectedNutrientIds}
-					setSelectedNutrientIds={setSelectedNutrientIds}
-					onChangePage={() => setPage("meals")}
-				/>
-			);
-			break;
-	}
-
-	return <main className="min-h-screen flex">{displayedSection}</main>;
+	return showTable ? (
+		<></>
+	) : (
+		<MealsContextProvider>
+			<MealsForm onSubmit={generateReportData} />
+		</MealsContextProvider>
+	);
 }

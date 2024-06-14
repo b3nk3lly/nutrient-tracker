@@ -3,21 +3,21 @@
 interface SideContentMenuOptionProps {
 	label: React.ReactNode;
 	selected?: boolean;
-	onSelect: () => void;
+	onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 	actionButtons?: React.ReactNode[];
 }
 
 export default function SideContentMenuOption({
 	label,
 	selected,
-	onSelect,
+	onClick,
 	actionButtons
 }: Readonly<SideContentMenuOptionProps>) {
 	return (
 		<li className="animate-fadeIn group flex justify-between">
 			<button
 				className={`group-hover:bg-base-300 ${selected ? "bg-base-300" : ""}`}
-				onClick={() => onSelect()}
+				onClick={onClick}
 			>
 				{label}
 			</button>

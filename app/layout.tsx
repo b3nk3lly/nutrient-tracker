@@ -16,7 +16,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" data-theme="lemonade">
-			<body className={inter.className}>{children}</body>
+			<body className={inter.className}>
+				<main className="min-h-screen flex">{children}</main>
+			</body>
 		</html>
 	);
 }

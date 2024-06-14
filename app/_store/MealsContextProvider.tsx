@@ -1,6 +1,6 @@
 "use client";
 
-import { Context, Dispatch, createContext, useReducer } from "react";
+import { Context, Dispatch, createContext, useContext, useReducer } from "react";
 import Meal from "../types/meal";
 import createNewMeal from "../_functions/createNewMeal";
 import mealsReducer, { MealsAction } from "../_reducers/mealsReducer";
@@ -38,4 +38,16 @@ export default function MealsContextProvider({ children }: Readonly<MealsContext
 			{children}
 		</MealsContext.Provider>
 	);
+}
+
+export function useMealsContext() {
+	const context = useContext(MealsContext);
+
+	if (!context) {
+		throw new Error(
+			"useMealsContext must only be used in components wrapped by MealsContextProvider !"
+		);
+	}
+
+	return context;
 }

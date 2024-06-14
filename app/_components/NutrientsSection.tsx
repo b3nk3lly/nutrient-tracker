@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SideContent from "./layout/SideContent";
 import MainContent from "./layout/MainContent";
 import NutrientGroup from "../types/nutrientGroup";
@@ -7,21 +7,16 @@ import Nutrient from "../types/nutrient";
 import IconButton from "./IconButton";
 import DeselectAllIcon from "./DeselectAllIcon";
 import SelectAllIcon from "./SelectAllIcon";
+import { useMealsContext } from "../_store/MealsContextProvider";
 
 interface NutrientsSectionProps {
-	nutrients: Nutrient[];
-	selectedNutrientIds: Set<number>;
-	setSelectedNutrientIds: Dispatch<SetStateAction<Set<number>>>;
-	onChangePage: () => void;
+	onChangePage: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export default function NutrientsSection({
-	nutrients,
-	selectedNutrientIds,
-	setSelectedNutrientIds,
-	onChangePage
-}: Readonly<NutrientsSectionProps>) {
+export default function NutrientsSection({ onChangePage }: Readonly<NutrientsSectionProps>) {
+	const { selectedNutrientIds, nutrientsDispatch } = useMealsContext();
 	const [nutrientGroups, setNutrientGroups] = useState<NutrientGroup[]>([]);
+	const [nutrients, setNutrients] = useState<Nutrient[]>([]);
 	const [selectedNutrientGroupId, setSelectedNutrientGroupId] = useState<number | undefined>();
 
 	const selectedNutrientGroup = nutrientGroups.find(
@@ -41,43 +36,60 @@ export default function NutrientsSection({
 			setSelectedNutrientGroupId(json[0].id);
 		}
 
+		async function fetchNutrients() {
+			const response = await fetch("/api/nutrients");
+			const json: Nutrient[] = await response.json();
+
+			setNutrients(json);
+		}
+
 		fetchNutrientGroups();
+		fetchNutrients();
 	}, []);
+
+	const handleSelectNutrientGroup = (
+		event: React.MouseEvent<HTMLButtonElement>,
+		newNutrientGroupId: number
+	) => {
+		event.preventDefault();
+		setSelectedNutrientGroupId(newNutrientGroupId);
+	};
 
 	const handleSelectNutrient = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const nutrientId = Number(event.target.value);
 
-		setSelectedNutrientIds((prevNutrientIds) => {
-			if (event.target.checked) {
-				// add the nutrient to the set
-				return new Set(prevNutrientIds.add(nutrientId));
-			}
+		if (event.target.checked) {
+			nutrientsDispatch({ type: "SELECT_ONE", nutrientId });
+		} else {
+			nutrientsDispatch({ type: "DESELECT_ONE", nutrientId });
+		}
+	};
 
-			// remove the nutrient from the set
-			const newNutrientIds = new Set(prevNutrientIds);
-			newNutrientIds.delete(nutrientId);
+	const handleSelectAllInGroup = (
+		event: React.MouseEvent<HTMLButtonElement>,
+		groupId: number
+	) => {
+		event.preventDefault();
 
-			return newNutrientIds;
+		nutrientsDispatch({
+			type: "SELECT_MANY",
+			nutrientIds: nutrients
+				.filter((nutrient) => nutrient.groupId === groupId)
+				.map((nutrient) => nutrient.id)
 		});
 	};
 
-	const handleSelectAll = (groupId: number) => {
-		setSelectedNutrientIds((prevNutrientIds) => {
-			const newNutrientIds = new Set(prevNutrientIds);
-			nutrients
-				.filter((nutrient) => nutrient.groupId === groupId)
-				.forEach((nutrient) => newNutrientIds.add(nutrient.id));
-			return newNutrientIds;
-		});
-	};
+	const handleDeselectAllInGroup = (
+		event: React.MouseEvent<HTMLButtonElement>,
+		groupId: number
+	) => {
+		event.preventDefault();
 
-	const handleDeselectAll = (groupId: number) => {
-		setSelectedNutrientIds((prevNutrientIds) => {
-			const newNutrientIds = new Set(prevNutrientIds);
-			nutrients
+		nutrientsDispatch({
+			type: "DESELECT_MANY",
+			nutrientIds: nutrients
 				.filter((nutrient) => nutrient.groupId === groupId)
-				.forEach((nutrient) => newNutrientIds.delete(nutrient.id));
-			return newNutrientIds;
+				.map((nutrient) => nutrient.id)
 		});
 	};
 
@@ -109,19 +121,19 @@ export default function NutrientsSection({
 								</p>
 							}
 							selected={group.id === selectedNutrientGroupId}
-							onSelect={() => setSelectedNutrientGroupId(group.id)}
+							onClick={(e) => handleSelectNutrientGroup(e, group.id)}
 							actionButtons={[
 								<IconButton
 									key={`${group.id}-deselect-all`}
 									tooltip="Deselect All"
-									onClick={() => handleDeselectAll(group.id)}
+									onClick={(e) => handleDeselectAllInGroup(e, group.id)}
 								>
 									<DeselectAllIcon />
 								</IconButton>,
 								<IconButton
 									key={`${group.id}-select-all`}
 									tooltip="Select All"
-									onClick={() => handleSelectAll(group.id)}
+									onClick={(e) => handleSelectAllInGroup(e, group.id)}
 								>
 									<SelectAllIcon />
 								</IconButton>
@@ -130,10 +142,10 @@ export default function NutrientsSection({
 					))}
 				</ul>
 				<div className="w-full flex justify-evenly">
-					<button className="btn btn-sm btn-neutral" onClick={() => onChangePage()}>
+					<button className="btn btn-sm btn-neutral" onClick={onChangePage}>
 						&lt; Meals
 					</button>
-					<button className="btn btn-sm btn-neutral" onClick={() => onChangePage()}>
+					<button className="btn btn-sm btn-neutral" onClick={onChangePage}>
 						Generate Report
 					</button>
 				</div>
@@ -147,13 +159,13 @@ export default function NutrientsSection({
 					<div className="flex p-4 justify-evenly">
 						<button
 							className="btn btn-sm btn-neutral"
-							onClick={() => handleSelectAll(selectedNutrientGroupId)}
+							onClick={(e) => handleSelectAllInGroup(e, selectedNutrientGroupId)}
 						>
 							Select All
 						</button>
 						<button
 							className="btn btn-sm btn-neutral"
-							onClick={() => handleDeselectAll(selectedNutrientGroupId)}
+							onClick={(e) => handleDeselectAllInGroup(e, selectedNutrientGroupId)}
 						>
 							Deselect All
 						</button>
