@@ -10,6 +10,7 @@ interface CNFNutrient {
 	nutrient_name: string;
 	nutrient_web_name: string;
 	nutrient_group_id: number;
+	nutrient_decimals: number;
 }
 
 /**
@@ -28,6 +29,7 @@ export default async function fetchNutrients(): Promise<Nutrient[]> {
 		name: nutrient.nutrient_name,
 		webName: nutrient.nutrient_web_name,
 		unit: nutrient.unit,
-		order: nutrient.nutrient_web_order
+		order: nutrient.nutrient_web_order,
+		decimals: nutrient.nutrient_decimals
 	}));
 }

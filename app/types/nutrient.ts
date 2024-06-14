@@ -5,4 +5,5 @@ export default interface Nutrient {
 	webName: string;
 	unit: string;
 	order: number;
+	decimals: number;
 }

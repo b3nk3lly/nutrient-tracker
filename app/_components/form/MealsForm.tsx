@@ -7,7 +7,7 @@ import MealsSection from "../MealsSection";
 import NutrientsSection from "../NutrientsSection";
 
 interface MealsFormProps {
-	onSubmit: (meals: Meal[], selectedNutrientIds: Set<number>) => void;
+	onSubmit: (meals: Meal[], nutrientIds: number[]) => void;
 }
 
 export default function MealsForm({ onSubmit }: Readonly<MealsFormProps>) {
@@ -19,8 +19,9 @@ export default function MealsForm({ onSubmit }: Readonly<MealsFormProps>) {
 		setPageIndex(newIndex);
 	};
 
-	const handleSubmit = () => {
-		onSubmit(meals, selectedNutrientIds);
+	const handleSubmit = (event: React.FormEvent) => {
+		event.preventDefault();
+		onSubmit(meals, Array.from(selectedNutrientIds));
 	};
 
 	const pages = [

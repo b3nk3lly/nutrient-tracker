@@ -145,7 +145,7 @@ export default function NutrientsSection({ onChangePage }: Readonly<NutrientsSec
 					<button className="btn btn-sm btn-neutral" onClick={onChangePage}>
 						&lt; Meals
 					</button>
-					<button className="btn btn-sm btn-neutral" onClick={onChangePage}>
+					<button className="btn btn-sm btn-neutral" type="submit">
 						Generate Report
 					</button>
 				</div>
