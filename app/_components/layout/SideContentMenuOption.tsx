@@ -16,7 +16,7 @@ export default function SideContentMenuOption({
 	return (
 		<li className="animate-fadeIn group flex justify-between">
 			<button
-				className={`group-hover:bg-base-300 ${selected ? "bg-base-300" : ""}`}
+				className={`text-neutral group-hover:bg-base-300 ${selected ? "bg-base-300" : ""}`}
 				onClick={onClick}
 			>
 				{label}

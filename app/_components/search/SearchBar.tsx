@@ -43,10 +43,11 @@ const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 	return (
 		<>
 			<label className="input input-bordered flex items-center gap-2">
-				<SearchIcon className="w-4 h-4 opacity-70" />
+				<SearchIcon className="w-4 h-4 opacity-70 fill-neutral" />
 				<input
 					type="text"
 					placeholder="Enter a name or food code"
+					className="text-neutral"
 					onChange={handleInputChange}
 					onFocus={() => setSearchFocused(true)}
 					onBlur={() => setSearchFocused(false)}
@@ -60,7 +61,10 @@ const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 								<li key={food.code}>
 									{/* use onMouseDown so this is clickable before the options are 
 								    un-rendered after the search bar loses focus */}
-									<button onMouseDown={() => props.onSelect(food)}>
+									<button
+										onMouseDown={() => props.onSelect(food)}
+										className="text-neutral"
+									>
 										{`[${food.code}] ${food.description}`}
 									</button>
 								</li>

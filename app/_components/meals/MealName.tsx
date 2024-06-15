@@ -44,7 +44,7 @@ export default function MealName({ name, onChange }: Readonly<MealNameProps>) {
 			type="text"
 			maxLength={64}
 			ref={input}
-			className="text-xl font-bold outline-none bg-inherit hover:bg-base-200 focus:bg-base-200 p-1 rounded-sm"
+			className="text-xl text-neutral font-bold outline-none bg-inherit hover:bg-base-200 focus:bg-base-200 p-1 rounded-sm"
 			value={newName}
 			onChange={(event) => setNewName(event.target.value)}
 			onKeyDown={handleKeyDown}

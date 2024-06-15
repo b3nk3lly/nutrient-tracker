@@ -152,7 +152,9 @@ export default function NutrientsSection({ onChangePage }: Readonly<NutrientsSec
 			</SideContent>
 			<MainContent
 				headerContent={
-					<h2 className="text-xl font-bold p-1">{selectedNutrientGroup?.name}</h2>
+					<h2 className="text-xl text-neutral font-bold p-1">
+						{selectedNutrientGroup?.name}
+					</h2>
 				}
 			>
 				{selectedNutrientGroupId && (
