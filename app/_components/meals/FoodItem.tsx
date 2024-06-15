@@ -34,12 +34,12 @@ const FoodItem = ({ food, mealId }: FoodItemProps) => {
 	return (
 		<div className="p-4 animate-flash">
 			<div className="flex justify-between align-middle">
-				<p className="font-semibold">{food.description}</p>
+				<p className="font-semibold text-neutral">{food.description}</p>
 				<IconButton tooltip="Remove Food" onClick={() => handleDeleteFood()}>
 					<DeleteIcon />
 				</IconButton>
 			</div>
-			<label className="w-full m-1">
+			<label className="w-full m-1 text-neutral">
 				Quantity:
 				<div className="join ml-3 w-3/4">
 					<input
