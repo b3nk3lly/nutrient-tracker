@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Food from "../../types/food";
-import SearchIcon from "./SearchIcon";
+import SearchIcon from "../icons/SearchIcon";
 
 const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 	const [suggestions, setSuggestions] = useState<Food[]>([]);

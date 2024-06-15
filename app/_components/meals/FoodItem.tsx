@@ -4,7 +4,7 @@ import React from "react";
 import ServingSelection from "./ServingSelection";
 import Food from "../../types/food";
 import IconButton from "../IconButton";
-import DeleteIcon from "../DeleteIcon";
+import DeleteIcon from "../icons/DeleteIcon";
 import { useMealsContext } from "../../_store/MealsContextProvider";
 
 interface FoodItemProps {

@@ -8,7 +8,7 @@ import MainContent from "./layout/MainContent";
 import createNewMeal from "../_functions/createNewMeal";
 import MealName from "./meals/MealName";
 import IconButton from "./IconButton";
-import DeleteIcon from "./DeleteIcon";
+import DeleteIcon from "./icons/DeleteIcon";
 import { useMealsContext } from "../_store/MealsContextProvider";
 
 interface MealsSectionProps {

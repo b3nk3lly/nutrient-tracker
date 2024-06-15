@@ -5,8 +5,8 @@ import NutrientGroup from "../types/nutrientGroup";
 import SideContentMenuOption from "./layout/SideContentMenuOption";
 import Nutrient from "../types/nutrient";
 import IconButton from "./IconButton";
-import DeselectAllIcon from "./DeselectAllIcon";
-import SelectAllIcon from "./SelectAllIcon";
+import DeselectAllIcon from "./icons/DeselectAllIcon";
+import SelectAllIcon from "./icons/SelectAllIcon";
 import { useMealsContext } from "../_store/MealsContextProvider";
 
 interface NutrientsSectionProps {
