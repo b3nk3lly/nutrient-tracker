@@ -86,7 +86,7 @@ export default function MealTable({ data }: Readonly<MealTableProps>) {
 	];
 
 	return (
-		<table className="table table-pin-rows">
+		<table className="table table-pin-rows text-neutral">
 			<thead>
 				<tr>
 					{headers.map((header) => (
@@ -104,7 +104,7 @@ export default function MealTable({ data }: Readonly<MealTableProps>) {
 					<tbody key={`${meal.id}-body`}>
 						{meal.foods.map((food) => {
 							return (
-								<tr key={food.id}>
+								<tr key={food.id} className="hover:bg-base-200">
 									<td>{food.description}</td>
 									<td>{formatFoodQuantity(food)}</td>
 									<td>{String(food.code)}</td>
