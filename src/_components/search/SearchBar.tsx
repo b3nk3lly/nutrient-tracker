@@ -3,21 +3,11 @@
 import React, { useState } from "react";
 import Food from "../../types/food";
 import SearchIcon from "../icons/SearchIcon";
+import fetchFoods from "../../cnf/fetchFoods";
 
 const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 	const [suggestions, setSuggestions] = useState<Food[]>([]);
 	const [searchFocused, setSearchFocused] = useState(false);
-
-	/**
-	 * Fetches search suggestions from the backend
-	 * @param query search string for finding food items
-	 * @returns list of food items that matched the search string
-	 */
-	const fetchSearchSuggestions = async (query: string) => {
-		const response = await fetch(`/api/food?query=${query}`);
-		const suggestions: Food[] = await response.json();
-		return suggestions;
-	};
 
 	/**
 	 * Updates search query and retrieves and sets search suggestions
@@ -28,7 +18,7 @@ const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 
 		// if query is too short, we don't want to overdo it on suggestions
 		if (inputValue && inputValue.length >= 3) {
-			fetchSearchSuggestions(inputValue).then((result) => {
+			fetchFoods(inputValue).then((result) => {
 				setSuggestions(result);
 			});
 		} else {

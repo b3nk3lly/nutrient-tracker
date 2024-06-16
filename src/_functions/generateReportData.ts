@@ -1,11 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import Food from "../../types/food";
-import Nutrient from "../../types/nutrient";
-import NutrientAmount from "../../types/nutrientAmount";
-import Meal from "../../types/meal";
-import fetchNutrients from "../../cnf/fetchNutrients";
-import fetchNutrientAmounts from "../../cnf/fetchNutrientAmounts";
-import ReportData from "../../types/reportData";
+import fetchNutrientAmounts from "../cnf/fetchNutrientAmounts";
+import fetchNutrients from "../cnf/fetchNutrients";
+import Food from "../types/food";
+import Meal from "../types/meal";
+import Nutrient from "../types/nutrient";
+import NutrientAmount from "../types/nutrientAmount";
+import ReportData from "../types/reportData";
 
 /**
  * Returns the amount of a given nutrient contained in a given quantity of food, according to
@@ -44,7 +43,7 @@ function computeNutrientValueForFood(
  * @param nutrientGroups the nutrient groups to include in the report
  * @returns a 2D array containing the report data
  */
-async function generateReportData(meals: Meal[], nutrientIds: number[]) {
+export default async function generateReportData(meals: Meal[], nutrientIds: number[]) {
 	const nutrients = (await fetchNutrients()).filter((nutrient) =>
 		nutrientIds.includes(nutrient.id)
 	);
@@ -63,13 +62,4 @@ async function generateReportData(meals: Meal[], nutrientIds: number[]) {
 	}
 
 	return data;
-}
-
-export async function POST(request: NextRequest) {
-	const body: { meals: Meal[]; nutrientIds: number[] } = await request.json();
-	const { meals, nutrientIds } = body;
-
-	const reportData = await generateReportData(meals, nutrientIds);
-
-	return NextResponse.json(reportData, { status: 200 });
 }

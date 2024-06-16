@@ -6,6 +6,7 @@ import FoodItem from "./FoodItem";
 import Meal from "../../types/meal";
 import Serving from "../../types/serving";
 import { useMealsContext } from "../../_store/MealsContextProvider";
+import fetchServings from "../../cnf/fetchServings";
 
 interface MealCardProps {
 	meal: Meal;
@@ -19,8 +20,7 @@ const MealCard = ({ meal }: MealCardProps) => {
 
 	const handleAddFood = async (food: Food) => {
 		// fetch serving sizes for food
-		const response = await fetch(`/api/food/servings?foodCode=${food.code}`);
-		const servings: Serving[] = await response.json();
+		const servings = await fetchServings(food.code);
 
 		// add IDs to servings
 		servings.forEach((serving) => (serving.id = servingCount++));

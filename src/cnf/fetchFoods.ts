@@ -1,6 +1,4 @@
-// /api/food
-
-import { NextResponse, NextRequest } from "next/server";
+import Food from "../types/food";
 
 const processedFoodData = new Map<string, CNFFood>();
 const strippingRegex = new RegExp(/[^a-zA-Z0-9 ]/, "g"); // used for removing special characters
@@ -80,47 +78,26 @@ async function initFoodData() {
 	initialized = true;
 }
 
-export const dynamic = "force-dynamic";
-
-export async function GET(request: NextRequest) {
-	let query = request.nextUrl.searchParams.get("query");
-
+export default async function fetchFoods(searchString: string): Promise<Food[]> {
 	if (!initialized) {
 		await initFoodData();
 	}
 
-	// check if any query was provided
-	if (!query) {
-		return NextResponse.json(
-			{ message: "Missing required parameter 'query'." },
-			{ status: 400 }
-		);
-	}
+	searchString = formatString(searchString);
 
-	query = formatString(query);
-
-	// check if there is still a query after formatting it
-	if (!query) {
-		return NextResponse.json(
-			{
-				message: "Invalid query. Please remove special characters and try again."
-			},
-			{ status: 400 }
-		);
-	}
-
-	const searchByFoodCode = !isNaN(Number(query));
+	const searchByFoodCode = !isNaN(Number(searchString));
 
 	// match foods either by food code or with string search
 	const matchingEntries = Array.from(processedFoodData.entries()).filter(([key, value]) =>
-		searchByFoodCode ? value.food_code === Number(query) : matches(key, query)
+		searchByFoodCode ? value.food_code === Number(searchString) : matches(key, searchString)
 	);
 
-	return NextResponse.json(
-		matchingEntries.map(([key, value]) => ({
-			code: value.food_code,
-			description: value.food_description
-		})),
-		{ status: 200 }
-	);
+	return matchingEntries.map(([key, value]) => ({
+		code: value.food_code,
+		description: value.food_description,
+		id: 0,
+		quantity: 0,
+		servings: [],
+		selectedServingId: 0
+	}));
 }

@@ -8,6 +8,8 @@ import IconButton from "./IconButton";
 import DeselectAllIcon from "./icons/DeselectAllIcon";
 import SelectAllIcon from "./icons/SelectAllIcon";
 import { useMealsContext } from "../_store/MealsContextProvider";
+import fetchNutrients from "../cnf/fetchNutrients";
+import ftechNutrientGroups from "../cnf/fetchNutrientGroups";
 
 interface NutrientsSectionProps {
 	onChangePage: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -28,23 +30,14 @@ export default function NutrientsSection({ onChangePage }: Readonly<NutrientsSec
 	);
 
 	useEffect(() => {
-		async function fetchNutrientGroups() {
-			const response = await fetch("/api/nutrient-groups");
-			const json: NutrientGroup[] = await response.json();
+		ftechNutrientGroups().then((groups) => {
+			setNutrientGroups(groups);
+			setSelectedNutrientGroupId(groups[0].id);
+		});
 
-			setNutrientGroups(json);
-			setSelectedNutrientGroupId(json[0].id);
-		}
-
-		async function fetchNutrients() {
-			const response = await fetch("/api/nutrients");
-			const json: Nutrient[] = await response.json();
-
-			setNutrients(json);
-		}
-
-		fetchNutrientGroups();
-		fetchNutrients();
+		fetchNutrients().then((nutrients) => {
+			setNutrients(nutrients);
+		});
 	}, []);
 
 	const handleSelectNutrientGroup = (

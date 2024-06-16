@@ -5,6 +5,7 @@ import Food from "../../types/food";
 import Nutrient from "../../types/nutrient";
 import ReportData from "../../types/reportData";
 import { useMealsContext } from "../../_store/MealsContextProvider";
+import fetchNutrients from "../../cnf/fetchNutrients";
 
 /**
  * Returns the name of a nutrient and its unit of measurement, if not already present in the name.
@@ -68,14 +69,9 @@ export default function MealTable({ data }: Readonly<MealTableProps>) {
 	const [nutrients, setNutrients] = useState<Nutrient[]>([]);
 
 	useEffect(() => {
-		async function fetchNutrients() {
-			const response = await fetch("/api/nutrients");
-			const json: Nutrient[] = await response.json();
-
-			setNutrients(json.filter(({ id }) => selectedNutrientIds.has(id)));
-		}
-
-		fetchNutrients();
+		fetchNutrients().then((nutrients) => {
+			setNutrients(nutrients.filter(({ id }) => selectedNutrientIds.has(id)));
+		});
 	}, [selectedNutrientIds]);
 
 	const headers = [

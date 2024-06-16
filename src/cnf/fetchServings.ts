@@ -1,5 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
-import Serving from "../../types/serving";
+import Serving from "../types/serving";
 
 const quantityRegex = new RegExp(/^\d+(\/\d+)?/); // finds a whole number or a fraction denoted with '/'
 const gramsServingRegex = new RegExp(/\d+g/); // finds a whole-number gram measurement (e.g., 90g)
@@ -61,7 +60,7 @@ const formatName = ({ measure_name }: CNFServing) => {
  * @param servings the list of servings to format
  * @returns the formatted list
  */
-const formatServings = (servings: CNFServing[]) => {
+const formatServings = (servings: CNFServing[]): Serving[] => {
 	const formattedServings = servings
 		.filter(
 			(serving) =>
@@ -94,20 +93,17 @@ const formatServings = (servings: CNFServing[]) => {
 			)
 			.map((serving) => ({
 				name: serving.measure_name,
-				conversionFactor: serving.conversion_factor_value
+				conversionFactor: serving.conversion_factor_value,
+				id: 0
 			}))
 	);
 };
 
-export const dynamic = "force-dynamic";
-
-export async function GET(request: NextRequest) {
-	let foodCode = request.nextUrl.searchParams.get("foodCode");
-
+export default async function fetchServings(foodCode: number): Promise<Serving[]> {
 	const cnfResponse = await fetch(
 		`https://food-nutrition.canada.ca/api/canadian-nutrient-file/servingsize?id=${foodCode}`
 	);
 	const servings: CNFServing[] = await cnfResponse.json();
 
-	return NextResponse.json(formatServings(servings), { status: 200 });
+	return formatServings(servings);
 }
