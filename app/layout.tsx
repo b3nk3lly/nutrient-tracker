@@ -16,8 +16,14 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" data-theme="lemonade">
-			<body className={inter.className}>
-				<main className="min-h-screen flex">{children}</main>
+			<body className={`${inter.className} h-screen flex flex-col overflow-hidden`}>
+				<header className="text-center text-2xl border-b-2 border-base-200 p-2">
+					<h1 className="drop-shadow">
+						<span className="text-secondary">Nutrient</span>
+						<span className="text-primary">Tracker</span>
+					</h1>
+				</header>
+				<main className="flex grow">{children}</main>
 			</body>
 		</html>
 	);
