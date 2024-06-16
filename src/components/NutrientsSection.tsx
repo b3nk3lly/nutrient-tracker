@@ -9,12 +9,13 @@ import SelectAllIcon from "./icons/SelectAllIcon";
 import { useMealsContext } from "../store/MealsContextProvider";
 import fetchNutrients from "../functions/fetchNutrients";
 import ftechNutrientGroups from "../functions/fetchNutrientGroups";
+import Button from "./Button";
 
 interface NutrientsSectionProps {
-	onChangePage: (event: React.MouseEvent<HTMLButtonElement>) => void;
+	navigationButtons?: React.ReactNode[];
 }
 
-export default function NutrientsSection({ onChangePage }: Readonly<NutrientsSectionProps>) {
+export default function NutrientsSection({ navigationButtons }: Readonly<NutrientsSectionProps>) {
 	const { selectedNutrientIds, nutrientsDispatch } = useMealsContext();
 	const [nutrientGroups, setNutrientGroups] = useState<NutrientGroup[]>([]);
 	const [nutrients, setNutrients] = useState<Nutrient[]>([]);
@@ -98,7 +99,7 @@ export default function NutrientsSection({ onChangePage }: Readonly<NutrientsSec
 
 	return (
 		<>
-			<SideContent title="Nutrients">
+			<SideContent title="Nutrients" width="w-0 sm:w-1/3">
 				<SideContent.Menu>
 					{nutrientGroups.map((group) => (
 						<SideContent.MenuOption
@@ -134,12 +135,8 @@ export default function NutrientsSection({ onChangePage }: Readonly<NutrientsSec
 					))}
 				</SideContent.Menu>
 				<SideContent.Footer>
-					<button className="btn btn-sm btn-neutral" onClick={onChangePage}>
-						&lt; Meals
-					</button>
-					<button className="btn btn-sm btn-neutral" type="submit">
-						Generate Report
-					</button>
+					{navigationButtons}
+					<Button type="submit">Generate Report</Button>
 				</SideContent.Footer>
 			</SideContent>
 			<MainContent>
@@ -150,18 +147,14 @@ export default function NutrientsSection({ onChangePage }: Readonly<NutrientsSec
 				</MainContent.Header>
 				{selectedNutrientGroupId && (
 					<div className="flex p-4 justify-evenly">
-						<button
-							className="btn btn-sm btn-neutral"
-							onClick={(e) => handleSelectAllInGroup(e, selectedNutrientGroupId)}
-						>
+						<Button onClick={(e) => handleSelectAllInGroup(e, selectedNutrientGroupId)}>
 							Select All
-						</button>
-						<button
-							className="btn btn-sm btn-neutral"
+						</Button>
+						<Button
 							onClick={(e) => handleDeselectAllInGroup(e, selectedNutrientGroupId)}
 						>
 							Deselect All
-						</button>
+						</Button>
 					</div>
 				)}
 				<div className="grid grid-cols-3 gap-3 divide-y divide-base-200 grow overflow-x-hidden overflow-y-auto">

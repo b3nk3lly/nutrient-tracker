@@ -5,6 +5,7 @@ import MealsContextProvider from "./store/MealsContextProvider";
 import ReportSection from "./components/ReportSection";
 import MealsForm from "./components/form/MealsForm";
 import generateReportData from "./functions/generateReportData";
+import Button from "./components/Button";
 
 function App() {
 	const [showTable, setShowTable] = useState(false);
@@ -28,7 +29,14 @@ function App() {
 			<main className="flex grow overflow-hidden">
 				<MealsContextProvider>
 					{showTable ? (
-						<ReportSection data={reportData} />
+						<ReportSection
+							data={reportData}
+							navigationButtons={[
+								<Button onClick={() => setShowTable(false)}>
+									&lt; Back to meals
+								</Button>
+							]}
+						/>
 					) : (
 						<MealsForm onSubmit={fetchReportData} />
 					)}

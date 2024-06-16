@@ -9,12 +9,13 @@ import MealName from "./meals/MealName";
 import IconButton from "./IconButton";
 import DeleteIcon from "./icons/DeleteIcon";
 import { useMealsContext } from "../store/MealsContextProvider";
+import Button from "./Button";
 
 interface MealsSectionProps {
-	onChangePage: (event: React.MouseEvent<HTMLButtonElement>) => void;
+	navigationButtons?: React.ReactNode[];
 }
 
-export default function MealsSection({ onChangePage }: Readonly<MealsSectionProps>) {
+export default function MealsSection({ navigationButtons }: Readonly<MealsSectionProps>) {
 	const { meals, mealsDispatch } = useMealsContext();
 	const [selectedMealId, setSelectedMealId] = useState(0);
 
@@ -78,7 +79,7 @@ export default function MealsSection({ onChangePage }: Readonly<MealsSectionProp
 
 	return (
 		<>
-			<SideContent title="Meals">
+			<SideContent title="Meals" width="w-0 sm:w-1/3">
 				<SideContent.Menu>
 					{meals.map((meal) => (
 						<SideContent.MenuOption
@@ -101,12 +102,8 @@ export default function MealsSection({ onChangePage }: Readonly<MealsSectionProp
 					))}
 				</SideContent.Menu>
 				<SideContent.Footer>
-					<button className="btn btn-sm btn-neutral" onClick={handleAddMeal}>
-						+ Add Meal
-					</button>
-					<button className="btn btn-sm btn-neutral" onClick={onChangePage}>
-						Nutrients &gt;
-					</button>
+					<Button onClick={handleAddMeal}>+ Add Meal</Button>
+					{navigationButtons}
 				</SideContent.Footer>
 			</SideContent>
 			<MainContent>
