@@ -25,7 +25,7 @@ function App() {
 					<span className="text-primary">Tracker</span>
 				</h1>
 			</header>
-			<main className="flex grow">
+			<main className="flex grow overflow-hidden">
 				<MealsContextProvider>
 					{showTable ? (
 						<ReportSection data={reportData} />

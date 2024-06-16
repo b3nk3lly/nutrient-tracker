@@ -80,28 +80,31 @@ export default function MealsSection({ onChangePage }: Readonly<MealsSectionProp
 	return (
 		<>
 			<SideContent title="Meals">
-				<ul className="menu space-y-2 w-full">
-					{meals.map((meal) => (
-						<SideContentMenuOption
-							key={meal.id}
-							label={meal.name}
-							selected={meal.id === selectedMealId}
-							onClick={(e) => handleSelectMeal(e, meal.id)}
-							actionButtons={[
-								meals.length > 1 && (
-									<IconButton
-										key={`${meal.id}-delete`}
-										tooltip="Remove Meal"
-										onClick={(e) => handleDeleteMeal(e, meal.id)}
-									>
-										<DeleteIcon />
-									</IconButton>
-								)
-							]}
-						/>
-					))}
-				</ul>
-				<div className="w-full flex justify-evenly">
+				<div className="overflow-y-auto w-full">
+					<ul className="menu space-y-2 flex-col overflow-auto">
+						{meals.map((meal) => (
+							<SideContentMenuOption
+								key={meal.id}
+								label={meal.name}
+								selected={meal.id === selectedMealId}
+								onClick={(e) => handleSelectMeal(e, meal.id)}
+								actionButtons={[
+									meals.length > 1 && (
+										<IconButton
+											key={`${meal.id}-delete`}
+											tooltip="Remove Meal"
+											onClick={(e) => handleDeleteMeal(e, meal.id)}
+										>
+											<DeleteIcon />
+										</IconButton>
+									)
+								]}
+							/>
+						))}
+					</ul>
+				</div>
+
+				<div className="w-full flex justify-evenly self-end">
 					<button className="btn btn-sm btn-neutral" onClick={handleAddMeal}>
 						+ Add Meal
 					</button>

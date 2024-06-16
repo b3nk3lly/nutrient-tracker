@@ -5,7 +5,7 @@ interface SideContentProps {
 
 export default function SideContent({ title, children }: Readonly<SideContentProps>) {
 	return (
-		<aside className="w-1/3 bg-base-200 flex flex-col items-center py-4 space-y-4">
+		<aside className="w-1/3 bg-base-200 flex flex-col items-center py-4 space-y-4 overflow-hidden">
 			<h2 className="text-xl font-bold text-center text-neutral">{title}</h2>
 			{children}
 		</aside>
