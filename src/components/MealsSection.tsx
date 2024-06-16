@@ -5,11 +5,11 @@ import MealCard from "./meals/MealCard";
 import SideContentMenuOption from "./layout/SideContentMenuOption";
 import SideContent from "./layout/SideContent";
 import MainContent from "./layout/MainContent";
-import createNewMeal from "../_functions/createNewMeal";
+import createNewMeal from "../functions/createNewMeal";
 import MealName from "./meals/MealName";
 import IconButton from "./IconButton";
 import DeleteIcon from "./icons/DeleteIcon";
-import { useMealsContext } from "../_store/MealsContextProvider";
+import { useMealsContext } from "../store/MealsContextProvider";
 
 interface MealsSectionProps {
 	onChangePage: (event: React.MouseEvent<HTMLButtonElement>) => void;

@@ -1,5 +1,5 @@
-import fetchNutrientAmounts from "../cnf/fetchNutrientAmounts";
-import fetchNutrients from "../cnf/fetchNutrients";
+import fetchNutrientAmounts from "./fetchNutrientAmounts";
+import fetchNutrients from "./fetchNutrients";
 import Food from "../types/food";
 import Meal from "../types/meal";
 import Nutrient from "../types/nutrient";

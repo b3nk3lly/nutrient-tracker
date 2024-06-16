@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Food from "../../types/food";
 import SearchIcon from "../icons/SearchIcon";
-import fetchFoods from "../../cnf/fetchFoods";
+import fetchFoods from "../../functions/fetchFoods";
 
 const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 	const [suggestions, setSuggestions] = useState<Food[]>([]);

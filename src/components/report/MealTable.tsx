@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import Food from "../../types/food";
 import Nutrient from "../../types/nutrient";
 import ReportData from "../../types/reportData";
-import { useMealsContext } from "../../_store/MealsContextProvider";
-import fetchNutrients from "../../cnf/fetchNutrients";
+import { useMealsContext } from "../../store/MealsContextProvider";
+import fetchNutrients from "../../functions/fetchNutrients";
 
 /**
  * Returns the name of a nutrient and its unit of measurement, if not already present in the name.

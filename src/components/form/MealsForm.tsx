@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useMealsContext } from "../../_store/MealsContextProvider";
+import { useMealsContext } from "../../store/MealsContextProvider";
 import Meal from "../../types/meal";
 import MealsSection from "../MealsSection";
 import NutrientsSection from "../NutrientsSection";

@@ -5,7 +5,7 @@ import ServingSelection from "./ServingSelection";
 import Food from "../../types/food";
 import IconButton from "../IconButton";
 import DeleteIcon from "../icons/DeleteIcon";
-import { useMealsContext } from "../../_store/MealsContextProvider";
+import { useMealsContext } from "../../store/MealsContextProvider";
 
 interface FoodItemProps {
 	food: Food;

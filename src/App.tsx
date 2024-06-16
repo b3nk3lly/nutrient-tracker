@@ -1,10 +1,10 @@
 import { useState } from "react";
 import ReportData from "./types/reportData";
 import Meal from "./types/meal";
-import MealsContextProvider from "./_store/MealsContextProvider";
-import ReportSection from "./_components/ReportSection";
-import MealsForm from "./_components/form/MealsForm";
-import generateReportData from "./_functions/generateReportData";
+import MealsContextProvider from "./store/MealsContextProvider";
+import ReportSection from "./components/ReportSection";
+import MealsForm from "./components/form/MealsForm";
+import generateReportData from "./functions/generateReportData";
 
 function App() {
 	const [showTable, setShowTable] = useState(false);

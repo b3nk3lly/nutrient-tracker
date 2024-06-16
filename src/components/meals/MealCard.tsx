@@ -5,8 +5,8 @@ import SearchBar from "../search/SearchBar";
 import FoodItem from "./FoodItem";
 import Meal from "../../types/meal";
 import Serving from "../../types/serving";
-import { useMealsContext } from "../../_store/MealsContextProvider";
-import fetchServings from "../../cnf/fetchServings";
+import { useMealsContext } from "../../store/MealsContextProvider";
+import fetchServings from "../../functions/fetchServings";
 
 interface MealCardProps {
 	meal: Meal;

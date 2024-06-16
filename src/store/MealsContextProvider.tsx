@@ -2,9 +2,9 @@
 
 import { Context, Dispatch, createContext, useContext, useReducer } from "react";
 import Meal from "../types/meal";
-import createNewMeal from "../_functions/createNewMeal";
-import mealsReducer, { MealsAction } from "../_reducers/mealsReducer";
-import nutrientsReducer, { NutrientsAction } from "../_reducers/nutrientsReducer";
+import createNewMeal from "../functions/createNewMeal";
+import mealsReducer, { MealsAction } from "../reducers/mealsReducer";
+import nutrientsReducer, { NutrientsAction } from "../reducers/nutrientsReducer";
 
 interface IMealsContext {
 	meals: Meal[];

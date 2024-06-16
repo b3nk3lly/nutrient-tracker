@@ -7,9 +7,9 @@ import Nutrient from "../types/nutrient";
 import IconButton from "./IconButton";
 import DeselectAllIcon from "./icons/DeselectAllIcon";
 import SelectAllIcon from "./icons/SelectAllIcon";
-import { useMealsContext } from "../_store/MealsContextProvider";
-import fetchNutrients from "../cnf/fetchNutrients";
-import ftechNutrientGroups from "../cnf/fetchNutrientGroups";
+import { useMealsContext } from "../store/MealsContextProvider";
+import fetchNutrients from "../functions/fetchNutrients";
+import ftechNutrientGroups from "../functions/fetchNutrientGroups";
 
 interface NutrientsSectionProps {
 	onChangePage: (event: React.MouseEvent<HTMLButtonElement>) => void;
