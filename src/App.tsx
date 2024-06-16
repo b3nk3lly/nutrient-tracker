@@ -18,7 +18,7 @@ function App() {
 	};
 
 	return (
-		<>
+		<div className="h-screen flex flex-col">
 			<header className="text-center text-2xl border-b-2 border-base-200 p-2">
 				<h1 className="drop-shadow">
 					<span className="text-secondary">Nutrient</span>
@@ -34,7 +34,7 @@ function App() {
 					)}
 				</MealsContextProvider>
 			</main>
-		</>
+		</div>
 	);
 }
 
