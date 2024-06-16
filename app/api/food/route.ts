@@ -81,11 +81,11 @@ async function initFoodData() {
 }
 
 export async function GET(request: NextRequest) {
+	let query = request.nextUrl.searchParams.get("query");
+
 	if (!initialized) {
 		await initFoodData();
 	}
-
-	let query = request.nextUrl.searchParams.get("query");
 
 	// check if any query was provided
 	if (!query) {

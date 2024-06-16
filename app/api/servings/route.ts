@@ -1,7 +1,5 @@
-// /api/food/[id]/servings
-
 import { NextRequest, NextResponse } from "next/server";
-import Serving from "../../../../types/serving";
+import Serving from "../../types/serving";
 
 const quantityRegex = new RegExp(/^\d+(\/\d+)?/); // finds a whole number or a fraction denoted with '/'
 const gramsServingRegex = new RegExp(/\d+g/); // finds a whole-number gram measurement (e.g., 90g)
@@ -102,9 +100,10 @@ const formatServings = (servings: CNFServing[]) => {
 };
 
 export async function GET(request: NextRequest) {
-	const foodId = request.url.split("/").slice(-2, -1);
+	let foodCode = request.nextUrl.searchParams.get("foodCode");
+
 	const cnfResponse = await fetch(
-		`https://food-nutrition.canada.ca/api/canadian-nutrient-file/servingsize?id=${foodId}`
+		`https://food-nutrition.canada.ca/api/canadian-nutrient-file/servingsize?id=${foodCode}`
 	);
 	const servings: CNFServing[] = await cnfResponse.json();
 

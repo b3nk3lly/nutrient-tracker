@@ -19,7 +19,7 @@ const MealCard = ({ meal }: MealCardProps) => {
 
 	const handleAddFood = async (food: Food) => {
 		// fetch serving sizes for food
-		const response = await fetch(`/api/food/${food.code}/servings`);
+		const response = await fetch(`/api/food/servings?foodCode=${food.code}`);
 		const servings: Serving[] = await response.json();
 
 		// add IDs to servings
