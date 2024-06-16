@@ -6,8 +6,8 @@ interface SideContentMenuProps {
 
 export default function SideContentMenu({ children }: SideContentMenuProps) {
 	return (
-		<div className="grow overflow-y-auto w-full">
-			<ul className="menu space-y-2 flex-col overflow-auto">{children}</ul>
+		<div className="grow w-full overflow-x-hidden overflow-y-auto">
+			<ul className="menu space-y-2 flex-col">{children}</ul>
 		</div>
 	);
 }

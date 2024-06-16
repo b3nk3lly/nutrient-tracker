@@ -4,7 +4,6 @@ import Food from "../../types/food";
 import SearchBar from "../search/SearchBar";
 import FoodItem from "./FoodItem";
 import Meal from "../../types/meal";
-import Serving from "../../types/serving";
 import { useMealsContext } from "../../store/MealsContextProvider";
 import fetchServings from "../../functions/fetchServings";
 
@@ -43,23 +42,25 @@ const MealCard = ({ meal }: MealCardProps) => {
 	};
 
 	return (
-		<section className="animate-fadeIn">
+		<>
 			<div className="m-4">
 				<SearchBar onSelect={(food: Food) => handleAddFood(food)} />
 			</div>
 
-			{meal.foods.length === 0 ? (
-				<p className="m-4 text-center text-neutral">
-					Search for food to add it to this meal.
-				</p>
-			) : (
-				<ul className="space-y-1 divide-y divide-base-200">
-					{meal.foods.map((food) => (
-						<FoodItem key={food.id} mealId={meal.id} food={food} />
-					))}
-				</ul>
-			)}
-		</section>
+			<div className="grow overflow-x-hidden overflow-y-auto">
+				{meal.foods.length === 0 ? (
+					<p className="m-4 text-center text-neutral">
+						Search for food to add it to this meal.
+					</p>
+				) : (
+					<ul className="space-y-1 divide-y divide-base-200">
+						{meal.foods.map((food) => (
+							<FoodItem key={food.id} mealId={meal.id} food={food} />
+						))}
+					</ul>
+				)}
+			</div>
+		</>
 	);
 };
 

@@ -1,5 +1,4 @@
 import MainContentHeader from "./MainContentHeader";
-import MainContentBody from "./MainContentBody";
 
 interface MainContentProps {
 	children: React.ReactNode;

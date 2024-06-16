@@ -164,7 +164,7 @@ export default function NutrientsSection({ onChangePage }: Readonly<NutrientsSec
 						</button>
 					</div>
 				)}
-				<div className="grid grid-cols-3 gap-3 divide-y divide-base-200">
+				<div className="grid grid-cols-3 gap-3 divide-y divide-base-200 grow overflow-x-hidden overflow-y-auto">
 					{displayedNutrients.map((nutrient) => (
 						<label key={nutrient.id} className="cursor-pointer label p-4">
 							<div className="label-text">
