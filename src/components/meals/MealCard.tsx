@@ -1,7 +1,7 @@
 "use client";
 
 import Food from "../../types/food";
-import SearchBar from "../search/SearchBar";
+import SearchBar from "./SearchBar";
 import FoodItem from "./FoodItem";
 import Meal from "../../types/meal";
 import { useMealsContext } from "../../store/MealsContextProvider";

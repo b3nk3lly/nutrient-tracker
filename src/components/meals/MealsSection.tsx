@@ -1,15 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import MealCard from "./meals/MealCard";
-import SideContent from "./layout/SideContent/SideContent";
-import MainContent from "./layout/MainContent/MainContent";
-import createNewMeal from "../functions/createNewMeal";
-import MealName from "./meals/MealName";
-import IconButton from "./IconButton";
-import DeleteIcon from "./icons/DeleteIcon";
-import { useMealsContext } from "../store/MealsContextProvider";
-import Button from "./Button";
+import MealCard from "./MealCard";
+import SideContent from "../layout/SideContent/SideContent";
+import MainContent from "../layout/MainContent/MainContent";
+import createNewMeal from "../../functions/createNewMeal";
+import MealName from "./MealName";
+import IconButton from "../IconButton";
+import DeleteIcon from "../icons/DeleteIcon";
+import { useMealsContext } from "../../store/MealsContextProvider";
+import Button from "../Button";
 
 interface MealsSectionProps {
 	navigationButtons?: React.ReactNode[];

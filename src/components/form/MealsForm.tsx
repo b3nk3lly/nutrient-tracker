@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useMealsContext } from "../../store/MealsContextProvider";
 import Meal from "../../types/meal";
-import MealsSection from "../MealsSection";
+import MealsSection from "../meals/MealsSection";
 import NutrientsSection from "../NutrientsSection";
 import Button from "../Button";
 

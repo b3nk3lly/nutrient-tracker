@@ -2,7 +2,7 @@ import { useState } from "react";
 import ReportData from "./types/reportData";
 import Meal from "./types/meal";
 import MealsContextProvider from "./store/MealsContextProvider";
-import ReportSection from "./components/ReportSection";
+import ReportSection from "./components/report/ReportSection";
 import MealsForm from "./components/form/MealsForm";
 import generateReportData from "./functions/generateReportData";
 import Button from "./components/Button";

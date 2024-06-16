@@ -60,11 +60,11 @@ function formatNutrientAmount(food: Food, nutrient: Nutrient, data: ReportData) 
 	);
 }
 
-interface MealTableProps {
+interface TableProps {
 	data: ReportData;
 }
 
-export default function MealTable({ data }: Readonly<MealTableProps>) {
+export default function Table({ data }: Readonly<TableProps>) {
 	const { meals, selectedNutrientIds } = useMealsContext();
 	const [nutrients, setNutrients] = useState<Nutrient[]>([]);
 

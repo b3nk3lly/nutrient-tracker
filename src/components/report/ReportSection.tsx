@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import ReportData from "../types/reportData";
-import MainContent from "./layout/MainContent/MainContent";
-import SideContent from "./layout/SideContent/SideContent";
-import MealTable from "./report/MealTable";
+import ReportData from "../../types/reportData";
+import MainContent from "../layout/MainContent/MainContent";
+import SideContent from "../layout/SideContent/SideContent";
+import MealTable from "./Table";
 
 interface ReportSectionProps {
 	data: ReportData;
