@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import MealCard from "./meals/MealCard";
-import SideContentMenuOption from "./layout/SideContentMenuOption";
-import SideContent from "./layout/SideContent";
+import SideContent from "./layout/SideContent/SideContent";
 import MainContent from "./layout/MainContent";
 import createNewMeal from "../functions/createNewMeal";
 import MealName from "./meals/MealName";
@@ -80,38 +79,35 @@ export default function MealsSection({ onChangePage }: Readonly<MealsSectionProp
 	return (
 		<>
 			<SideContent title="Meals">
-				<div className="overflow-y-auto w-full">
-					<ul className="menu space-y-2 flex-col overflow-auto">
-						{meals.map((meal) => (
-							<SideContentMenuOption
-								key={meal.id}
-								label={meal.name}
-								selected={meal.id === selectedMealId}
-								onClick={(e) => handleSelectMeal(e, meal.id)}
-								actionButtons={[
-									meals.length > 1 && (
-										<IconButton
-											key={`${meal.id}-delete`}
-											tooltip="Remove Meal"
-											onClick={(e) => handleDeleteMeal(e, meal.id)}
-										>
-											<DeleteIcon />
-										</IconButton>
-									)
-								]}
-							/>
-						))}
-					</ul>
-				</div>
-
-				<div className="w-full flex justify-evenly self-end">
+				<SideContent.Menu>
+					{meals.map((meal) => (
+						<SideContent.MenuOption
+							key={meal.id}
+							label={meal.name}
+							selected={meal.id === selectedMealId}
+							onClick={(e) => handleSelectMeal(e, meal.id)}
+							actionButtons={[
+								meals.length > 1 && (
+									<IconButton
+										key={`${meal.id}-delete`}
+										tooltip="Remove Meal"
+										onClick={(e) => handleDeleteMeal(e, meal.id)}
+									>
+										<DeleteIcon />
+									</IconButton>
+								)
+							]}
+						/>
+					))}
+				</SideContent.Menu>
+				<SideContent.Footer>
 					<button className="btn btn-sm btn-neutral" onClick={handleAddMeal}>
 						+ Add Meal
 					</button>
 					<button className="btn btn-sm btn-neutral" onClick={onChangePage}>
 						Nutrients &gt;
 					</button>
-				</div>
+				</SideContent.Footer>
 			</SideContent>
 			<MainContent
 				headerContent={

@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import SideContent from "./layout/SideContent";
+import SideContent from "./layout/SideContent/SideContent";
 import MainContent from "./layout/MainContent";
 import NutrientGroup from "../types/nutrientGroup";
-import SideContentMenuOption from "./layout/SideContentMenuOption";
 import Nutrient from "../types/nutrient";
 import IconButton from "./IconButton";
 import DeselectAllIcon from "./icons/DeselectAllIcon";
@@ -100,9 +99,9 @@ export default function NutrientsSection({ onChangePage }: Readonly<NutrientsSec
 	return (
 		<>
 			<SideContent title="Nutrients">
-				<ul className="menu space-y-2 w-full">
+				<SideContent.Menu>
 					{nutrientGroups.map((group) => (
-						<SideContentMenuOption
+						<SideContent.MenuOption
 							key={group.id}
 							label={
 								<p>
@@ -133,15 +132,15 @@ export default function NutrientsSection({ onChangePage }: Readonly<NutrientsSec
 							]}
 						/>
 					))}
-				</ul>
-				<div className="w-full flex justify-evenly">
+				</SideContent.Menu>
+				<SideContent.Footer>
 					<button className="btn btn-sm btn-neutral" onClick={onChangePage}>
 						&lt; Meals
 					</button>
 					<button className="btn btn-sm btn-neutral" type="submit">
 						Generate Report
 					</button>
-				</div>
+				</SideContent.Footer>
 			</SideContent>
 			<MainContent
 				headerContent={

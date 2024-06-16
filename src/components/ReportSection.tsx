@@ -2,7 +2,7 @@
 
 import ReportData from "../types/reportData";
 import MainContent from "./layout/MainContent";
-import SideContent from "./layout/SideContent";
+import SideContent from "./layout/SideContent/SideContent";
 import MealTable from "./report/MealTable";
 
 interface ReportSectionProps {
