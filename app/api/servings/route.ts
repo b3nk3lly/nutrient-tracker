@@ -99,6 +99,8 @@ const formatServings = (servings: CNFServing[]) => {
 	);
 };
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
 	let foodCode = request.nextUrl.searchParams.get("foodCode");
 

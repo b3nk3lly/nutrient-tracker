@@ -80,6 +80,8 @@ async function initFoodData() {
 	initialized = true;
 }
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
 	let query = request.nextUrl.searchParams.get("query");
 
