@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import SideContent from "./layout/SideContent/SideContent";
-import MainContent from "./layout/MainContent";
+import MainContent from "./layout/MainContent/MainContent";
 import NutrientGroup from "../types/nutrientGroup";
 import Nutrient from "../types/nutrient";
 import IconButton from "./IconButton";
@@ -142,13 +142,12 @@ export default function NutrientsSection({ onChangePage }: Readonly<NutrientsSec
 					</button>
 				</SideContent.Footer>
 			</SideContent>
-			<MainContent
-				headerContent={
+			<MainContent>
+				<MainContent.Header>
 					<h2 className="text-xl text-neutral font-bold p-1">
 						{selectedNutrientGroup?.name}
 					</h2>
-				}
-			>
+				</MainContent.Header>
 				{selectedNutrientGroupId && (
 					<div className="flex p-4 justify-evenly">
 						<button

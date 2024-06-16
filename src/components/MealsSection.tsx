@@ -3,7 +3,7 @@
 import { useState } from "react";
 import MealCard from "./meals/MealCard";
 import SideContent from "./layout/SideContent/SideContent";
-import MainContent from "./layout/MainContent";
+import MainContent from "./layout/MainContent/MainContent";
 import createNewMeal from "../functions/createNewMeal";
 import MealName from "./meals/MealName";
 import IconButton from "./IconButton";
@@ -109,25 +109,22 @@ export default function MealsSection({ onChangePage }: Readonly<MealsSectionProp
 					</button>
 				</SideContent.Footer>
 			</SideContent>
-			<MainContent
-				headerContent={
-					<>
-						<MealName
-							key={`${selectedMeal.id}-name`}
-							name={selectedMeal.name}
-							onChange={(newName) => handleChangeMealName(selectedMeal.id, newName)}
-						/>
-						<IconButton
-							key={`${selectedMeal.id}-delete`}
-							tooltip="Remove Meal"
-							onClick={(e) => handleDeleteMeal(e, selectedMeal.id)}
-							disabled={meals.length === 1}
-						>
-							<DeleteIcon />
-						</IconButton>
-					</>
-				}
-			>
+			<MainContent>
+				<MainContent.Header>
+					<MealName
+						key={`${selectedMeal.id}-name`}
+						name={selectedMeal.name}
+						onChange={(newName) => handleChangeMealName(selectedMeal.id, newName)}
+					/>
+					<IconButton
+						key={`${selectedMeal.id}-delete`}
+						tooltip="Remove Meal"
+						onClick={(e) => handleDeleteMeal(e, selectedMeal.id)}
+						disabled={meals.length === 1}
+					>
+						<DeleteIcon />
+					</IconButton>
+				</MainContent.Header>
 				<MealCard meal={selectedMeal} />
 			</MainContent>
 		</>

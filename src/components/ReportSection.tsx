@@ -1,7 +1,7 @@
 "use client";
 
 import ReportData from "../types/reportData";
-import MainContent from "./layout/MainContent";
+import MainContent from "./layout/MainContent/MainContent";
 import SideContent from "./layout/SideContent/SideContent";
 import MealTable from "./report/MealTable";
 
