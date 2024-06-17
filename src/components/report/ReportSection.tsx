@@ -36,12 +36,14 @@ export default function ReportSection({ data, navigationButtons }: ReportSection
 
 	return (
 		<>
-			<SideContent title="Report" width="w-0 sm:w-1/5">
+			<SideContent title="Report" width="w-0 sm:w-1/4">
 				{navigationButtons && <SideContent.Footer>{navigationButtons}</SideContent.Footer>}
 				<Button onClick={() => handleExportToCsv()}>Export to CSV</Button>
 			</SideContent>
 			<MainContent>
-				<Table id={tableId} data={data} />
+				<div className="overflow-auto">
+					<Table id={tableId} data={data} />
+				</div>
 			</MainContent>
 		</>
 	);

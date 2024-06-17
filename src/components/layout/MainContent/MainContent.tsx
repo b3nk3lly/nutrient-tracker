@@ -6,7 +6,7 @@ interface MainContentProps {
 
 function MainContent({ children }: Readonly<MainContentProps>) {
 	return (
-		<section className="w-full sm:w-2/3 p-4 flex flex-col overflow-hidden">{children}</section>
+		<section className="w-full sm:grow p-4 flex flex-col overflow-hidden">{children}</section>
 	);
 }
 
