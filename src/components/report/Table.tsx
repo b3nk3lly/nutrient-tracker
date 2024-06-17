@@ -61,10 +61,11 @@ function formatNutrientAmount(food: Food, nutrient: Nutrient, data: ReportData) 
 }
 
 interface TableProps {
+	id: string;
 	data: ReportData;
 }
 
-export default function Table({ data }: Readonly<TableProps>) {
+export default function Table({ id, data }: Readonly<TableProps>) {
 	const { meals, selectedNutrientIds } = useMealsContext();
 	const [nutrients, setNutrients] = useState<Nutrient[]>([]);
 
@@ -82,7 +83,7 @@ export default function Table({ data }: Readonly<TableProps>) {
 	];
 
 	return (
-		<table className="table table-pin-rows text-neutral">
+		<table id={id} className="table table-pin-rows text-neutral">
 			<thead>
 				<tr>
 					{headers.map((header) => (
