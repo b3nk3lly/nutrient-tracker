@@ -79,7 +79,7 @@ export default function MealsSection({ navigationButtons }: Readonly<MealsSectio
 
 	return (
 		<>
-			<SideContent title="Meals" width="w-0 sm:w-1/3">
+			<SideContent title="Meals" width="w-0 md:w-1/3">
 				<SideContent.Menu>
 					{meals.map((meal) => (
 						<SideContent.MenuOption
@@ -101,10 +101,6 @@ export default function MealsSection({ navigationButtons }: Readonly<MealsSectio
 						/>
 					))}
 				</SideContent.Menu>
-				<SideContent.Footer>
-					<Button onClick={handleAddMeal}>+ Add Meal</Button>
-					{navigationButtons}
-				</SideContent.Footer>
 			</SideContent>
 			<MainContent>
 				<MainContent.Header>
@@ -123,6 +119,10 @@ export default function MealsSection({ navigationButtons }: Readonly<MealsSectio
 					</IconButton>
 				</MainContent.Header>
 				<MealCard meal={selectedMeal} />
+				<div className="flex justify-between">
+					<Button onClick={handleAddMeal}>+ Add Meal</Button>
+					{navigationButtons}
+				</div>
 			</MainContent>
 		</>
 	);

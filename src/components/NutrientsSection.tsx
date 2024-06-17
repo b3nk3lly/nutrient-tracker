@@ -99,7 +99,7 @@ export default function NutrientsSection({ navigationButtons }: Readonly<Nutrien
 
 	return (
 		<>
-			<SideContent title="Nutrients" width="w-0 sm:w-1/3">
+			<SideContent title="Nutrients" width="w-0 md:w-1/3">
 				<SideContent.Menu>
 					{nutrientGroups.map((group) => (
 						<SideContent.MenuOption
@@ -134,10 +134,6 @@ export default function NutrientsSection({ navigationButtons }: Readonly<Nutrien
 						/>
 					))}
 				</SideContent.Menu>
-				<SideContent.Footer>
-					{navigationButtons}
-					<Button type="submit">Generate Report</Button>
-				</SideContent.Footer>
 			</SideContent>
 			<MainContent>
 				<MainContent.Header>
@@ -145,19 +141,7 @@ export default function NutrientsSection({ navigationButtons }: Readonly<Nutrien
 						{selectedNutrientGroup?.name}
 					</h2>
 				</MainContent.Header>
-				{selectedNutrientGroupId && (
-					<div className="flex p-4 justify-evenly">
-						<Button onClick={(e) => handleSelectAllInGroup(e, selectedNutrientGroupId)}>
-							Select All
-						</Button>
-						<Button
-							onClick={(e) => handleDeselectAllInGroup(e, selectedNutrientGroupId)}
-						>
-							Deselect All
-						</Button>
-					</div>
-				)}
-				<div className="grid grid-cols-3 gap-3 divide-y divide-base-200 grow overflow-x-hidden overflow-y-auto">
+				<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 divide-y divide-base-200 grow overflow-x-hidden overflow-y-auto">
 					{displayedNutrients.map((nutrient) => (
 						<label key={nutrient.id} className="cursor-pointer label p-4">
 							<div className="label-text">
@@ -173,6 +157,26 @@ export default function NutrientsSection({ navigationButtons }: Readonly<Nutrien
 							/>
 						</label>
 					))}
+				</div>
+				<div className="flex justify-between p-[4px]">
+					{navigationButtons}
+					{selectedNutrientGroupId && (
+						<>
+							<Button
+								onClick={(e) => handleSelectAllInGroup(e, selectedNutrientGroupId)}
+							>
+								Select All
+							</Button>
+							<Button
+								onClick={(e) =>
+									handleDeselectAllInGroup(e, selectedNutrientGroupId)
+								}
+							>
+								Deselect All
+							</Button>
+						</>
+					)}
+					<Button type="submit">Generate Report</Button>
 				</div>
 			</MainContent>
 		</>

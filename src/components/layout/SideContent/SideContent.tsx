@@ -1,6 +1,5 @@
 import SideContentMenu from "./SideContentMenu";
 import SideContentMenuOption from "./SideContentMenuOption";
-import SideContentFooter from "./SideContentFooter";
 
 interface SideContentProps {
 	title: string;
@@ -21,6 +20,5 @@ function SideContent({ title, width, children }: Readonly<SideContentProps>) {
 
 SideContent.Menu = SideContentMenu;
 SideContent.MenuOption = SideContentMenuOption;
-SideContent.Footer = SideContentFooter;
 
 export default SideContent;
