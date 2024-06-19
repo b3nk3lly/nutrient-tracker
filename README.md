@@ -1,46 +1,59 @@
-# Getting Started with Create React App
+# NutrientTracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This web app is designed to help users track the nutritional content of their meals. Enter the food and quantities of your meals, select nutrients to track, and then generate a report of the nutrients contained in each meal.
 
-## Available Scripts
+Data used in this app (food options, serving sizes, nutrient options, and nutritional values) all come from Health Canada's **Canadian Nutrient File (CNF)**, which you can access here: [Canadian Nutrient File](https://food-nutrition.canada.ca/cnf-fce/). 
 
-In the project directory, you can run:
+## Running the app
 
-### `npm start`
+### Requirements
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+To run NutrientTracker, you'll need:
+- [Node.js](https://nodejs.org/) (v22 or higher)
+- [npm](https://www.npmjs.com/) (v10 or higher)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Installation
 
-### `npm test`
+**1. Clone the repository:**
+   
+```sh
+git clone https://github.com/b3nk3lly/nutrient-tracker.git
+cd nutrient-tracker
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**2. Install dependencies:**
 
-### `npm run build`
+```sh
+npm install
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**3. Run the application:**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```sh
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Usage
 
-### `npm run eject`
+**1. Enter food:**
+- Create one or more meals and give them each a name.
+- Use the search bar to add food to each meal.
+- Enter the quantity of each food, along with the unit of quantity (grams, millilitres, etc.)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+**2. Select nutrients:**
+- Select the nutrients you want to include in your report.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**3. Generate report:**
+- Click the "Generate Report" button to view the nutritional breakdown of your meals. You can export the report to a CSV file as well.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## License
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+This project is licensed under the GNU General Public License v3.0. See [LICENSE](LICENSE) for details.
 
-## Learn More
+## Acknowledgements
+- Thanks to Health Canada for making and maintaining the Canadian Nutrient File and its public API.
+- Thanks to my girlfriend Rylee for showing me her nutrition class assignments, which inspired me to make this, and for all the feedback along the way :)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Contact
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+For any questions or feedback, please feel free to reach out to me at [benjkelly98@gmail.com](mailto:benjkelly98@gmail.com?subject=[GitHub]%20NutrientTracker).
