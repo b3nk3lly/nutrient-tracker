@@ -25,11 +25,15 @@ export default function MealsForm({ onSubmit }: Readonly<MealsFormProps>) {
 		onSubmit(meals, Array.from(selectedNutrientIds));
 	};
 
+	const mealsAreEmpty = !meals.some((meal) => meal.foods.length > 0);
+
 	const pages = [
 		<MealsSection
 			key="meals"
 			navigationButtons={[
-				<Button onClick={(e) => handleChangePage(e, 1)}>Nutrients &gt;</Button>
+				<Button onClick={(e) => handleChangePage(e, 1)} disabled={mealsAreEmpty}>
+					Nutrients &gt;
+				</Button>
 			]}
 		/>,
 		<NutrientsSection

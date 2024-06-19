@@ -176,7 +176,9 @@ export default function NutrientsSection({ navigationButtons }: Readonly<Nutrien
 							</Button>
 						</>
 					)}
-					<Button type="submit">Generate Report</Button>
+					<Button type="submit" disabled={selectedNutrientIds.size === 0}>
+						Generate Report
+					</Button>
 				</div>
 			</MainContent>
 		</>
