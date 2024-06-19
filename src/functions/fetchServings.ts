@@ -5,6 +5,8 @@ const gramsServingRegex = new RegExp(/\d+g/); // finds a whole-number gram measu
 
 const namesToIgnore = ["no serving sizes specified", "no serving specified"];
 
+let nextServingId = 0; // incremented to assign serving IDs
+
 /**
  * The structure of the response from Canadian Nutrient File
  */
@@ -94,7 +96,7 @@ const formatServings = (servings: CNFServing[]): Serving[] => {
 			.map((serving) => ({
 				name: serving.measure_name,
 				conversionFactor: serving.conversion_factor_value,
-				id: 0
+				id: nextServingId++
 			}))
 	);
 };

@@ -4,7 +4,7 @@ import { useState } from "react";
 import MealCard from "./MealCard";
 import SideContent from "../layout/SideContent/SideContent";
 import MainContent from "../layout/MainContent/MainContent";
-import createNewMeal from "../../functions/createNewMeal";
+import mealGenerator from "../../functions/mealGenerator";
 import MealName from "./MealName";
 import IconButton from "../IconButton";
 import DeleteIcon from "../icons/DeleteIcon";
@@ -24,7 +24,7 @@ export default function MealsSection({ navigationButtons }: Readonly<MealsSectio
 	const handleAddMeal = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 
-		const newMeal = createNewMeal();
+		const newMeal = mealGenerator.next().value;
 		mealsDispatch({ type: "CREATE_MEAL", meal: newMeal });
 		setSelectedMealId(newMeal.id);
 	};

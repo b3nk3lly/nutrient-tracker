@@ -11,8 +11,7 @@ interface MealCardProps {
 	meal: Meal;
 }
 
-let foodCount = 0; // incremented to assign food IDs
-let servingCount = 0; // incremented to assign serving IDs
+let nextFoodId = 0; // incremented to assign food IDs
 
 const MealCard = ({ meal }: MealCardProps) => {
 	const { mealsDispatch } = useMealsContext();
@@ -21,12 +20,9 @@ const MealCard = ({ meal }: MealCardProps) => {
 		// fetch serving sizes for food
 		const servings = await fetchServings(food.code);
 
-		// add IDs to servings
-		servings.forEach((serving) => (serving.id = servingCount++));
-
 		const newFood: Food = {
 			...food,
-			id: foodCount++,
+			id: nextFoodId++,
 			quantity: 0,
 			servings: servings,
 			selectedServingId: servings[0].id

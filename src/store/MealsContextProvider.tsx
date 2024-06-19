@@ -2,7 +2,7 @@
 
 import { Context, Dispatch, createContext, useContext, useReducer } from "react";
 import Meal from "../types/meal";
-import createNewMeal from "../functions/createNewMeal";
+import mealGenerator from "../functions/mealGenerator";
 import mealsReducer, { MealsAction } from "../reducers/mealsReducer";
 import nutrientsReducer, { NutrientsAction } from "../reducers/nutrientsReducer";
 
@@ -25,7 +25,7 @@ export const MealsContext: Context<IMealsContext> = createContext<IMealsContext>
 });
 
 export default function MealsContextProvider({ children }: Readonly<MealsContextProviderProps>) {
-	const [meals, mealsDispatch] = useReducer(mealsReducer, [createNewMeal()]);
+	const [meals, mealsDispatch] = useReducer(mealsReducer, [mealGenerator.next().value]);
 	const [selectedNutrientIds, nutrientsDispatch] = useReducer(
 		nutrientsReducer,
 		new Set<number>()
