@@ -6,7 +6,7 @@ interface Identifiable {
 }
 
 interface SidebarOptionProps<T> {
-	label: (item: T) => string;
+	label: (item: T) => React.ReactNode;
 	actionButtons: (item: T) => JSX.Element[] | undefined;
 }
 

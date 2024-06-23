@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import SideContent from "./layout/SideContent/SideContent";
 import MainContent from "./layout/MainContent/MainContent";
 import NutrientGroup from "../types/nutrientGroup";
 import Nutrient from "../types/nutrient";
@@ -10,43 +9,26 @@ import { useMealsContext } from "../store/MealsContextProvider";
 import fetchNutrients from "../functions/fetchNutrients";
 import ftechNutrientGroups from "../functions/fetchNutrientGroups";
 import Button from "./Button";
+import Section from "./layout/Section";
 
 interface NutrientsSectionProps {
-	navigationButtons?: React.ReactNode[];
+	navigationButtons: React.ReactNode[];
 }
 
 export default function NutrientsSection({ navigationButtons }: Readonly<NutrientsSectionProps>) {
 	const { selectedNutrientIds, nutrientsDispatch } = useMealsContext();
 	const [nutrientGroups, setNutrientGroups] = useState<NutrientGroup[]>([]);
 	const [nutrients, setNutrients] = useState<Nutrient[]>([]);
-	const [selectedNutrientGroupId, setSelectedNutrientGroupId] = useState<number | undefined>();
-
-	const selectedNutrientGroup = nutrientGroups.find(
-		(group) => group.id === selectedNutrientGroupId
-	);
-
-	const displayedNutrients = nutrients.filter(
-		(nutrient) => nutrient.groupId === selectedNutrientGroupId
-	);
 
 	useEffect(() => {
 		ftechNutrientGroups().then((groups) => {
 			setNutrientGroups(groups);
-			setSelectedNutrientGroupId(groups[0].id);
 		});
 
 		fetchNutrients().then((nutrients) => {
 			setNutrients(nutrients);
 		});
 	}, []);
-
-	const handleSelectNutrientGroup = (
-		event: React.MouseEvent<HTMLButtonElement>,
-		newNutrientGroupId: number
-	) => {
-		event.preventDefault();
-		setSelectedNutrientGroupId(newNutrientGroupId);
-	};
 
 	const handleSelectNutrient = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const nutrientId = Number(event.target.value);
@@ -86,63 +68,50 @@ export default function NutrientsSection({ navigationButtons }: Readonly<Nutrien
 		});
 	};
 
-	const countSelectedNutrientsInGroup = (nutrientGroupId: number) => {
-		return nutrients.filter(
-			(nutrient) =>
-				nutrient.groupId === nutrientGroupId && selectedNutrientIds.has(nutrient.id)
-		).length;
+	const renderNutrientGroupLabel = (group: NutrientGroup) => {
+		const nutrientsInGroup = nutrients.filter((nutrient) => nutrient.groupId === group.id);
+		const selectedNutrientsInGroup = nutrientsInGroup.filter((nutrient) =>
+			selectedNutrientIds.has(nutrient.id)
+		);
+
+		return (
+			<p>
+				{group.name}&nbsp;
+				<span className="font-light opacity-60">
+					{`${selectedNutrientsInGroup.length}/${nutrientsInGroup.length}`}
+				</span>
+			</p>
+		);
 	};
 
-	const countNutrientsInGroup = (nutrientGroupId: number) => {
-		return nutrients.filter((nutrient) => nutrient.groupId === nutrientGroupId).length;
-	};
+	const renderSidebarActionButtons = (group: NutrientGroup) => [
+		<IconButton
+			key={`${group.id}-deselect-all`}
+			tooltip="Deselect All"
+			onClick={(e) => handleDeselectAllInGroup(e, group.id)}
+		>
+			<DeselectAllIcon />
+		</IconButton>,
+		<IconButton
+			key={`${group.id}-select-all`}
+			tooltip="Select All"
+			onClick={(e) => handleSelectAllInGroup(e, group.id)}
+		>
+			<SelectAllIcon />
+		</IconButton>
+	];
 
-	return (
+	const renderNutrientGroupDetails = (group: NutrientGroup) => (
 		<>
-			<SideContent title="Nutrients" width="w-0 md:w-1/3">
-				<SideContent.Menu>
-					{nutrientGroups.map((group) => (
-						<SideContent.MenuOption
-							key={group.id}
-							label={
-								<p>
-									{group.name}&nbsp;
-									<span className="font-light opacity-60">
-										{countSelectedNutrientsInGroup(group.id)}/
-										{countNutrientsInGroup(group.id)}
-									</span>
-								</p>
-							}
-							selected={group.id === selectedNutrientGroupId}
-							onClick={(e) => handleSelectNutrientGroup(e, group.id)}
-							actionButtons={[
-								<IconButton
-									key={`${group.id}-deselect-all`}
-									tooltip="Deselect All"
-									onClick={(e) => handleDeselectAllInGroup(e, group.id)}
-								>
-									<DeselectAllIcon />
-								</IconButton>,
-								<IconButton
-									key={`${group.id}-select-all`}
-									tooltip="Select All"
-									onClick={(e) => handleSelectAllInGroup(e, group.id)}
-								>
-									<SelectAllIcon />
-								</IconButton>
-							]}
-						/>
-					))}
-				</SideContent.Menu>
-			</SideContent>
-			<MainContent>
-				<MainContent.Header>
-					<h2 className="text-xl text-neutral font-bold p-1">
-						{selectedNutrientGroup?.name}
-					</h2>
-				</MainContent.Header>
-				<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 divide-y divide-base-200 grow overflow-x-hidden overflow-y-auto">
-					{displayedNutrients.map((nutrient) => (
+			<MainContent.Header>
+				<h2 className="text-xl text-neutral font-bold p-1">{group.name}</h2>
+				<Button onClick={(e) => handleSelectAllInGroup(e, group.id)}>Select All</Button>
+				<Button onClick={(e) => handleDeselectAllInGroup(e, group.id)}>Deselect All</Button>
+			</MainContent.Header>
+			<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 divide-y divide-base-200 grow overflow-x-hidden overflow-y-auto mx-4">
+				{nutrients
+					.filter((nutrient) => nutrient.groupId === group.id)
+					.map((nutrient) => (
 						<label key={nutrient.id} className="cursor-pointer label p-4">
 							<div className="label-text">
 								<p>{nutrient.webName}</p>
@@ -157,30 +126,27 @@ export default function NutrientsSection({ navigationButtons }: Readonly<Nutrien
 							/>
 						</label>
 					))}
-				</div>
-				<div className="flex justify-between p-[4px]">
-					{navigationButtons}
-					{selectedNutrientGroupId && (
-						<>
-							<Button
-								onClick={(e) => handleSelectAllInGroup(e, selectedNutrientGroupId)}
-							>
-								Select All
-							</Button>
-							<Button
-								onClick={(e) =>
-									handleDeselectAllInGroup(e, selectedNutrientGroupId)
-								}
-							>
-								Deselect All
-							</Button>
-						</>
-					)}
+			</div>
+		</>
+	);
+
+	return (
+		<>
+			<Section<NutrientGroup>
+				title="Nutrients"
+				items={nutrientGroups}
+				sidebarOptionProps={{
+					label: renderNutrientGroupLabel,
+					actionButtons: renderSidebarActionButtons
+				}}
+				renderItem={renderNutrientGroupDetails}
+				actionButtons={[
+					...navigationButtons,
 					<Button type="submit" disabled={selectedNutrientIds.size === 0}>
 						Generate Report
 					</Button>
-				</div>
-			</MainContent>
+				]}
+			/>
 		</>
 	);
 }
