@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import MealCard, { MealCardHandle } from "./MealCard";
 import SideContent from "../layout/SideContent/SideContent";
 import mealGenerator from "../../functions/mealGenerator";
@@ -36,6 +36,18 @@ export default function MealsSection({ navigationButtons }: Readonly<MealsSectio
 		mealsDispatch({ type: "DELETE_MEAL", mealId });
 	};
 
+	/**
+	 * Compute selected meal based on scroll position
+	 * @param event scroll event
+	 */
+	const handleScroll = (event: React.UIEvent) => {
+		const height = event.currentTarget.clientHeight;
+		const distanceFromTop = event.currentTarget.scrollTop;
+		const selectedMealIndex = Math.round(distanceFromTop / height);
+
+		setSelectedMealId(meals[selectedMealIndex].id);
+	};
+
 	const hasMultipleMeals = meals.length > 1;
 
 	return (
@@ -64,7 +76,10 @@ export default function MealsSection({ navigationButtons }: Readonly<MealsSectio
 				</SideContent.Menu>
 			</SideContent>
 			<div className="flex flex-col w-full p-4">
-				<div className="grow overflow-x-hidden overflow-y-auto snap-y snap-mandatory">
+				<div
+					className="grow overflow-x-hidden overflow-y-auto snap-y snap-mandatory"
+					onScroll={handleScroll}
+				>
 					{meals.map((meal) => (
 						<MealCard
 							key={meal.id}
