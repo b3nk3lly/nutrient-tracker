@@ -9,32 +9,16 @@ import fetchServings from "../../functions/fetchServings";
 import MealName from "./MealName";
 import IconButton from "../IconButton";
 import DeleteIcon from "../icons/DeleteIcon";
-import { forwardRef, useImperativeHandle, useRef } from "react";
 
 interface MealCardProps {
 	meal: Meal;
 	deletable: boolean;
 }
 
-export interface MealCardHandle {
-	scrollIntoView: () => void;
-}
-
 let nextFoodId = 0; // incremented to assign food IDs
 
-const MealCard = forwardRef<MealCardHandle, MealCardProps>(({ meal, deletable }, ref) => {
+const MealCard = ({ meal, deletable }: MealCardProps) => {
 	const { mealsDispatch } = useMealsContext();
-	const cardRef = useRef<HTMLDivElement>(null);
-
-	useImperativeHandle(
-		ref,
-		() => ({
-			scrollIntoView() {
-				cardRef.current?.scrollIntoView({ behavior: "smooth" });
-			}
-		}),
-		[]
-	);
 
 	const handleChangeMealName = (mealId: number, newName: string) => {
 		mealsDispatch({
@@ -70,7 +54,7 @@ const MealCard = forwardRef<MealCardHandle, MealCardProps>(({ meal, deletable },
 	};
 
 	return (
-		<div ref={cardRef} className="h-full flex flex-col overflow-hidden snap-start">
+		<>
 			<header className="flex justify-between border-b-2 border-base-200 pb-2">
 				<MealName
 					name={meal.name}
@@ -101,8 +85,8 @@ const MealCard = forwardRef<MealCardHandle, MealCardProps>(({ meal, deletable },
 					</ul>
 				)}
 			</div>
-		</div>
+		</>
 	);
-});
+};
 
 export default MealCard;
