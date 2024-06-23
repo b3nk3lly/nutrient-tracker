@@ -6,15 +6,47 @@ import FoodItem from "./FoodItem";
 import Meal from "../../types/meal";
 import { useMealsContext } from "../../store/MealsContextProvider";
 import fetchServings from "../../functions/fetchServings";
+import MealName from "./MealName";
+import IconButton from "../IconButton";
+import DeleteIcon from "../icons/DeleteIcon";
+import { forwardRef, useImperativeHandle, useRef } from "react";
 
 interface MealCardProps {
 	meal: Meal;
+	deletable: boolean;
+}
+
+export interface MealCardHandle {
+	scrollIntoView: () => void;
 }
 
 let nextFoodId = 0; // incremented to assign food IDs
 
-const MealCard = ({ meal }: MealCardProps) => {
+const MealCard = forwardRef<MealCardHandle, MealCardProps>(({ meal, deletable }, ref) => {
 	const { mealsDispatch } = useMealsContext();
+	const cardRef = useRef<HTMLDivElement>(null);
+
+	useImperativeHandle(
+		ref,
+		() => ({
+			scrollIntoView() {
+				cardRef.current?.scrollIntoView({ behavior: "smooth" });
+			}
+		}),
+		[]
+	);
+
+	const handleChangeMealName = (mealId: number, newName: string) => {
+		mealsDispatch({
+			type: "UPDATE_MEAL",
+			payload: { mealId: mealId, property: "name", value: newName }
+		});
+	};
+
+	const handleDeleteMeal = (event: React.MouseEvent<HTMLButtonElement>, mealId: number) => {
+		event.preventDefault();
+		mealsDispatch({ type: "DELETE_MEAL", mealId });
+	};
 
 	const handleAddFood = async (food: Food) => {
 		// fetch serving sizes for food
@@ -38,12 +70,25 @@ const MealCard = ({ meal }: MealCardProps) => {
 	};
 
 	return (
-		<>
+		<div ref={cardRef} className="h-full flex flex-col overflow-hidden snap-start">
+			<header className="flex justify-between border-b-2 border-base-200 pb-2">
+				<MealName
+					name={meal.name}
+					onChange={(newName) => handleChangeMealName(meal.id, newName)}
+				/>
+				<IconButton
+					tooltip="Remove Meal"
+					onClick={(e) => handleDeleteMeal(e, meal.id)}
+					disabled={!deletable}
+				>
+					<DeleteIcon />
+				</IconButton>
+			</header>
 			<div className="m-4">
 				<SearchBar onSelect={(food: Food) => handleAddFood(food)} />
 			</div>
 
-			<div className="grow overflow-x-hidden overflow-y-auto">
+			<div className="mx-4 grow overflow-x-hidden overflow-y-auto">
 				{meal.foods.length === 0 ? (
 					<p className="m-4 text-center text-neutral">
 						Search for food to add it to this meal.
@@ -56,8 +101,8 @@ const MealCard = ({ meal }: MealCardProps) => {
 					</ul>
 				)}
 			</div>
-		</>
+		</div>
 	);
-};
+});
 
 export default MealCard;
