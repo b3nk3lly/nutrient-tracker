@@ -45,11 +45,6 @@ export default function Section<T extends Identifiable>({
 		prevItemLengthRef.current = items.length;
 	}, [items, scrollToItem]);
 
-	const handleSelectItem = (event: React.MouseEvent<HTMLButtonElement>, item: T) => {
-		event.preventDefault();
-		scrollToItem(item);
-	};
-
 	/**
 	 * Compute selected item based on scroll position
 	 * @param event scroll event
@@ -70,7 +65,7 @@ export default function Section<T extends Identifiable>({
 						<SideContent.MenuOption
 							key={item.id}
 							selected={item.id === selectedItemId}
-							onClick={(e) => handleSelectItem(e, item)}
+							onClick={() => scrollToItem(item)}
 							label={sidebarOptionProps.label(item)}
 							actionButtons={sidebarOptionProps.actionButtons(item)}
 						/>

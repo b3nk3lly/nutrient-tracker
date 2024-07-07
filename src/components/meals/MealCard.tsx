@@ -27,8 +27,7 @@ const MealCard = ({ meal, deletable }: MealCardProps) => {
 		});
 	};
 
-	const handleDeleteMeal = (event: React.MouseEvent<HTMLButtonElement>, mealId: number) => {
-		event.preventDefault();
+	const handleDeleteMeal = (mealId: number) => {
 		mealsDispatch({ type: "DELETE_MEAL", mealId });
 	};
 
@@ -62,7 +61,7 @@ const MealCard = ({ meal, deletable }: MealCardProps) => {
 				/>
 				<IconButton
 					tooltip="Remove Meal"
-					onClick={(e) => handleDeleteMeal(e, meal.id)}
+					onClick={() => handleDeleteMeal(meal.id)}
 					disabled={!deletable}
 				>
 					<DeleteIcon />

@@ -40,12 +40,7 @@ export default function NutrientsSection({ navigationButtons }: Readonly<Nutrien
 		}
 	};
 
-	const handleSelectAllInGroup = (
-		event: React.MouseEvent<HTMLButtonElement>,
-		groupId: number
-	) => {
-		event.preventDefault();
-
+	const handleSelectAllInGroup = (groupId: number) => {
 		nutrientsDispatch({
 			type: "SELECT_MANY",
 			nutrientIds: nutrients
@@ -54,12 +49,7 @@ export default function NutrientsSection({ navigationButtons }: Readonly<Nutrien
 		});
 	};
 
-	const handleDeselectAllInGroup = (
-		event: React.MouseEvent<HTMLButtonElement>,
-		groupId: number
-	) => {
-		event.preventDefault();
-
+	const handleDeselectAllInGroup = (groupId: number) => {
 		nutrientsDispatch({
 			type: "DESELECT_MANY",
 			nutrientIds: nutrients
@@ -88,14 +78,14 @@ export default function NutrientsSection({ navigationButtons }: Readonly<Nutrien
 		<IconButton
 			key={`${group.id}-deselect-all`}
 			tooltip="Deselect All"
-			onClick={(e) => handleDeselectAllInGroup(e, group.id)}
+			onClick={() => handleDeselectAllInGroup(group.id)}
 		>
 			<DeselectAllIcon />
 		</IconButton>,
 		<IconButton
 			key={`${group.id}-select-all`}
 			tooltip="Select All"
-			onClick={(e) => handleSelectAllInGroup(e, group.id)}
+			onClick={() => handleSelectAllInGroup(group.id)}
 		>
 			<SelectAllIcon />
 		</IconButton>
@@ -105,8 +95,8 @@ export default function NutrientsSection({ navigationButtons }: Readonly<Nutrien
 		<>
 			<MainContent.Header>
 				<h2 className="text-xl text-neutral font-bold p-1">{group.name}</h2>
-				<Button onClick={(e) => handleSelectAllInGroup(e, group.id)}>Select All</Button>
-				<Button onClick={(e) => handleDeselectAllInGroup(e, group.id)}>Deselect All</Button>
+				<Button onClick={() => handleSelectAllInGroup(group.id)}>Select All</Button>
+				<Button onClick={() => handleDeselectAllInGroup(group.id)}>Deselect All</Button>
 			</MainContent.Header>
 			<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 divide-y divide-base-200 grow overflow-x-hidden overflow-y-auto mx-4">
 				{nutrients
@@ -139,12 +129,7 @@ export default function NutrientsSection({ navigationButtons }: Readonly<Nutrien
 				actionButtons: renderSidebarActionButtons
 			}}
 			renderItem={renderNutrientGroupDetails}
-			actionButtons={[
-				...navigationButtons,
-				<Button type="submit" disabled={selectedNutrientIds.size === 0}>
-					Generate Report
-				</Button>
-			]}
+			actionButtons={[...navigationButtons]}
 		/>
 	);
 }

@@ -15,13 +15,7 @@ export default function MealsForm({ onSubmit }: Readonly<MealsFormProps>) {
 	const { meals, selectedNutrientIds } = useMealsContext();
 	const [pageIndex, setPageIndex] = useState(0);
 
-	const handleChangePage = (event: React.MouseEvent<HTMLButtonElement>, newIndex: number) => {
-		event.preventDefault();
-		setPageIndex(newIndex);
-	};
-
-	const handleSubmit = (event: React.FormEvent) => {
-		event.preventDefault();
+	const handleSubmit = () => {
 		onSubmit(meals, Array.from(selectedNutrientIds));
 	};
 
@@ -31,7 +25,7 @@ export default function MealsForm({ onSubmit }: Readonly<MealsFormProps>) {
 		<MealsSection
 			key="meals"
 			navigationButtons={[
-				<Button onClick={(e) => handleChangePage(e, 1)} disabled={mealsAreEmpty}>
+				<Button onClick={() => setPageIndex(1)} disabled={mealsAreEmpty}>
 					Nutrients &gt;
 				</Button>
 			]}
@@ -39,14 +33,13 @@ export default function MealsForm({ onSubmit }: Readonly<MealsFormProps>) {
 		<NutrientsSection
 			key="nutrients"
 			navigationButtons={[
-				<Button onClick={(e) => handleChangePage(e, 0)}>&lt; Meals</Button>
+				<Button onClick={() => setPageIndex(0)}>&lt; Meals</Button>,
+				<Button onClick={() => handleSubmit()} disabled={selectedNutrientIds.size === 0}>
+					Generate Report
+				</Button>
 			]}
 		/>
 	];
 
-	return (
-		<form className="w-full flex" onSubmit={handleSubmit}>
-			{pages[pageIndex]}
-		</form>
-	);
+	return pages[pageIndex];
 }
