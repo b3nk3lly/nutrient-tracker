@@ -3,13 +3,12 @@ import MainContent from "./layout/MainContent/MainContent";
 import NutrientGroup from "../types/nutrientGroup";
 import Nutrient from "../types/nutrient";
 import IconButton from "./IconButton";
-import DeselectAllIcon from "./icons/DeselectAllIcon";
-import SelectAllIcon from "./icons/SelectAllIcon";
 import { useMealsContext } from "../store/MealsContextProvider";
 import fetchNutrients from "../functions/fetchNutrients";
 import ftechNutrientGroups from "../functions/fetchNutrientGroups";
 import Button from "./Button";
 import Section from "./layout/Section";
+import { DeselectAll, SelectAll } from "./Icons";
 
 interface NutrientsSectionProps {
 	navigationButtons: React.ReactNode[];
@@ -80,14 +79,14 @@ export default function NutrientsSection({ navigationButtons }: Readonly<Nutrien
 			tooltip="Deselect All"
 			onClick={() => handleDeselectAllInGroup(group.id)}
 		>
-			<DeselectAllIcon />
+			<DeselectAll />
 		</IconButton>,
 		<IconButton
 			key={`${group.id}-select-all`}
 			tooltip="Select All"
 			onClick={() => handleSelectAllInGroup(group.id)}
 		>
-			<SelectAllIcon />
+			<SelectAll />
 		</IconButton>
 	];
 

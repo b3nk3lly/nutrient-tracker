@@ -4,12 +4,11 @@ import React from "react";
 import MealCard from "./MealCard";
 import mealGenerator from "../../functions/mealGenerator";
 import IconButton from "../IconButton";
-import DeleteIcon from "../icons/DeleteIcon";
 import { useMealsContext } from "../../store/MealsContextProvider";
 import Button from "../Button";
 import Meal from "../../types/meal";
 import Section from "../layout/Section";
-import { RiAddLine } from "react-icons/ri";
+import { Add, Delete } from "../Icons";
 
 interface MealsSectionProps {
 	navigationButtons: React.ReactNode[];
@@ -37,7 +36,7 @@ export default function MealsSection({ navigationButtons }: Readonly<MealsSectio
 						tooltip="Remove Meal"
 						onClick={() => handleDeleteMeal(id)}
 					>
-						<DeleteIcon />
+						<Delete />
 					</IconButton>
 			  ]
 			: undefined;
@@ -57,7 +56,7 @@ export default function MealsSection({ navigationButtons }: Readonly<MealsSectio
 			renderItem={renderMealDetails}
 			actionButtons={[
 				<Button onClick={handleAddMeal}>
-					<RiAddLine />
+					<Add />
 					Add Meal
 				</Button>,
 				...navigationButtons

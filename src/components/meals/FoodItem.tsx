@@ -1,11 +1,10 @@
 "use client";
 
-import React from "react";
 import ServingSelection from "./ServingSelection";
 import Food from "../../types/food";
 import IconButton from "../IconButton";
-import DeleteIcon from "../icons/DeleteIcon";
 import { useMealsContext } from "../../store/MealsContextProvider";
+import { Delete } from "../Icons";
 
 interface FoodItemProps {
 	food: Food;
@@ -36,7 +35,7 @@ const FoodItem = ({ food, mealId }: FoodItemProps) => {
 			<div className="flex justify-between align-middle">
 				<p className="font-semibold text-neutral">{food.description}</p>
 				<IconButton tooltip="Remove Food" onClick={() => handleDeleteFood()}>
-					<DeleteIcon />
+					<Delete />
 				</IconButton>
 			</div>
 			<label className="w-full m-1 text-neutral">

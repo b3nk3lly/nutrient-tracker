@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Food from "../../types/food";
-import SearchIcon from "../icons/SearchIcon";
 import fetchFoods from "../../functions/fetchFoods";
 import { IconContext } from "react-icons";
+import { Search } from "../Icons";
 
 const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 	const [suggestions, setSuggestions] = useState<Food[]>([]);
@@ -35,7 +35,7 @@ const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 		<>
 			<label className="input input-bordered flex items-center gap-2">
 				<IconContext.Provider value={{ style: { opacity: "70%" } }}>
-					<SearchIcon />
+					<Search />
 				</IconContext.Provider>
 				<input
 					type="text"

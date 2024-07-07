@@ -6,6 +6,7 @@ import ReportSection from "./components/report/ReportSection";
 import MealsForm from "./components/form/MealsForm";
 import generateReportData from "./functions/generateReportData";
 import Button from "./components/Button";
+import { Previous } from "./components/Icons";
 
 function App() {
 	const [showTable, setShowTable] = useState(false);
@@ -33,7 +34,8 @@ function App() {
 							data={reportData}
 							navigationButtons={[
 								<Button onClick={() => setShowTable(false)}>
-									&lt; Back to meals
+									<Previous />
+									Back to meals
 								</Button>
 							]}
 						/>

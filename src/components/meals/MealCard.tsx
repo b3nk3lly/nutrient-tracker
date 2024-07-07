@@ -8,7 +8,7 @@ import { useMealsContext } from "../../store/MealsContextProvider";
 import fetchServings from "../../functions/fetchServings";
 import MealName from "./MealName";
 import IconButton from "../IconButton";
-import DeleteIcon from "../icons/DeleteIcon";
+import { Delete } from "../Icons";
 
 interface MealCardProps {
 	meal: Meal;
@@ -64,7 +64,7 @@ const MealCard = ({ meal, deletable }: MealCardProps) => {
 					onClick={() => handleDeleteMeal(meal.id)}
 					disabled={!deletable}
 				>
-					<DeleteIcon />
+					<Delete />
 				</IconButton>
 			</header>
 			<div className="m-4">

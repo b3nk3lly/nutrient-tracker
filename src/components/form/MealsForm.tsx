@@ -6,7 +6,7 @@ import Meal from "../../types/meal";
 import MealsSection from "../meals/MealsSection";
 import NutrientsSection from "../NutrientsSection";
 import Button from "../Button";
-import { GrFormNext, GrFormPrevious } from "react-icons/gr";
+import { Next, Previous } from "../Icons";
 
 interface MealsFormProps {
 	onSubmit: (meals: Meal[], nutrientIds: number[]) => void;
@@ -28,7 +28,7 @@ export default function MealsForm({ onSubmit }: Readonly<MealsFormProps>) {
 			navigationButtons={[
 				<Button onClick={() => setPageIndex(1)} disabled={mealsAreEmpty}>
 					Nutrients
-					<GrFormNext />
+					<Next />
 				</Button>
 			]}
 		/>,
@@ -36,7 +36,7 @@ export default function MealsForm({ onSubmit }: Readonly<MealsFormProps>) {
 			key="nutrients"
 			navigationButtons={[
 				<Button onClick={() => setPageIndex(0)}>
-					<GrFormPrevious />
+					<Previous />
 					Meals
 				</Button>,
 				<Button onClick={() => handleSubmit()} disabled={selectedNutrientIds.size === 0}>

@@ -6,7 +6,7 @@ import MainContent from "../layout/MainContent/MainContent";
 import Table from "./Table";
 import Button from "../Button";
 import scrapeTableData from "../../functions/scrapeTable";
-import DownloadIcon from "../icons/DownloadIcon";
+import { Download } from "../Icons";
 
 interface ReportSectionProps {
 	data: ReportData;
@@ -46,7 +46,7 @@ export default function ReportSection({ data, navigationButtons }: ReportSection
 				<div className="flex justify-evenly">
 					{navigationButtons && <div>{navigationButtons}</div>}
 					<Button onClick={() => handleExportToCsv()}>
-						<DownloadIcon />
+						<Download />
 						Export to CSV
 					</Button>
 				</div>
