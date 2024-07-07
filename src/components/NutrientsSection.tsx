@@ -73,30 +73,29 @@ export default function NutrientsSection({ navigationButtons }: Readonly<Nutrien
 		);
 	};
 
-	const renderSidebarActionButtons = (group: NutrientGroup) => [
-		<IconButton
-			key={`${group.id}-deselect-all`}
-			tooltip="Deselect All"
-			onClick={() => handleDeselectAllInGroup(group.id)}
-		>
-			<DeselectAll />
-		</IconButton>,
+	const renderActionButtons = (group: NutrientGroup) => [
 		<IconButton
 			key={`${group.id}-select-all`}
 			tooltip="Select All"
 			onClick={() => handleSelectAllInGroup(group.id)}
 		>
 			<SelectAll />
+		</IconButton>,
+		<IconButton
+			key={`${group.id}-deselect-all`}
+			tooltip="Deselect All"
+			onClick={() => handleDeselectAllInGroup(group.id)}
+		>
+			<DeselectAll />
 		</IconButton>
 	];
 
 	const renderNutrientGroupDetails = (group: NutrientGroup) => (
 		<>
-			<MainContent.Header>
+			<header className="flex justify-between border-b-2 border-base-200 pb-2">
 				<h2 className="text-xl text-neutral font-bold p-1">{group.name}</h2>
-				<Button onClick={() => handleSelectAllInGroup(group.id)}>Select All</Button>
-				<Button onClick={() => handleDeselectAllInGroup(group.id)}>Deselect All</Button>
-			</MainContent.Header>
+				<div className="mr-4">{renderActionButtons(group)}</div>
+			</header>
 			<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 divide-y divide-base-200 grow overflow-x-hidden overflow-y-auto mx-4">
 				{nutrients
 					.filter((nutrient) => nutrient.groupId === group.id)
@@ -125,7 +124,7 @@ export default function NutrientsSection({ navigationButtons }: Readonly<Nutrien
 			items={nutrientGroups}
 			sidebarOptionProps={{
 				label: renderNutrientGroupLabel,
-				actionButtons: renderSidebarActionButtons
+				actionButtons: renderActionButtons
 			}}
 			renderItem={renderNutrientGroupDetails}
 			actionButtons={[...navigationButtons]}
