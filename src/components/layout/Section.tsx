@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import SideContent from "./SideContent/SideContent";
 
 interface Identifiable {
@@ -27,10 +27,27 @@ export default function Section<T extends Identifiable>({
 }: SectionProps<T>) {
 	const [selectedItemId, setSelectedItemId] = useState<number | undefined>();
 	const itemsRef = useRef<Map<number, HTMLDivElement>>(new Map());
+	const prevItemLengthRef = useRef(items.length);
 
-	const handleSelectItem = (event: React.MouseEvent<HTMLButtonElement>, id: number) => {
-		event.preventDefault();
+	const scrollToItem = useCallback(({ id }: T) => {
 		itemsRef.current.get(id)?.scrollIntoView({ behavior: "smooth" });
+	}, []);
+
+	/**
+	 * Detects changes in the length of `items` array
+	 */
+	useEffect(() => {
+		if (prevItemLengthRef.current > 0 && items.length > prevItemLengthRef.current) {
+			// new item added, scroll to it
+			scrollToItem(items[items.length - 1]);
+		}
+
+		prevItemLengthRef.current = items.length;
+	}, [items, scrollToItem]);
+
+	const handleSelectItem = (event: React.MouseEvent<HTMLButtonElement>, item: T) => {
+		event.preventDefault();
+		scrollToItem(item);
 	};
 
 	/**
@@ -53,7 +70,7 @@ export default function Section<T extends Identifiable>({
 						<SideContent.MenuOption
 							key={item.id}
 							selected={item.id === selectedItemId}
-							onClick={(e) => handleSelectItem(e, item.id)}
+							onClick={(e) => handleSelectItem(e, item)}
 							label={sidebarOptionProps.label(item)}
 							actionButtons={sidebarOptionProps.actionButtons(item)}
 						/>
