@@ -3,10 +3,10 @@
 import React from "react";
 import ReportData from "../../types/reportData";
 import MainContent from "../layout/MainContent/MainContent";
-import SideContent from "../layout/SideContent/SideContent";
 import Table from "./Table";
 import Button from "../Button";
 import scrapeTableData from "../../functions/scrapeTable";
+import DownloadIcon from "../icons/DownloadIcon";
 
 interface ReportSectionProps {
 	data: ReportData;
@@ -45,7 +45,10 @@ export default function ReportSection({ data, navigationButtons }: ReportSection
 				</div>
 				<div className="flex justify-evenly">
 					{navigationButtons && <div>{navigationButtons}</div>}
-					<Button onClick={() => handleExportToCsv()}>Export to CSV</Button>
+					<Button onClick={() => handleExportToCsv()}>
+						<DownloadIcon />
+						Export to CSV
+					</Button>
 				</div>
 			</MainContent>
 		</>
