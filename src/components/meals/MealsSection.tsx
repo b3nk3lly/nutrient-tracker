@@ -19,15 +19,12 @@ export default function MealsSection({ navigationButtons }: Readonly<MealsSectio
 
 	const hasMultipleMeals = meals.length > 1;
 
-	const handleAddMeal = (event: React.MouseEvent<HTMLButtonElement>) => {
-		event.preventDefault();
-
+	const handleAddMeal = () => {
 		const newMeal = mealGenerator.next().value;
 		mealsDispatch({ type: "CREATE_MEAL", meal: newMeal });
 	};
 
-	const handleDeleteMeal = (event: React.MouseEvent<HTMLButtonElement>, mealId: number) => {
-		event.preventDefault();
+	const handleDeleteMeal = (mealId: number) => {
 		mealsDispatch({ type: "DELETE_MEAL", mealId });
 	};
 
@@ -37,7 +34,7 @@ export default function MealsSection({ navigationButtons }: Readonly<MealsSectio
 					<IconButton
 						key={`${id}-delete`}
 						tooltip="Remove Meal"
-						onClick={(e) => handleDeleteMeal(e, id)}
+						onClick={() => handleDeleteMeal(id)}
 					>
 						<DeleteIcon />
 					</IconButton>
