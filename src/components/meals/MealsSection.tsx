@@ -41,10 +41,6 @@ export default function MealsSection({ navigationButtons }: Readonly<MealsSectio
 			  ]
 			: undefined;
 
-	const renderMealDetails = (meal: Meal) => (
-		<MealCard meal={meal} deletable={!hasMultipleMeals} />
-	);
-
 	return (
 		<Section<Meal>
 			title="Meals"
@@ -53,7 +49,7 @@ export default function MealsSection({ navigationButtons }: Readonly<MealsSectio
 				label: ({ name }: Meal) => name,
 				actionButtons: renderSidebarActionButtons
 			}}
-			renderItem={renderMealDetails}
+			renderItem={(meal: Meal) => <MealCard meal={meal} deletable={hasMultipleMeals} />}
 			actionButtons={[
 				<Button onClick={handleAddMeal}>
 					<Add />
