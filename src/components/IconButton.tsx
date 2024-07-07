@@ -1,5 +1,7 @@
 "use client";
 
+import { IconContext } from "react-icons";
+
 interface IconButtonProps {
 	tooltip: string;
 	onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -20,7 +22,11 @@ export default function IconButton({
 				onClick={onClick}
 				disabled={disabled}
 			>
-				{children}
+				<IconContext.Provider
+					value={{ className: "fill-neutral", style: { height: "100%", width: "100%" } }}
+				>
+					{children}
+				</IconContext.Provider>
 			</button>
 		</div>
 	);

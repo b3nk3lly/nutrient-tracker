@@ -9,6 +9,7 @@ import { useMealsContext } from "../../store/MealsContextProvider";
 import Button from "../Button";
 import Meal from "../../types/meal";
 import Section from "../layout/Section";
+import { RiAddLine } from "react-icons/ri";
 
 interface MealsSectionProps {
 	navigationButtons: React.ReactNode[];
@@ -55,7 +56,10 @@ export default function MealsSection({ navigationButtons }: Readonly<MealsSectio
 			}}
 			renderItem={renderMealDetails}
 			actionButtons={[
-				<Button onClick={handleAddMeal}>+ Add Meal</Button>,
+				<Button onClick={handleAddMeal}>
+					<RiAddLine />
+					Add Meal
+				</Button>,
 				...navigationButtons
 			]}
 		/>

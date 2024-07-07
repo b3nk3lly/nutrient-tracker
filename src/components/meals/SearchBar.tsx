@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Food from "../../types/food";
 import SearchIcon from "../icons/SearchIcon";
 import fetchFoods from "../../functions/fetchFoods";
+import { IconContext } from "react-icons";
 
 const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 	const [suggestions, setSuggestions] = useState<Food[]>([]);
@@ -33,7 +34,9 @@ const SearchBar = (props: { onSelect: (food: Food) => void }) => {
 	return (
 		<>
 			<label className="input input-bordered flex items-center gap-2">
-				<SearchIcon className="w-4 h-4 opacity-70 fill-neutral" />
+				<IconContext.Provider value={{ style: { opacity: "70%" } }}>
+					<SearchIcon />
+				</IconContext.Provider>
 				<input
 					type="text"
 					placeholder="Enter a name or food code"
