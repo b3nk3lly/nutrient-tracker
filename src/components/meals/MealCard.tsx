@@ -69,7 +69,7 @@ const MealCard = ({ meal, deletable }: MealCardProps) => {
 				</IconButton>
 			</header>
 			<div className="m-4">
-				<SearchBar onSelect={(food: Food) => handleAddFood(food)} />
+				<SearchBar onSelect={handleAddFood} />
 			</div>
 
 			<div className="mx-4 grow overflow-x-hidden overflow-y-auto">

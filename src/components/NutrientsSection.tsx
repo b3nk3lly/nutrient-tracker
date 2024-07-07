@@ -131,22 +131,20 @@ export default function NutrientsSection({ navigationButtons }: Readonly<Nutrien
 	);
 
 	return (
-		<>
-			<Section<NutrientGroup>
-				title="Nutrients"
-				items={nutrientGroups}
-				sidebarOptionProps={{
-					label: renderNutrientGroupLabel,
-					actionButtons: renderSidebarActionButtons
-				}}
-				renderItem={renderNutrientGroupDetails}
-				actionButtons={[
-					...navigationButtons,
-					<Button type="submit" disabled={selectedNutrientIds.size === 0}>
-						Generate Report
-					</Button>
-				]}
-			/>
-		</>
+		<Section<NutrientGroup>
+			title="Nutrients"
+			items={nutrientGroups}
+			sidebarOptionProps={{
+				label: renderNutrientGroupLabel,
+				actionButtons: renderSidebarActionButtons
+			}}
+			renderItem={renderNutrientGroupDetails}
+			actionButtons={[
+				...navigationButtons,
+				<Button type="submit" disabled={selectedNutrientIds.size === 0}>
+					Generate Report
+				</Button>
+			]}
+		/>
 	);
 }
